@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImagePlanner", "ImagePlanner\ImagePlanner.csproj", "{FD6CEF54-1C7A-4024-B33C-55079A6D4463}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD6CEF54-1C7A-4024-B33C-55079A6D4463}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD6CEF54-1C7A-4024-B33C-55079A6D4463}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD6CEF54-1C7A-4024-B33C-55079A6D4463}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD6CEF54-1C7A-4024-B33C-55079A6D4463}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {01FCBBA5-407D-42ED-BD8A-B7E7000141FE}
+	EndGlobalSection
+EndGlobal

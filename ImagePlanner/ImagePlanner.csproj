@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{FD6CEF54-1C7A-4024-B33C-55079A6D4463}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ImagePlanner</RootNamespace>
+    <AssemblyName>ImagePlanner</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ProductName>Image Planner</ProductName>
+    <PublisherName>TSXToolkit</PublisherName>
+    <SuiteName>TSXToolKit</SuiteName>
+    <ApplicationRevision>46</ApplicationRevision>
+    <ApplicationVersion>3.1.3.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>FFCA76693ACE586EDD46A1386FAC2A2CEAC3566E</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ImagePlanner_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>ImageForecast.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AMTransform.cs" />
+    <Compile Include="AMCelestial.cs" />
+    <Compile Include="AMDailyPosition.cs" />
+    <Compile Include="DBQFileManagement.cs" />
+    <Compile Include="FormDetails.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormDetails.Designer.cs">
+      <DependentUpon>FormDetails.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormImagePlanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormImagePlanner.Designer.cs">
+      <DependentUpon>FormImagePlanner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormPreview.Designer.cs">
+      <DependentUpon>FormPreview.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormSearchingNotice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSearchingNotice.Designer.cs">
+      <DependentUpon>FormSearchingNotice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTargetPath.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTargetPath.Designer.cs">
+      <DependentUpon>FormTargetPath.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormTargetTrack.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormTargetTrack.Designer.cs">
+      <DependentUpon>FormTargetTrack.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormWazzup.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormWazzup.Designer.cs">
+      <DependentUpon>FormWazzup.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FOVX.cs" />
+    <Compile Include="ObjectList.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AMSpherical.cs" />
+    <Compile Include="WazzupEvent.cs" />
+    <Compile Include="AMSidereal.cs" />
+    <Compile Include="TargetControl.cs" />
+    <Compile Include="AMFormatter.cs" />
+    <Compile Include="AMPlanarMath.cs" />
+    <Compile Include="Xccess.cs" />
+    <Compile Include="XFiles.cs" />
+    <EmbeddedResource Include="FormDetails.resx">
+      <DependentUpon>FormDetails.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormImagePlanner.resx">
+      <DependentUpon>FormImagePlanner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormPreview.resx">
+      <DependentUpon>FormPreview.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormSearchingNotice.resx">
+      <DependentUpon>FormSearchingNotice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTargetPath.resx">
+      <DependentUpon>FormTargetPath.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormTargetTrack.resx">
+      <DependentUpon>FormTargetTrack.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormWazzup.resx">
+      <DependentUpon>FormWazzup.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="ImagePlannerDescription.docx" />
+    <None Include="ImagePlanner_TemporaryKey.pfx" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="ImagePlannerCluster.dbq">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImagePlannerGalaxy.dbq">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ImagePlannerNebula.dbq">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="TheSkyXLib">
+      <Guid>{AECFC6C9-1BED-4028-B248-0D9156598289}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ImageForecast.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
