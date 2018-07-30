@@ -30,7 +30,7 @@ namespace NightHawk
         string NightHawkFolderName = "NightHawk";
         string NightHawkTargetPlanFilename = "TargetPlan.xml";
         string NightHawkTargetPlanXName = "NightHawkTargetPlan";
-        string NightHawkActiveTargetPlanFilename = "Active.TargetPlan.xml";
+        string NightHawkDefaultTargetPlanFilename = "TargetPlanDefault.xml";
         string NightHawkTargetPlanSearchPattern = "*.TargetPlan.xml";
 
         string nhDir;
@@ -145,26 +145,30 @@ namespace NightHawk
 
         public XFiles(string targetName)
         {
+            //Checks for an existing project plan as named targetName.  If so, return as an Xccess object.
+            //if not, then create a new default project plan from the TargetPlanDefault xml file in the NightHawk directory
+            //  and return it as an Xcess object.
             nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightHawkFolderName;
-            string nhActiveFilePath = nhDir + "\\" + NightHawkActiveTargetPlanFilename;
             string nhTargetFilePath = nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename;
+            string nhDefaultFilePath = nhDir + "\\" + NightHawkDefaultTargetPlanFilename;
             if ((!(Directory.Exists(nhDir + "\\" + NightHawkFolderName))))
             {
                 Directory.CreateDirectory(nhDir);
             }
-            if ((!(File.Exists(nhTargetFilePath)))) //No target xml file
+            if ((!(File.Exists(nhTargetFilePath)))) 
             {
-                if ((!(File.Exists(nhActiveFilePath)))) //and no active xml file so just create new target file
+                if ((!(File.Exists(nhDefaultFilePath)))) //No target xml file and no default xml file so just create null target file
                 {
                     XElement cDefaultX = new XElement(NightHawkTargetPlanXName);
                     cDefaultX.Save(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
                 }
-                else //is active xml file, but no target file so load the active file and create a new target file
+                else //No target xml file but there is a default target file so use it to create a new target file.
                 {
-                    XElement hnTgtX = XElement.Load(nhActiveFilePath);
+                    XElement hnTgtX = XElement.Load(nhDefaultFilePath);
                     hnTgtX.Save(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
                 }
             }
+            //Create new Xccess object from whatever was found
             Xmlf = new Xccess(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
             return;
         }
