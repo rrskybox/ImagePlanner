@@ -31,7 +31,7 @@ namespace ImagePlanner
             for (int dayidx = 0; dayidx < sunspots.Length; dayidx++)
             {
                 DateTime tdate = sdate.AddDays(dayidx);
-                sunpos = Celestial.SunRADec(Celestial.DateToJ2kC(tdate));
+                sunpos = DailyPosition.SunRADec(Celestial.DateToJ2kC(tdate));
                 sunspots[dayidx] = new DailyPosition(tdate,
                                  tdate.AddDays(1),
                                  sunpos,
@@ -66,7 +66,7 @@ namespace ImagePlanner
             {
                 moonedspots[dayidx] = new DailyPosition(tgtspots[dayidx].Rising,
                                                    tgtspots[dayidx].Setting,
-                                                   Celestial.MoonRaDec(Celestial.DateToJ2kC(tgtspots[dayidx].Rising)),
+                                                   DailyPosition.MoonRaDec(Celestial.DateToJ2kC(tgtspots[dayidx].Rising)),
                                                    obsLocation,
                                                    0);
             }
@@ -80,8 +80,8 @@ namespace ImagePlanner
             Celestial.RADec moonradec;
             foreach (DailyPosition dp in tgtdata)
             {
-                sunradec = Celestial.SunRADec(Celestial.DateToJ2kC(dp.UTCdate));
-                moonradec = Celestial.MoonRaDec(Celestial.DateToJ2kC(dp.UTCdate));
+                sunradec = DailyPosition.SunRADec(Celestial.DateToJ2kC(dp.UTCdate));
+                moonradec = DailyPosition.MoonRaDec(Celestial.DateToJ2kC(dp.UTCdate));
                 dp.SetMoonPhase(sunradec.RA, moonradec.RA);
             }
             return tgtdata;

@@ -43,7 +43,7 @@ namespace ImagePlanner
             obsLatD = Transform.RadiansToDegrees(dp.Location.Lat);
 
             //Moon look up stuff
-            Celestial.RADec moonRADec = Celestial.MoonRaDec(Celestial.DateToJ2kC(dp.UTCdate));
+            Celestial.RADec moonRADec = DailyPosition.MoonRaDec(Celestial.DateToJ2kC(dp.UTCdate));
             moonDecD = 90 - Transform.RadiansToDegrees(mp.Position.Dec);
             //Get the rise/set times from TSX
             sky6StarChart tsxs = new sky6StarChart();

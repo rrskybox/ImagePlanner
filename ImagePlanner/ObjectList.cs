@@ -325,7 +325,7 @@ namespace ImagePlanner
         {
             Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(longitudeDegrees));
             Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
-            double maxAlt = Transform.RadiansToDegrees(Celestial.MaxAltitude(duskLocal.ToUniversalTime(), dawnLocal.ToUniversalTime(), position, location));
+            double maxAlt = Transform.RadiansToDegrees(AstroMath.DailyPosition.MaxAltitude(duskLocal.ToUniversalTime(), dawnLocal.ToUniversalTime(), position, location));
             return maxAlt;
         }
 
