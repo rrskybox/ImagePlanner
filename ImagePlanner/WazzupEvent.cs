@@ -5,7 +5,7 @@ namespace ImagePlanner
     public class WazzupEvent
     {
         /// Class for creating event handler for passing Log value to 
-        /// a subscriber form (NightHawkForm) and saving it to a file
+        /// a subscriber form (NightShiftForm) and saving it to a file
         /// 
         /// 
         /// The subscribing form class (which wants to display the log entry
@@ -21,7 +21,7 @@ namespace ImagePlanner
         ///            return;
         ///         }
         ///Then an event publisher gets the Logger object from the controlling form
-        ///            Logger lg = NightHawkForm.logstatus;
+        ///            Logger lg = NightShiftForm.logstatus;
         ///And generates an event whenever it needs to
         ///            lg.targetName("Acquiring guide star");
         ///            

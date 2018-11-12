@@ -390,7 +390,7 @@
             // 
             // printCalendar
             // 
-            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.printCalendar_PrintPage);
+            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintCalendar_PrintPage);
             // 
             // ProspectButton
             // 

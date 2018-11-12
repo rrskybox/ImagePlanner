@@ -28,6 +28,8 @@
 //          2. Restructured classes to create "AstroMath" and "AstroChart" namespaces
 //              with "Planar", "Spherical", "Transform", "Formatter", "Sidereal" and DailyPosition classes
 //          3. Disabled the calendar column sorting
+//V3.2:     1. Modified target plan searches and methods to use "Default" instead of "Active"
+//          2. Modified target plan file to "Night Shift" rather than "NightHawk".
 
 using System;
 using System.Collections.Generic;
@@ -36,7 +38,7 @@ using System.Windows.Forms;
 using TheSkyXLib;
 using System.Xml.Linq;
 using AstroMath;
-using NightHawk;
+using NightShift;
 
 namespace ImagePlanner
 {
@@ -107,14 +109,14 @@ namespace ImagePlanner
             int iRow = DateTime.Now.Day - 1;
             MonthCalendar.Rows[iRow].Cells[jCol].Selected = true;
 
-            //Fill in NightHawk target plans
+            //Fill in Night Shift target plans
             XFiles xf = new XFiles();
             if (xf != null)
             {
                 List<string> tgtList = xf.GetTargetFiles();
                 foreach (string tgt in tgtList)
                 {
-                    if (!(tgt.Contains("Active")))
+                    if (!(tgt.Contains("Default")))
                     {
                         ImagePlannerTargetList.Items.Add(tgt);
                     }
@@ -320,7 +322,7 @@ namespace ImagePlanner
         private void AddTargetPlanButton_Click(Object sender, EventArgs e)  // Handles AddTargetPlanButton.Click
         {
             ButtonRed(AddTargetPlanButton);
-            //Save a new night hawk configuration file with this target name, RA and Dec and about nothing else
+            //Save a new Night Shift configuration file with this target name, RA and Dec and about nothing else
 
             string tgtName = TargetNameBox.Text;
             sky6StarChart tsxs = new sky6StarChart();
@@ -350,12 +352,12 @@ namespace ImagePlanner
             xfn.SavePlan(tgtName);
             //clear current target list box and reload
             ImagePlannerTargetList.Items.Clear();
-            //Fill in NightHawk target plans
+            //Fill in Night Shift target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
             foreach (string tgt in tgtList)
             {
-                if (!(tgt.Contains("Active")))
+                if (!(tgt.Contains("Default")))
                 {
                     ImagePlannerTargetList.Items.Add(tgt);
                 }
@@ -374,18 +376,18 @@ namespace ImagePlanner
         private void DeleteTargetPlanButton_Click(Object sender, EventArgs e)  // Handles DeleteTargetPlanButton.Click
         {
             ButtonRed(DeleteTargetPlanButton);
-            //Delete the night hawk configuration file with this target name
+            //Delete the night Shift configuration file with this target name
             XFiles xfn = new XFiles();
             string tgtName = ImagePlannerTargetList.SelectedItem.ToString();
             xfn.DeletePlan(tgtName);
             //clear current target list box and reload
             ImagePlannerTargetList.Items.Clear(); ;
-            //Fill in NightHawk target plans
+            //Fill in Night Shift target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
             foreach (string tgt in tgtList)
             {
-                if (!(tgt.Contains("Active")))
+                if (!(tgt.Contains("Default")))
                 {
                     ImagePlannerTargetList.Items.Add(tgt);
                 }
@@ -1145,7 +1147,7 @@ namespace ImagePlanner
             return;
         }
 
-        private void printCalendar_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
+        private void PrintCalendar_PrintPage(object sender, System.Drawing.Printing.PrintPageEventArgs e)
         {
             e.Graphics.DrawImage(memoryImage, 0, 0, 1000, 750);
 

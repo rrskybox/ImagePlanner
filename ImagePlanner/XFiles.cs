@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace NightHawk
+namespace NightShift
 {
     public class XFiles
     {
@@ -27,17 +27,17 @@ namespace NightHawk
 
         //Private data
 
-        string NightHawkFolderName = "NightHawk";
-        string NightHawkTargetPlanFilename = "TargetPlan.xml";
-        string NightHawkTargetPlanXName = "NightHawkTargetPlan";
-        string NightHawkDefaultTargetPlanFilename = "TargetPlanDefault.xml";
-        string NightHawkTargetPlanSearchPattern = "*.TargetPlan.xml";
+        string NightShiftFolderName = "Night Shift";
+        string NightShiftTargetPlanFilename = "TargetPlan.xml";
+        string NightShiftTargetPlanXName = "NightShiftTargetPlan";
+        string NightShiftDefaultTargetPlanFilename = "TargetPlanDefault.xml";
+        string NightShiftTargetPlanSearchPattern = "*.TargetPlan.xml";
 
         string nhDir;
 
         //Configuration Element Names
 
-        public static string cfNightHawkFolderNameName = "NightHawkFolderName";
+        public static string cfNightShiftFolderNameName = "NightShiftFolderName";
         public static string nhLastFileNumberName = "NH-LastFileNumber";
         public static string afFindStarName = "AF-FindStar-Checked";
         public static string afRGBName = "AF-RGB-Checked";
@@ -135,8 +135,8 @@ namespace NightHawk
 
         public XFiles()
         {
-            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightHawkFolderName;
-            if ((!(Directory.Exists(nhDir + "\\" + NightHawkFolderName))))  //no directory, so create it
+            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightShiftFolderName;
+            if ((!(Directory.Exists(nhDir + "\\" + NightShiftFolderName))))  //no directory, so create it
             {
                 Directory.CreateDirectory(nhDir);
             }
@@ -146,12 +146,12 @@ namespace NightHawk
         public XFiles(string targetName)
         {
             //Checks for an existing project plan as named targetName.  If so, return as an Xccess object.
-            //if not, then create a new default project plan from the TargetPlanDefault xml file in the NightHawk directory
+            //if not, then create a new default project plan from the TargetPlanDefault xml file in the Night Shift directory
             //  and return it as an Xcess object.
-            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightHawkFolderName;
-            string nhTargetFilePath = nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename;
-            string nhDefaultFilePath = nhDir + "\\" + NightHawkDefaultTargetPlanFilename;
-            if ((!(Directory.Exists(nhDir + "\\" + NightHawkFolderName))))
+            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightShiftFolderName;
+            string nhTargetFilePath = nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename;
+            string nhDefaultFilePath = nhDir + "\\" + NightShiftDefaultTargetPlanFilename;
+            if ((!(Directory.Exists(nhDir + "\\" + NightShiftFolderName))))
             {
                 Directory.CreateDirectory(nhDir);
             }
@@ -159,17 +159,17 @@ namespace NightHawk
             {
                 if ((!(File.Exists(nhDefaultFilePath)))) //No target xml file and no default xml file so just create null target file
                 {
-                    XElement cDefaultX = new XElement(NightHawkTargetPlanXName);
-                    cDefaultX.Save(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
+                    XElement cDefaultX = new XElement(NightShiftTargetPlanXName);
+                    cDefaultX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
                 }
                 else //No target xml file but there is a default target file so use it to create a new target file.
                 {
                     XElement hnTgtX = XElement.Load(nhDefaultFilePath);
-                    hnTgtX.Save(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
+                    hnTgtX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
                 }
             }
             //Create new Xccess object from whatever was found
-            Xmlf = new Xccess(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
+            Xmlf = new Xccess(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
             return;
         }
 
@@ -178,7 +178,7 @@ namespace NightHawk
             //This command will save a copy of the current configuration.xml file
             //under the name targetname.configuration.xml
             XElement hnCfgX = Xmlf.GetXccessFileX();
-            hnCfgX.Save(nhDir + "\\" + targetName + "." + NightHawkTargetPlanFilename);
+            hnCfgX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
             return true;
         }
 
@@ -186,7 +186,7 @@ namespace NightHawk
         {
             //Removes the configuration file with the filename targetname
             string cfgFolderName = nhDir;
-            string cfgFilePath = cfgFolderName + "\\" + targetName + "." + NightHawkTargetPlanFilename;
+            string cfgFilePath = cfgFolderName + "\\" + targetName + "." + NightShiftTargetPlanFilename;
             System.Windows.Forms.DialogResult dr = System.Windows.Forms.MessageBox.Show("Are you sure you want to remove " + targetName + "?",
                 "Confirm Deletion",
                 System.Windows.Forms.MessageBoxButtons.OKCancel);
@@ -201,8 +201,8 @@ namespace NightHawk
         {
             //Removes the configuration file with the filename targetname
             string cfgFolderName = nhDir;
-            string tgtFilePath = cfgFolderName + "\\" + targetName + "." + NightHawkTargetPlanFilename;
-            string cfgFilePath = cfgFolderName + "\\" + NightHawkTargetPlanFilename;
+            string tgtFilePath = cfgFolderName + "\\" + targetName + "." + NightShiftTargetPlanFilename;
+            string cfgFilePath = cfgFolderName + "\\" + NightShiftTargetPlanFilename;
             File.Copy(tgtFilePath, cfgFilePath, true);
             return;
         }
@@ -210,10 +210,10 @@ namespace NightHawk
         public List<string> GetTargetFiles()
         {
             //return;s list of configuration filenames for targets
-            //Get a list of files from the NightHawk directory
+            //Get a list of files from the Night Shift directory
 
             List<string> targetNames = new List<string>();
-            string[] tgtProspectPaths = Directory.GetFiles(nhDir, NightHawkTargetPlanSearchPattern);
+            string[] tgtProspectPaths = Directory.GetFiles(nhDir, NightShiftTargetPlanSearchPattern);
             foreach (string sFile in tgtProspectPaths)
             {
                 string[] fname = Path.GetFileNameWithoutExtension(sFile).Split('.');
@@ -232,7 +232,7 @@ namespace NightHawk
         public string GetItem(string itemName)
         {
             return Xmlf.GetItem(itemName);
-            //string hnCfgFilePath = nhDir + "\\" + NightHawkTargetPlanFilename;
+            //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
             //XElement hnCfgX = XElement.Load(hnCfgFilePath);
             //IEnumerable<XElement> itemX = hnCfgX.Elements(itemName);
             //if (itemX.Count() == 0)
@@ -247,7 +247,7 @@ namespace NightHawk
         //{
         //    return Xmlf.GetItem(itemSection, itemName);
         //    ////Retrieves entry from two levels deep
-        //    //string hnCfgFilePath = nhDir + "\\" + NightHawkTargetPlanFilename;
+        //    //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
         //    //XElement hnCfgX = XElement.Load(hnCfgFilePath);
         //    //XElement sectionX = hnCfgX.Element(itemSection);
         //    ////Check section, if doesn//t exist, then return nothing
@@ -274,7 +274,7 @@ namespace NightHawk
         public void SetItem(string itemName, string item)
         {
             Xmlf.SetItem(itemName, item);
-            //string hnCfgFilePath = nhDir + "\\" + NightHawkTargetPlanFilename;
+            //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
             //XElement hnCfgX = XElement.Load(hnCfgFilePath);
             //IEnumerable<XElement> sscfgXel = hnCfgX.Elements(itemName);
             //if ((sscfgXel.Count() == 0))
@@ -294,7 +294,7 @@ namespace NightHawk
         //    //Set entry for level two-deep element
         //    //if ( the item Is in the file, but the entry Is "nothing" then just delete the entry
 
-        //    string hnCfgFilePath = nhDir + "\\" + NightHawkTargetPlanFilename;
+        //    string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
         //    XElement hnCfgX = XElement.Load(hnCfgFilePath);
         //    IEnumerable<XElement> sectionX = hnCfgX.Elements(sectionName);
         //    if ((sectionX.Count() == 0))
@@ -512,7 +512,7 @@ namespace NightHawk
         //            //Read && return the set of entries stored in the configuration file
         //            // , in ths case, in the form of Filter objects
 
-        //            string hnCfgFilePath = nhDir + "\\" + NightHawkTargetPlanFilename
+        //            string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename
         //            XElement hnCfgX = XElement.Load(hnCfgFilePath)
         //            XElement sectionX = hnCfgX.Element(suFilterSetName)
         //            //Check section, if doesn//t exist, then return nothing

@@ -1,11 +1,11 @@
-﻿//Class for accessing XML files in NightHawk
+﻿//Class for accessing XML files in NightShift
 
 using System;
 
 using System.Xml.Linq;
 using System.IO;
 
-namespace NightHawk
+namespace NightShift
 {
     public class Xccess
     {
