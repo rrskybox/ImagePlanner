@@ -1,11 +1,10 @@
-﻿//Class for accessing XML files in NightShift
+﻿//Class for accessing XML files in Humason
 
 using System;
-
 using System.Xml.Linq;
 using System.IO;
 
-namespace NightShift
+namespace Humason
 {
     public class Xccess
     {

@@ -1,7 +1,7 @@
-﻿using System;
+﻿using AstroMath;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AstroMath;
 
 namespace ImagePlanner
 {
@@ -43,11 +43,14 @@ namespace ImagePlanner
             {
 
                 double haR = gRaDec.HourAngle(gTime, gloc);
-                double haH = Transform.RadiansToHours(haR);
+               double haH = Transform.RadiansToHours(haR);
                 double altR = gRaDec.Altitude(haR, gloc);
                 double altitude = Transform.RadiansToDegrees(altR);
-                //double altitude = AstroMath.RadiansToDegrees(gRaDec.Altitude(gRaDec.HourAngle(gTime, gloc), gloc));
-
+                //
+                double gst = Celestial.DateUTCToGST(gTime);
+                double lst = Celestial.GSTToLST(gst, gloc.Lon);
+                //
+                                
                 if (altitude > 0)
                 {
                     DateTime localTime = gTime.ToLocalTime();

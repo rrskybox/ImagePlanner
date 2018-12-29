@@ -62,13 +62,6 @@
             this.DoneButton = new System.Windows.Forms.Button();
             this.PrintButton = new System.Windows.Forms.Button();
             this.MonthCalendar = new System.Windows.Forms.DataGridView();
-            this.PreviewButton = new System.Windows.Forms.Button();
-            this.TargetNameBox = new System.Windows.Forms.TextBox();
-            this.CreateButton = new System.Windows.Forms.Button();
-            this.CurrentYearPick = new System.Windows.Forms.NumericUpDown();
-            this.printCalendar = new System.Drawing.Printing.PrintDocument();
-            this.ProspectButton = new System.Windows.Forms.Button();
-            this.TrackButton = new System.Windows.Forms.Button();
             this.January = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Februrary = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.March = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -81,6 +74,13 @@
             this.October = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.November = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.December = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.PreviewButton = new System.Windows.Forms.Button();
+            this.TargetNameBox = new System.Windows.Forms.TextBox();
+            this.AssessButton = new System.Windows.Forms.Button();
+            this.CurrentYearPick = new System.Windows.Forms.NumericUpDown();
+            this.printCalendar = new System.Drawing.Printing.PrintDocument();
+            this.ProspectButton = new System.Windows.Forms.Button();
+            this.TrackButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -135,7 +135,7 @@
             // 
             this.DeleteTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DeleteTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1209, 10);
+            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1209, 9);
             this.DeleteTargetPlanButton.Name = "DeleteTargetPlanButton";
             this.DeleteTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.DeleteTargetPlanButton.TabIndex = 55;
@@ -147,7 +147,7 @@
             // 
             this.AddTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AddTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AddTargetPlanButton.Location = new System.Drawing.Point(1143, 10);
+            this.AddTargetPlanButton.Location = new System.Drawing.Point(1143, 9);
             this.AddTargetPlanButton.Name = "AddTargetPlanButton";
             this.AddTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.AddTargetPlanButton.TabIndex = 54;
@@ -159,7 +159,7 @@
             // 
             this.Label4.AutoSize = true;
             this.Label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label4.Location = new System.Drawing.Point(916, 15);
+            this.Label4.Location = new System.Drawing.Point(916, 13);
             this.Label4.Name = "Label4";
             this.Label4.Size = new System.Drawing.Size(94, 13);
             this.Label4.TabIndex = 53;
@@ -170,7 +170,7 @@
             this.ImagePlannerTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ImagePlannerTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ImagePlannerTargetList.FormattingEnabled = true;
-            this.ImagePlannerTargetList.Location = new System.Drawing.Point(1016, 11);
+            this.ImagePlannerTargetList.Location = new System.Drawing.Point(1016, 9);
             this.ImagePlannerTargetList.MaxDropDownItems = 20;
             this.ImagePlannerTargetList.Name = "ImagePlannerTargetList";
             this.ImagePlannerTargetList.Size = new System.Drawing.Size(121, 21);
@@ -181,7 +181,7 @@
             // 
             this.TargetNameDownButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.TargetNameDownButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TargetNameDownButton.Location = new System.Drawing.Point(320, 9);
+            this.TargetNameDownButton.Location = new System.Drawing.Point(301, 9);
             this.TargetNameDownButton.Name = "TargetNameDownButton";
             this.TargetNameDownButton.Size = new System.Drawing.Size(27, 20);
             this.TargetNameDownButton.TabIndex = 51;
@@ -193,7 +193,7 @@
             // 
             this.TargetNameUpButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.TargetNameUpButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TargetNameUpButton.Location = new System.Drawing.Point(287, 9);
+            this.TargetNameUpButton.Location = new System.Drawing.Point(268, 9);
             this.TargetNameUpButton.Name = "TargetNameUpButton";
             this.TargetNameUpButton.Size = new System.Drawing.Size(27, 20);
             this.TargetNameUpButton.TabIndex = 50;
@@ -205,7 +205,7 @@
             // 
             this.Label3.AutoSize = true;
             this.Label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label3.Location = new System.Drawing.Point(748, 15);
+            this.Label3.Location = new System.Drawing.Point(748, 13);
             this.Label3.Name = "Label3";
             this.Label3.Size = new System.Drawing.Size(115, 13);
             this.Label3.TabIndex = 49;
@@ -225,7 +225,7 @@
             // 
             this.Label1.AutoSize = true;
             this.Label1.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label1.Location = new System.Drawing.Point(140, 13);
+            this.Label1.Location = new System.Drawing.Point(121, 13);
             this.Label1.Name = "Label1";
             this.Label1.Size = new System.Drawing.Size(38, 13);
             this.Label1.TabIndex = 47;
@@ -233,7 +233,7 @@
             // 
             // MinAltitudeBox
             // 
-            this.MinAltitudeBox.Location = new System.Drawing.Point(869, 11);
+            this.MinAltitudeBox.Location = new System.Drawing.Point(869, 9);
             this.MinAltitudeBox.Maximum = new decimal(new int[] {
             90,
             0,
@@ -330,91 +330,6 @@
             this.MonthCalendar.Size = new System.Drawing.Size(1431, 724);
             this.MonthCalendar.TabIndex = 40;
             this.MonthCalendar.SelectionChanged += new System.EventHandler(this.MonthCalendar_SelectionChanged);
-            // 
-            // PreviewButton
-            // 
-            this.PreviewButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.PreviewButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PreviewButton.Location = new System.Drawing.Point(616, 10);
-            this.PreviewButton.Name = "PreviewButton";
-            this.PreviewButton.Size = new System.Drawing.Size(60, 20);
-            this.PreviewButton.TabIndex = 58;
-            this.PreviewButton.Text = "Preview";
-            this.PreviewButton.UseVisualStyleBackColor = false;
-            this.PreviewButton.Click += new System.EventHandler(this.PreviewButton_Click);
-            // 
-            // TargetNameBox
-            // 
-            this.TargetNameBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.TargetNameBox.Location = new System.Drawing.Point(184, 9);
-            this.TargetNameBox.Name = "TargetNameBox";
-            this.TargetNameBox.Size = new System.Drawing.Size(97, 20);
-            this.TargetNameBox.TabIndex = 42;
-            this.TargetNameBox.Text = "M1";
-            this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.TargetNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TargetNameBox_TextChanged);
-            // 
-            // CreateButton
-            // 
-            this.CreateButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.CreateButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.CreateButton.Location = new System.Drawing.Point(353, 9);
-            this.CreateButton.Name = "CreateButton";
-            this.CreateButton.Size = new System.Drawing.Size(61, 20);
-            this.CreateButton.TabIndex = 41;
-            this.CreateButton.Text = "Create";
-            this.CreateButton.UseVisualStyleBackColor = false;
-            this.CreateButton.Click += new System.EventHandler(this.CreateButton_Click);
-            // 
-            // CurrentYearPick
-            // 
-            this.CurrentYearPick.Location = new System.Drawing.Point(57, 9);
-            this.CurrentYearPick.Maximum = new decimal(new int[] {
-            2200,
-            0,
-            0,
-            0});
-            this.CurrentYearPick.Minimum = new decimal(new int[] {
-            1900,
-            0,
-            0,
-            0});
-            this.CurrentYearPick.Name = "CurrentYearPick";
-            this.CurrentYearPick.Size = new System.Drawing.Size(67, 20);
-            this.CurrentYearPick.TabIndex = 43;
-            this.CurrentYearPick.Value = new decimal(new int[] {
-            2018,
-            0,
-            0,
-            0});
-            // 
-            // printCalendar
-            // 
-            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintCalendar_PrintPage);
-            // 
-            // ProspectButton
-            // 
-            this.ProspectButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ProspectButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ProspectButton.Location = new System.Drawing.Point(682, 10);
-            this.ProspectButton.Name = "ProspectButton";
-            this.ProspectButton.Size = new System.Drawing.Size(60, 20);
-            this.ProspectButton.TabIndex = 61;
-            this.ProspectButton.Text = "Prospect";
-            this.ProspectButton.UseVisualStyleBackColor = false;
-            this.ProspectButton.Click += new System.EventHandler(this.ProspectButton_Click);
-            // 
-            // TrackButton
-            // 
-            this.TrackButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.TrackButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TrackButton.Location = new System.Drawing.Point(484, 9);
-            this.TrackButton.Name = "TrackButton";
-            this.TrackButton.Size = new System.Drawing.Size(60, 20);
-            this.TrackButton.TabIndex = 62;
-            this.TrackButton.Text = "Track";
-            this.TrackButton.UseVisualStyleBackColor = false;
-            this.TrackButton.Click += new System.EventHandler(this.TrackButton_Click);
             // 
             // January
             // 
@@ -550,6 +465,91 @@
             this.December.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.December.Width = 5;
             // 
+            // PreviewButton
+            // 
+            this.PreviewButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.PreviewButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.PreviewButton.Location = new System.Drawing.Point(615, 9);
+            this.PreviewButton.Name = "PreviewButton";
+            this.PreviewButton.Size = new System.Drawing.Size(60, 20);
+            this.PreviewButton.TabIndex = 58;
+            this.PreviewButton.Text = "Preview";
+            this.PreviewButton.UseVisualStyleBackColor = false;
+            this.PreviewButton.Click += new System.EventHandler(this.PreviewButton_Click);
+            // 
+            // TargetNameBox
+            // 
+            this.TargetNameBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.TargetNameBox.Location = new System.Drawing.Point(165, 9);
+            this.TargetNameBox.Name = "TargetNameBox";
+            this.TargetNameBox.Size = new System.Drawing.Size(97, 20);
+            this.TargetNameBox.TabIndex = 42;
+            this.TargetNameBox.Text = "M1";
+            this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TargetNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TargetNameBox_TextChanged);
+            // 
+            // AssessButton
+            // 
+            this.AssessButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.AssessButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.AssessButton.Location = new System.Drawing.Point(334, 9);
+            this.AssessButton.Name = "AssessButton";
+            this.AssessButton.Size = new System.Drawing.Size(61, 20);
+            this.AssessButton.TabIndex = 41;
+            this.AssessButton.Text = "Assess";
+            this.AssessButton.UseVisualStyleBackColor = false;
+            this.AssessButton.Click += new System.EventHandler(this.CreateButton_Click);
+            // 
+            // CurrentYearPick
+            // 
+            this.CurrentYearPick.Location = new System.Drawing.Point(48, 9);
+            this.CurrentYearPick.Maximum = new decimal(new int[] {
+            2200,
+            0,
+            0,
+            0});
+            this.CurrentYearPick.Minimum = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
+            this.CurrentYearPick.Name = "CurrentYearPick";
+            this.CurrentYearPick.Size = new System.Drawing.Size(67, 20);
+            this.CurrentYearPick.TabIndex = 43;
+            this.CurrentYearPick.Value = new decimal(new int[] {
+            2018,
+            0,
+            0,
+            0});
+            // 
+            // printCalendar
+            // 
+            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintCalendar_PrintPage);
+            // 
+            // ProspectButton
+            // 
+            this.ProspectButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ProspectButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ProspectButton.Location = new System.Drawing.Point(680, 9);
+            this.ProspectButton.Name = "ProspectButton";
+            this.ProspectButton.Size = new System.Drawing.Size(60, 20);
+            this.ProspectButton.TabIndex = 61;
+            this.ProspectButton.Text = "Prospect";
+            this.ProspectButton.UseVisualStyleBackColor = false;
+            this.ProspectButton.Click += new System.EventHandler(this.ProspectButton_Click);
+            // 
+            // TrackButton
+            // 
+            this.TrackButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.TrackButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TrackButton.Location = new System.Drawing.Point(485, 9);
+            this.TrackButton.Name = "TrackButton";
+            this.TrackButton.Size = new System.Drawing.Size(60, 20);
+            this.TrackButton.TabIndex = 62;
+            this.TrackButton.Text = "Track";
+            this.TrackButton.UseVisualStyleBackColor = false;
+            this.TrackButton.Click += new System.EventHandler(this.TrackButton_Click);
+            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -576,7 +576,7 @@
             this.Controls.Add(this.MonthCalendar);
             this.Controls.Add(this.PreviewButton);
             this.Controls.Add(this.TargetNameBox);
-            this.Controls.Add(this.CreateButton);
+            this.Controls.Add(this.AssessButton);
             this.Controls.Add(this.CurrentYearPick);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormImagePlanner";
@@ -610,7 +610,7 @@
         internal System.Windows.Forms.DataGridView MonthCalendar;
         internal System.Windows.Forms.Button PreviewButton;
         internal System.Windows.Forms.TextBox TargetNameBox;
-        internal System.Windows.Forms.Button CreateButton;
+        internal System.Windows.Forms.Button AssessButton;
         internal System.Windows.Forms.NumericUpDown CurrentYearPick;
         private System.Drawing.Printing.PrintDocument printCalendar;
         internal System.Windows.Forms.Button ProspectButton;

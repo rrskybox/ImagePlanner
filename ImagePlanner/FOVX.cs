@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.Xml.Linq;
 
 
@@ -49,7 +44,7 @@ namespace ImagePlanner
         public FOVX()
         {
 
-            fovdir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Field of View Indicators";
+            fovdir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Software Bisque\\TheSkyX Professional Edition\\Field of View Indicators";
             fovfile = fovdir + "\\My Equipment.txt";
             fovXfile = fovdir + "\\My Equipment.xml";
             System.IO.TextReader fovDataFile = System.IO.File.OpenText(fovfile);

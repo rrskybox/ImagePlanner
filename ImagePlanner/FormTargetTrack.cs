@@ -59,7 +59,7 @@ namespace ImagePlanner
             tgtTransitH = tsxo.ObjInfoPropOut;
 
             //Test stuff
-            double testmoontransitH = MoonPosition.TransitTime(tgtDateUTC, obsLocation);
+            //double testmoontransitH = MoonPosition.TransitTime(tgtDateUTC, obsLocation);
 
             //Get some moon stuff now
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, Celestial.DateToJulian(moonDateUTC));

@@ -1,12 +1,7 @@
 ﻿//Module for installing the observing list database search file (embedded in the app as ImagePlanner.dbq) also installed as same name.
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace ImagePlanner
@@ -20,35 +15,30 @@ namespace ImagePlanner
             Cluster,
             Nebula
         }
-
-
-        //Location to deposit database query: "C:\Users\" + System.Environment.UserName + 
-        //   "\Documents\Software Bisque\TheSkyX Professional Edition\Database Queries\ImagePlanner.dbq"
-
-        private static string ImagePlannerGalaxyDestinationSubPath = "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerGalaxy.dbq";
-        private static string ImagePlannerClusterDestinationSubPath = "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerCluster.dbq";
-        private static string ImagePlannerNebulaDestinationSubPath = "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerNebula.dbq";
+        
+        private static string ImagePlannerGalaxyDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerGalaxy.dbq";
+        private static string ImagePlannerClusterDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerCluster.dbq";
+        private static string ImagePlannerNebulaDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerNebula.dbq";
 
         public static bool DBQsInstalled()
         {
             //Checks to see if search database file is already installed or not
-            string ImagePlannerGalaxyDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerGalaxyDestinationSubPath;
-            string ImagePlannerClusterDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerClusterDestinationSubPath;
-            string ImagePlannerNebulaDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerNebulaDestinationSubPath;
+            string userDocumentsDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string ImagePlannerGalaxyDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerGalaxyDestinationSubPath;
+            string ImagePlannerClusterDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerClusterDestinationSubPath;
+            string ImagePlannerNebulaDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerNebulaDestinationSubPath;
             return (File.Exists(ImagePlannerGalaxyDestinationPath) && File.Exists(ImagePlannerClusterDestinationPath) && File.Exists(ImagePlannerNebulaDestinationPath));
         }
 
         public static void InstallDBQs()
         {
             //Make sure the dbq file paths are set up correctly
-            string ImagePlannerGalaxyDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerGalaxyDestinationSubPath;
-            string ImagePlannerClusterDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerClusterDestinationSubPath;
-            string ImagePlannerNebulaDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerNebulaDestinationSubPath;
+            string userDocumentsDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string ImagePlannerGalaxyDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerGalaxyDestinationSubPath;
+            string ImagePlannerClusterDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerClusterDestinationSubPath;
+            string ImagePlannerNebulaDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerNebulaDestinationSubPath;
 
             //Install the dbq file
-            //ImagePlannerGalaxyDestinationPath = "C:\\Users\\" + System.Environment.UserName +
-            //    "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerGalaxy.dbq";
-
             ////Collect the file contents to be written
             Assembly dgassembly = Assembly.GetExecutingAssembly();
             Stream dgstream = dgassembly.GetManifestResourceStream("ImagePlanner.ImagePlannerGalaxy.dbq");
@@ -60,9 +50,6 @@ namespace ImagePlanner
             File.WriteAllBytes(ImagePlannerGalaxyDestinationPath, dgbytes);
             dgstream.Close();
 
-            //ImagePlannerClusterDestinationPath = "C:\\Users\\" + System.Environment.UserName +
-            //    "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerCluster.dbq";
-
             //Collect the file contents to be written
             Assembly dcassembly = Assembly.GetExecutingAssembly();
             Stream dcstream = dcassembly.GetManifestResourceStream("ImagePlanner.ImagePlannerCluster.dbq");
@@ -73,9 +60,6 @@ namespace ImagePlanner
             //write to destination file
             File.WriteAllBytes(ImagePlannerClusterDestinationPath, dcbytes);
             dcstream.Close();
-
-            //ImagePlannerNebulaDestinationPath = "C:\\Users\\" + System.Environment.UserName +
-            //    "\\Documents\\Software Bisque\\TheSkyX Professional Edition\\Database Queries\\ImagePlannerNebula.dbq";
 
             //Collect the file contents to be written
             Assembly dnassembly = Assembly.GetExecutingAssembly();
@@ -94,9 +78,10 @@ namespace ImagePlanner
         {
             //Returns a path to the observing list query for the dbqType
 
-            string ImagePlannerGalaxyDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerGalaxyDestinationSubPath;
-            string ImagePlannerClusterDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerClusterDestinationSubPath;
-            string ImagePlannerNebulaDestinationPath = "C:\\Users\\" + System.Environment.UserName + ImagePlannerNebulaDestinationSubPath;
+            string userDocumentsDirectory = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string ImagePlannerGalaxyDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerGalaxyDestinationSubPath;
+            string ImagePlannerClusterDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerClusterDestinationSubPath;
+            string ImagePlannerNebulaDestinationPath = userDocumentsDirectory + "\\" + ImagePlannerNebulaDestinationSubPath;
             switch (dbqType)
             {
                 case DBQFileManagement.SearchType.Galaxy:

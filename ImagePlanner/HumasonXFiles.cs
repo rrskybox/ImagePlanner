@@ -7,7 +7,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace NightShift
+namespace Humason
 {
     public class XFiles
     {
@@ -27,116 +27,28 @@ namespace NightShift
 
         //Private data
 
-        string NightShiftFolderName = "Night Shift";
-        string NightShiftTargetPlanFilename = "TargetPlan.xml";
-        string NightShiftTargetPlanXName = "NightShiftTargetPlan";
-        string NightShiftDefaultTargetPlanFilename = "TargetPlanDefault.xml";
-        string NightShiftTargetPlanSearchPattern = "*.TargetPlan.xml";
+        string HumasonFolderName = "Humason";
+        string HumasonTargetPlanFilename = "TargetPlan.xml";
+        string HumasonTargetPlanXName = "HumasonTargetPlan";
+        string HumasonDefaultTargetPlanFilename = "TargetPlanDefault.xml";
+        string HumasonTargetPlanSearchPattern = "*.TargetPlan.xml";
 
         string nhDir;
 
         //Configuration Element Names
 
-        public static string cfNightShiftFolderNameName = "NightShiftFolderName";
-        public static string nhLastFileNumberName = "NH-LastFileNumber";
-        public static string afFindStarName = "AF-FindStar-Checked";
-        public static string afRGBName = "AF-RGB-Checked";
-        public static string afClearName = "AF-Clear-Checked";
-        public static string afH1Name = "AF-H1-Checked";
-        public static string afFocusExposureName = "AF-FocusExposure";
-        public static string afFilterSetName = "AF-FilterSet";
-        public static string afFocusExposure = "AF-FocusExposure";
-        public static string afFilterFilePath = "AF-FilterFilePath";
-        public static string afFocusFilterNumberName = "SU-FocusFilter";
-        public static string agGuideExposureTimeName = "AG-GuideExposureTime";
-        public static string agGuideCycleTimeName = "AG-GuideCycleTime";
-        public static string agGuideStarADUName = "AG-GuideStarADU";
-        public static string agAOCheckName = "AG-AOChecked";
-        public static string agXAxisMoveTimeName = "AG-XAxisMoveTime";
-        public static string agYAxisMoveTimeName = "AG-YAxisMoveTime";
-        public static string agGuideStarXName = "AG-GuideStarX";
-        public static string agGuideStarYName = "AG-GuideStarY";
-
-        public static string agCalVectorXPosXComponentName = "AG-CalVectorXPosXComponent";
-        public static string agCalVectorXPosYComponentName = "AG-CalVectorXPosYComponent";
-        public static string agCalVectorYPosXComponentName = "AG-CalVectorXPosXComponent";
-        public static string agCalVectorYPosYComponentName = "AG-CalVectorXPosYComponent";
-        public static string agCalVectorXNegXComponentName = "AG-CalVectorYNegXComponent";
-        public static string agCalVectorXNegYComponentName = "AG-CalVectorYNegYComponent";
-        public static string agCalVectorYNegXComponentName = "AG-CalVectorYNegXComponent";
-        public static string agCalVectorYNegYComponentName = "AG-CalVectorYNegYComponent";
-
-        public static string sbTargetNameName = "SB-TargetName";
-        public static string sbTargetAdjustCheckedName = "SB-TargetAdjustChecked";
-        public static string sbTargetRAName = "SB-TargetRA";
-        public static string sbTargetDecName = "SB-TargetDec";
-        public static string sbTargetPAName = "SB-TargetPA";
-        public static string sbSequenceStartTimeName = "SB-SequenceStartTime";
-        public static string sbSequenceEndTimeName = "SB-SequenceStartTime";
-        public static string sbAutoDarkCheckedName = "SB-AutoDarkChecked";
-        public static string sbExposureTimeName = "SB-ExposureTime";
-        public static string sbLoopsName = "SB-Loops";
-        public static string sbLRGBRatioName = "SB-LRGBRatio";
-        public static string sbDelayName = "SB-Delay";
-        public static string sbMakeFlatsCheckedName = "SB-MakeFlats";
-
-        public static string suAutoRunCheckedName = "SU-AutoRunChecked";
-        public static string suWeatherCheckName = "SU-WeatherChecked";
-        public static string suAutoFocusCheckedName = "SU-AutoFocusChecked";
-        public static string suFindStarCheckedName = "SU-FindStarChecked";
-        public static string suAutoGuideCheckedName = "SU-AutoGuideChecked";
-        public static string suRotatorCheckedName = "SU-RotatorChecked";
-        public static string suDitherCheckedName = "SU-DitherChecked";
-        public static string suClearFilterNumberName = "SU-ClearFilter";
-        public static string suFilterSetName = "SU-FilterSet";
-        public static string suOverheadName = "SU-Overhead";
-        public static string suCameraTemperatureSetName = "SU-CameraTemperatureSet";
-        public static string suAtFocusPickedName = "SU-AtFocusPicked";
-
-        public static string arPowerOnDateTimeCheckedName = "AR-PowerOnDateChecked";
-        public static string arPowerOnDateTimePickerName = "AR-PowerOnDateTime";
-        public static string arPowerOnFilePathName = "AR-PowerOnFilePath";
-        public static string arStartUpDateTimeCheckedName = "AR-StartUpDateChecked";
-        public static string arStartUpDateTimePickerName = "AR-StartUpDateTime";
-        public static string arStartUpFilePathName = "AR-StartUpFilePath";
-        public static string arShutDownDateTimeCheckedName = "AR-ShutDownDateChecked";
-        public static string arShutDownDateTimePickerName = "AR-ShutDownDateTime";
-        public static string arShutDownFilePathName = "AR-ShutDownFilePath";
-
-        public static string roPlateSolveExposureTimeName = "RO-PlateSolveExposureTime";
-        public static string roRotatorOffsetName = "RO-RotatorOffset";
-        public static string roRotatorDirectionName = "RO-RotatorDirection";
-        public static string roRotatorImagePAName = "RO-RotatorImagePA";
-        public static string roRotatorDevicePAName = "RO-RotatorDevicePA";
-
-        public static string fmFlatManPortNumName = "FMU-FlatManPort";
-        public static string fmFlatManCheckedName = "FM-FlatManChecked";
-        public static string fmDawnFlatCheckedName = "FM-DawnFlatChecked";
-        public static string fmDuskFlatCheckedName = "FM-DuskFlatChecked";
-        public static string fmFlatManBrightnessName = "FM-FlatManBrightness";
-        public static string fmFlatManExposureTimeName = "FM-FlatManExposureTime";
-        public static string fmFlatsTargetADUName = "FM-FlatsTargetADU";
-        public static string fmFlatsRepetitionsName = "FM-FlatsRepetitions";
-        public static string fmFlatManEastCheckedName = "FM-FlatManEastChecked";
-        public static string fmFlatFlipCheckedName = "FM-FlatFlipChecked";
-        public static string fmFlatSetName = "FM-FlatSet";
-        public static string fmFlatSetRequiredName = "FM_FlatRequired";
-        public static string fmFlatSetRequiredTargetName = "FM-FlatTarget";
-        public static string fmFlatSetRequiredSideOfPierName = "FM-FlatSideOfPier";
-        public static string fmFlatSetRequiredRotationPAName = "FM-RotationPA";
-        public static string fmFlatSetRequiredFilterNameName = "FM-FlatFilterName";
-        public static string fmFlatSetRequiredFilterIndexName = "FM-FlatFilterIndex";
-        public static string fmFlatSetRequiredLightSourceName = "FM-FlatLightSource";
-        public static string fmFlatSetRequiredRepetitionsName = "FM-FlatRepetitions";
-
-        public static string sbSummaryName = "SB-Summary";
+        public static string sbTargetNameName = "TargetName";
+        public static string sbTargetAdjustCheckedName = "TargetAdjustChecked";
+        public static string sbTargetRAName = "TargetRA";
+        public static string sbTargetDecName = "TargetDec";
+        public static string sbTargetPAName = "TargetPA";
 
         public Xccess Xmlf;
 
         public XFiles()
         {
-            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightShiftFolderName;
-            if ((!(Directory.Exists(nhDir + "\\" + NightShiftFolderName))))  //no directory, so create it
+            nhDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + HumasonFolderName;
+            if ((!(Directory.Exists(nhDir + "\\" + HumasonFolderName))))  //no directory, so create it
             {
                 Directory.CreateDirectory(nhDir);
             }
@@ -146,30 +58,32 @@ namespace NightShift
         public XFiles(string targetName)
         {
             //Checks for an existing project plan as named targetName.  If so, return as an Xccess object.
-            //if not, then create a new default project plan from the TargetPlanDefault xml file in the Night Shift directory
+            //if not, then create a new default project plan from the TargetPlanDefault xml file in the Humason directory
             //  and return it as an Xcess object.
-            nhDir = "C:\\Users\\" + System.Environment.UserName + "\\Documents\\" + NightShiftFolderName;
-            string nhTargetFilePath = nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename;
-            string nhDefaultFilePath = nhDir + "\\" + NightShiftDefaultTargetPlanFilename;
-            if ((!(Directory.Exists(nhDir + "\\" + NightShiftFolderName))))
+            nhDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + HumasonFolderName;
+            string nhTargetFilePath = nhDir + "\\" + targetName + "." + HumasonTargetPlanFilename;
+            string nhDefaultFilePath = nhDir + "\\" + HumasonDefaultTargetPlanFilename;
+            //convert target name to file name, notably change "/" to "_"
+            string targetFileName = targetName.Replace("/", "_");
+            if ((!(Directory.Exists(nhDir + "\\" + HumasonFolderName))))
             {
                 Directory.CreateDirectory(nhDir);
             }
-            if ((!(File.Exists(nhTargetFilePath)))) 
+            if ((!(File.Exists(nhTargetFilePath))))
             {
                 if ((!(File.Exists(nhDefaultFilePath)))) //No target xml file and no default xml file so just create null target file
                 {
-                    XElement cDefaultX = new XElement(NightShiftTargetPlanXName);
-                    cDefaultX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
+                    XElement cDefaultX = new XElement(HumasonTargetPlanXName);
+                    cDefaultX.Save(nhDir + "\\" + targetFileName + "." + HumasonTargetPlanFilename);
                 }
                 else //No target xml file but there is a default target file so use it to create a new target file.
                 {
                     XElement hnTgtX = XElement.Load(nhDefaultFilePath);
-                    hnTgtX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
+                    hnTgtX.Save(nhDir + "\\" + targetFileName + "." + HumasonTargetPlanFilename);
                 }
             }
             //Create new Xccess object from whatever was found
-            Xmlf = new Xccess(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
+            Xmlf = new Xccess(nhDir + "\\" + targetFileName + "." + HumasonTargetPlanFilename);
             return;
         }
 
@@ -177,16 +91,20 @@ namespace NightShift
         {
             //This command will save a copy of the current configuration.xml file
             //under the name targetname.configuration.xml
+            //convert target name to file name, notably change "/" to "_"
+            string targetFileName = targetName.Replace("/", "_");
             XElement hnCfgX = Xmlf.GetXccessFileX();
-            hnCfgX.Save(nhDir + "\\" + targetName + "." + NightShiftTargetPlanFilename);
+            hnCfgX.Save(nhDir + "\\" + targetFileName + "." + HumasonTargetPlanFilename);
             return true;
         }
 
         public void DeletePlan(string targetName)
         {
             //Removes the configuration file with the filename targetname
+            //convert target name to file name, notably change "/" to "_"
+            string targetFileName = targetName.Replace("/", "_");
             string cfgFolderName = nhDir;
-            string cfgFilePath = cfgFolderName + "\\" + targetName + "." + NightShiftTargetPlanFilename;
+            string cfgFilePath = cfgFolderName + "\\" + targetFileName + "." + HumasonTargetPlanFilename;
             System.Windows.Forms.DialogResult dr = System.Windows.Forms.MessageBox.Show("Are you sure you want to remove " + targetName + "?",
                 "Confirm Deletion",
                 System.Windows.Forms.MessageBoxButtons.OKCancel);
@@ -200,9 +118,11 @@ namespace NightShift
         public void ReplacePlan(string targetName)
         {
             //Removes the configuration file with the filename targetname
+            //convert target name to file name, notably change "/" to "_"
+            string targetFileName = targetName.Replace("/", "_");
             string cfgFolderName = nhDir;
-            string tgtFilePath = cfgFolderName + "\\" + targetName + "." + NightShiftTargetPlanFilename;
-            string cfgFilePath = cfgFolderName + "\\" + NightShiftTargetPlanFilename;
+            string tgtFilePath = cfgFolderName + "\\" + targetFileName + "." + HumasonTargetPlanFilename;
+            string cfgFilePath = cfgFolderName + "\\" + HumasonTargetPlanFilename;
             File.Copy(tgtFilePath, cfgFilePath, true);
             return;
         }
@@ -210,16 +130,18 @@ namespace NightShift
         public List<string> GetTargetFiles()
         {
             //return;s list of configuration filenames for targets
-            //Get a list of files from the Night Shift directory
+            //Get a list of files from the Humason directory
 
             List<string> targetNames = new List<string>();
-            string[] tgtProspectPaths = Directory.GetFiles(nhDir, NightShiftTargetPlanSearchPattern);
+            string[] tgtProspectPaths = Directory.GetFiles(nhDir, HumasonTargetPlanSearchPattern);
             foreach (string sFile in tgtProspectPaths)
             {
                 string[] fname = Path.GetFileNameWithoutExtension(sFile).Split('.');
                 if (fname.Length == 2)
                 {
-                    targetNames.Add(fname[0]);
+                    string fixName = fname[0].Replace("_", "/");
+                    //fixName = fixName.Replace("")
+                    targetNames.Add(fixName);
                 }
                 if ((fname.Length == 4))
                 {
@@ -232,7 +154,7 @@ namespace NightShift
         public string GetItem(string itemName)
         {
             return Xmlf.GetItem(itemName);
-            //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
+            //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
             //XElement hnCfgX = XElement.Load(hnCfgFilePath);
             //IEnumerable<XElement> itemX = hnCfgX.Elements(itemName);
             //if (itemX.Count() == 0)
@@ -247,7 +169,7 @@ namespace NightShift
         //{
         //    return Xmlf.GetItem(itemSection, itemName);
         //    ////Retrieves entry from two levels deep
-        //    //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
+        //    //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
         //    //XElement hnCfgX = XElement.Load(hnCfgFilePath);
         //    //XElement sectionX = hnCfgX.Element(itemSection);
         //    ////Check section, if doesn//t exist, then return nothing
@@ -274,7 +196,7 @@ namespace NightShift
         public void SetItem(string itemName, string item)
         {
             Xmlf.SetItem(itemName, item);
-            //string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
+            //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
             //XElement hnCfgX = XElement.Load(hnCfgFilePath);
             //IEnumerable<XElement> sscfgXel = hnCfgX.Elements(itemName);
             //if ((sscfgXel.Count() == 0))
@@ -294,7 +216,7 @@ namespace NightShift
         //    //Set entry for level two-deep element
         //    //if ( the item Is in the file, but the entry Is "nothing" then just delete the entry
 
-        //    string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename;
+        //    string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
         //    XElement hnCfgX = XElement.Load(hnCfgFilePath);
         //    IEnumerable<XElement> sectionX = hnCfgX.Elements(sectionName);
         //    if ((sectionX.Count() == 0))
@@ -512,7 +434,7 @@ namespace NightShift
         //            //Read && return the set of entries stored in the configuration file
         //            // , in ths case, in the form of Filter objects
 
-        //            string hnCfgFilePath = nhDir + "\\" + NightShiftTargetPlanFilename
+        //            string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename
         //            XElement hnCfgX = XElement.Load(hnCfgFilePath)
         //            XElement sectionX = hnCfgX.Element(suFilterSetName)
         //            //Check section, if doesn//t exist, then return nothing

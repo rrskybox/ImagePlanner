@@ -29,16 +29,18 @@
 //              with "Planar", "Spherical", "Transform", "Formatter", "Sidereal" and DailyPosition classes
 //          3. Disabled the calendar column sorting
 //V3.2:     1. Modified target plan searches and methods to use "Default" instead of "Active"
-//          2. Modified target plan file to "Night Shift" rather than "NightHawk".
+//          2. Modified target plan file to "Humason" rather than "NightHawk".
+//V3.3:     1. Fixed anomolies with positive longitudes and negative latitudes.  Also see AstroMath library
 
+
+using AstroMath;
+using Humason;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using TheSkyXLib;
 using System.Xml.Linq;
-using AstroMath;
-using NightShift;
+using TheSkyXLib;
 
 namespace ImagePlanner
 {
@@ -84,7 +86,7 @@ namespace ImagePlanner
             ButtonGreen(DoneButton);
             ButtonGreen(InfoButton);
             ButtonGreen(ProspectButton);
-            ButtonGreen(CreateButton);
+            ButtonGreen(AssessButton);
             ButtonGreen(TrackButton);
 
             this.FontHeight = 1;
@@ -94,22 +96,33 @@ namespace ImagePlanner
                 MonthCalendar.Rows[i].HeaderCell.Value = (i + 1).ToString();
             }
 
-            CurrentYearPick.Value = DateTime.Now.Year;
+            //Compute current dates based on TSX star chart julian date
+            //  this allows star charts to be in different locations and time zones
+            //  as set up by user
+            sky6StarChart tsxsc = new sky6StarChart();
+            //Get the star chart julian date and convert to current date/time
+            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+            DateTime dateTSXutc = AstroMath.Celestial.JulianToDate(tsxsc.DocPropOut);
+            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
+            double tzTSX = tsxsc.DocPropOut;
+            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
+            double tzIndexTSX = tsxsc.DocPropOut;
+            DateTime dateTSX = dateTSXutc.AddHours(tzTSX + tzIndexTSX);
+            CurrentYearPick.Value = dateTSX.Year;
             GenerateCalendar();
             Show();
             System.Windows.Forms.Application.DoEvents();
             SelectionEnabled = true;
             //Figure out the year and load it into the year box
-            string thisyear = DateTime.Now.ToString("yyyy");
+            string thisyear = dateTSX.ToString("yyyy");
             CurrentYearPick.Value = Convert.ToInt16(thisyear);
-
             //Pick the current date as the selected cell
-            SelectedDate = DateTime.Now;
-            int jCol = DateTime.Now.Month - 1;
-            int iRow = DateTime.Now.Day - 1;
+            SelectedDate = dateTSX;
+            int jCol = dateTSX.Month - 1;
+            int iRow = dateTSX.Day - 1;
             MonthCalendar.Rows[iRow].Cells[jCol].Selected = true;
 
-            //Fill in Night Shift target plans
+            //Fill in Humason target plans
             XFiles xf = new XFiles();
             if (xf != null)
             {
@@ -135,28 +148,34 @@ namespace ImagePlanner
 
         private void TargetNameUpButton_Click(Object sender, EventArgs e)  // Handles TargetNameUpButton.Click
         {
-            string upName = IncrementCatalogNumber(TargetNameBox.Text, +1);
-            TargetNameBox.Text = upName;
-            RegenerateForms();
-            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-            int iRow = selcel[0].RowIndex;
-            int iCol = selcel[0].ColumnIndex;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            return;
+            string tName = TargetNameBox.Text;
+            if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
+            {
+                string upName = IncrementCatalogNumber(TargetNameBox.Text, +1);
+                TargetNameBox.Text = upName;
+                RegenerateForms();
+                DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
+                int iRow = selcel[0].RowIndex;
+                int iCol = selcel[0].ColumnIndex;
+                MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
+                MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
+            }
         }
 
         private void TargetNameDownButton_Click(Object sender, EventArgs e)  // Handles TargetNameDownButton.Click
         {
-            string downName = IncrementCatalogNumber(TargetNameBox.Text, -1);
-            TargetNameBox.Text = downName;
-            RegenerateForms();
-            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-            int iRow = selcel[0].RowIndex;
-            int iCol = selcel[0].ColumnIndex;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            return;
+            string tName = TargetNameBox.Text;
+            if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
+            {
+                string downName = IncrementCatalogNumber(TargetNameBox.Text, -1);
+                TargetNameBox.Text = downName;
+                RegenerateForms();
+                DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
+                int iRow = selcel[0].RowIndex;
+                int iCol = selcel[0].ColumnIndex;
+                MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
+                MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
+            }
         }
 
         private void CurrentYearPick_TextChanged(Object sender, KeyPressEventArgs e) //Handles CurrentYearPick.KeyPress
@@ -227,7 +246,7 @@ namespace ImagePlanner
 
         private void CreateButton_Click(Object sender, EventArgs e)  // Handles CreateButton.Click
         {
-            ButtonRed(CreateButton);
+            ButtonRed(AssessButton);
             TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
             enteringTargetState = false;
             RegenerateForms();
@@ -236,7 +255,7 @@ namespace ImagePlanner
             int iCol = selcel[0].ColumnIndex;
             MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
             MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            ButtonGreen(CreateButton);
+            ButtonGreen(AssessButton);
             return;
         }
 
@@ -278,6 +297,9 @@ namespace ImagePlanner
             if (ButtonIsGreen(AltitudeButton))
             {
                 ButtonRed(AltitudeButton);
+                DataGridViewSelectedCellCollection selcells = MonthCalendar.SelectedCells;
+                DataGridViewCell cellpick = selcells[0];
+                moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
                 OpenPath();
             }
             else
@@ -322,9 +344,10 @@ namespace ImagePlanner
         private void AddTargetPlanButton_Click(Object sender, EventArgs e)  // Handles AddTargetPlanButton.Click
         {
             ButtonRed(AddTargetPlanButton);
-            //Save a new Night Shift configuration file with this target name, RA and Dec and about nothing else
+            //Save a new Humason configuration file with this target name, RA and Dec and about nothing else
 
             string tgtName = TargetNameBox.Text;
+
             sky6StarChart tsxs = new sky6StarChart();
             sky6ObjectInformation tsxo = new sky6ObjectInformation();
             //if (the object is not found, just return 
@@ -345,14 +368,17 @@ namespace ImagePlanner
             double dDec = tsxo.ObjInfoPropOut;
 
             XFiles xfn = new XFiles(tgtName);
-            xfn.ReplaceItem(XFiles.sbTargetNameName, tgtName);
-            xfn.ReplaceItem(XFiles.sbTargetAdjustCheckedName, false);
-            xfn.ReplaceItem(XFiles.sbTargetRAName, dRA);
-            xfn.ReplaceItem(XFiles.sbTargetDecName, dDec);
-            xfn.SavePlan(tgtName);
+            if (xfn != null)
+            {
+                xfn.ReplaceItem(XFiles.sbTargetNameName, tgtName);
+                xfn.ReplaceItem(XFiles.sbTargetAdjustCheckedName, false);
+                xfn.ReplaceItem(XFiles.sbTargetRAName, dRA);
+                xfn.ReplaceItem(XFiles.sbTargetDecName, dDec);
+                xfn.SavePlan(tgtName);
+            }
             //clear current target list box and reload
             ImagePlannerTargetList.Items.Clear();
-            //Fill in Night Shift target plans
+            //Fill in Humason target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
             foreach (string tgt in tgtList)
@@ -376,13 +402,13 @@ namespace ImagePlanner
         private void DeleteTargetPlanButton_Click(Object sender, EventArgs e)  // Handles DeleteTargetPlanButton.Click
         {
             ButtonRed(DeleteTargetPlanButton);
-            //Delete the night Shift configuration file with this target name
+            //Delete the Humason configuration file with this target name
             XFiles xfn = new XFiles();
             string tgtName = ImagePlannerTargetList.SelectedItem.ToString();
             xfn.DeletePlan(tgtName);
             //clear current target list box and reload
             ImagePlannerTargetList.Items.Clear(); ;
-            //Fill in Night Shift target plans
+            //Fill in Humason target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
             foreach (string tgt in tgtList)
@@ -629,7 +655,7 @@ namespace ImagePlanner
             catch (Exception ex)
             {
                 //! found
-                System.Windows.Forms.MessageBox.Show("Target not Found: " + ex.Message);
+                System.Windows.Forms.MessageBox.Show("Target not Found: " + TargetNameBox.Text + " " + ex.Message);
                 TargetNameBox.Text = "";
                 return;
             }
