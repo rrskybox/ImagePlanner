@@ -153,9 +153,9 @@ namespace ImagePlanner
             SizeTBMin.Text = SizeMin.ToString("0");
 
             DurationNumeric.Maximum = (decimal)DurationMax;
-            DurationTBMax.Text = Formatters.HourString(DurationMax);
+            DurationTBMax.Text = DurationMax.ToString("00.0");
             DurationNumeric.Minimum = (decimal)DurationMin;
-            DurationTBMin.Text = Formatters.HourString(DurationMin);
+            DurationTBMin.Text = DurationMin.ToString("00.0");
 
             AltitudeNumeric.Maximum = (decimal)AltitudeMax;
             AltitudeTBMax.Text = AltitudeMax.ToString("0");
