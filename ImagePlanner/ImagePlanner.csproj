@@ -26,7 +26,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>64</ApplicationRevision>
+    <ApplicationRevision>66</ApplicationRevision>
     <ApplicationVersion>3.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,6 +67,9 @@
     <ApplicationIcon>ImageForecast.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AstroMath">
+      <HintPath>..\..\AstroMath\AstroMath\bin\Release\AstroMath.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing.Design" />
@@ -218,12 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ImageForecast.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\AstroMath\AstroMath\AstroMath.csproj">
-      <Project>{b9b7b4d6-58f8-4d34-8f40-3747462c960a}</Project>
-      <Name>AstroMath</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
