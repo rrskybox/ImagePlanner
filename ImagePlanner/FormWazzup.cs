@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Diagnostics;
 using AstroMath;
 
 namespace ImagePlanner
@@ -33,6 +34,8 @@ namespace ImagePlanner
             this.Text = "WazzUp for " + DuskDateLocal.ToString("MMM dd, yyyy");
             //WazzupLaunch(ObjectList.SearchType.Nebula);
             //SelectNebulaButton.Checked = true;
+            //Minimize TSX to improve speed
+            ManageTSX.MinimizeTSX();
             return;
         }
 

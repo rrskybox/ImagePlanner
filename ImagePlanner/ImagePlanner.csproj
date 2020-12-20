@@ -26,7 +26,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>66</ApplicationRevision>
+    <ApplicationRevision>68</ApplicationRevision>
     <ApplicationVersion>3.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -130,6 +130,7 @@
       <DependentUpon>FormWazzup.cs</DependentUpon>
     </Compile>
     <Compile Include="FOVX.cs" />
+    <Compile Include="ManageTSX.cs" />
     <Compile Include="ObjectList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

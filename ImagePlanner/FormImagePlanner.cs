@@ -149,33 +149,33 @@ namespace ImagePlanner
         private void TargetNameUpButton_Click(Object sender, EventArgs e)  // Handles TargetNameUpButton.Click
         {
             string tName = TargetNameBox.Text;
-            if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
-            {
-                string upName = IncrementCatalogNumber(TargetNameBox.Text, +1);
-                TargetNameBox.Text = upName;
-                RegenerateForms();
-                DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-                int iRow = selcel[0].RowIndex;
-                int iCol = selcel[0].ColumnIndex;
-                MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-                MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            }
+            //if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
+            //{
+            string upName = IncrementCatalogNumber(TargetNameBox.Text, +1);
+            TargetNameBox.Text = upName;
+            RegenerateForms();
+            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
+            int iRow = selcel[0].RowIndex;
+            int iCol = selcel[0].ColumnIndex;
+            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
+            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
+            //}
         }
 
         private void TargetNameDownButton_Click(Object sender, EventArgs e)  // Handles TargetNameDownButton.Click
         {
             string tName = TargetNameBox.Text;
-            if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
-            {
-                string downName = IncrementCatalogNumber(TargetNameBox.Text, -1);
-                TargetNameBox.Text = downName;
-                RegenerateForms();
-                DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-                int iRow = selcel[0].RowIndex;
-                int iCol = selcel[0].ColumnIndex;
-                MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-                MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            }
+            //if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
+            //{
+            string downName = IncrementCatalogNumber(TargetNameBox.Text, -1);
+            TargetNameBox.Text = downName;
+            RegenerateForms();
+            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
+            int iRow = selcel[0].RowIndex;
+            int iCol = selcel[0].ColumnIndex;
+            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
+            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
+            // }
         }
 
         private void CurrentYearPick_TextChanged(Object sender, KeyPressEventArgs e) //Handles CurrentYearPick.KeyPress
@@ -247,7 +247,7 @@ namespace ImagePlanner
         private void CreateButton_Click(Object sender, EventArgs e)  // Handles CreateButton.Click
         {
             ButtonRed(AssessButton);
-            TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
+            //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
             enteringTargetState = false;
             RegenerateForms();
             DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
@@ -508,15 +508,14 @@ namespace ImagePlanner
                 else if ((e.KeyChar == 'C') || (e.KeyChar == 'c'))
                 {
                     e.KeyChar = ' ';
+                    TargetNameBox.Text = "CALDWELL";
                     TargetNameBox.Focus();
                     TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                    TargetNameBox.Text = "CALDWELL";
                 }
-            }
+             }
             if (e.KeyChar == '\r')
             {
                 enteringTargetState = false;
-                TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
                 RegenerateForms();
                 return;
             }
@@ -661,10 +660,10 @@ namespace ImagePlanner
             }
             //Reset the target name to whatever TSX found
             tobj.Index = 0;
-            tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
-            TargetNameBox.Text = tobj.ObjInfoPropOut;
+            //tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
+            //TargetNameBox.Text = tobj.ObjInfoPropOut;
             enteringTargetState = false;
-            TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
+            //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
 
             int vj = tobj.Count;
             tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
@@ -1052,20 +1051,26 @@ namespace ImagePlanner
         #region Miscellaneous Helper Methods
 
         private string IncrementCatalogNumber(string targetName, int increment)
+
         {
-            ////assumes an input string of a catelog object:  ccccnnnn where cccc are characters and nnnn are numbers
-            ////this function parses the string and return s a new string whre the number as been incremented
-            string catNum = System.Text.RegularExpressions.Regex.Match(targetName, "\\d+").Value;
-            string catName = targetName.Replace(catNum, "");
-            int catNumInt = Convert.ToInt32(catNum);
-            catNumInt += increment;
-            if (catNumInt < 1)
-            {
-                catNumInt = 1;
-            }
-            catNum = catNumInt.ToString();
-            string resultString = catName + catNum;
-            return resultString;
+            //assumes an input string of a catelog object:  ccccnnnn where cccc are characters and nnnn are numbers
+            //this function parses the string and return s a new string whre the number as been incremented
+            char[] s = new char[] { ' ' };
+            string[] parts = targetName.Split(s,StringSplitOptions.RemoveEmptyEntries);
+            int nextDigit = (Convert.ToInt32(parts[1]) + increment);
+            if (nextDigit > 1) return parts[0] + " " + nextDigit.ToString("0");
+            else return parts[0] + " 1";
+            //string catNum = System.Text.RegularExpressions.Regex.Match(targetName, "\\d+").Value;
+            //string catName = targetName.Replace(catNum, "");
+            //int catNumInt = Convert.ToInt32(catNum);
+            //catNumInt += increment;
+            //if (catNumInt < 1)
+            //{
+            //    catNumInt = 1;
+            //}
+            //catNum = catNumInt.ToString();
+            //string resultString = catName + catNum;
+            //return resultString;
         }
 
         private void FillInTargetDetails(string tName)
@@ -1160,7 +1165,7 @@ namespace ImagePlanner
             ProspectProtected = true;
             this.TargetNameBox.Text = e.TargetName;
             enteringTargetState = false;
-            TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
+            //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
             RegenerateForms();
             DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
             int iRow = selcel[0].RowIndex;

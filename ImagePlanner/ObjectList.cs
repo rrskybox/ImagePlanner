@@ -116,10 +116,10 @@ namespace ImagePlanner
             tsxdw.Path = DBQFileManagement.GetDBQPath(searchDB);
             //Set the search date for the dusk query
             sky6StarChart tsxs = new sky6StarChart();
-                 tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Latitude);
-                oLat = tsxs.DocPropOut;
-                tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Longitude);
-                oLong = tsxs.DocPropOut;
+            tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Latitude);
+            oLat = tsxs.DocPropOut;
+            tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Longitude);
+            oLong = tsxs.DocPropOut;
             double jdate = Celestial.DateToJulian(duskDateLocal.ToUniversalTime());
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jdate);
             tsxdw.Open();
@@ -148,7 +148,7 @@ namespace ImagePlanner
                 oDec = (tsxoi.ObjInfoPropOut);
                 tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
                 oRA = (tsxoi.ObjInfoPropOut);
-               //compute the duration
+                //compute the duration
                 oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                 //compute the maximum altitude
                 omaxaltitude = ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
