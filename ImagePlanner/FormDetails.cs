@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TheSkyXLib;
+using TheSky64Lib;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -38,7 +38,7 @@ namespace ImagePlanner
             }
 
             tsxo.Index = 0;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
             string sAllInfo = tsxo.ObjInfoPropOut;
             sAllInfo = sAllInfo.Replace("/", "-");
 

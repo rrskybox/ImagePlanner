@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using AstroMath;
 using AstroChart;
-using TheSkyXLib;
+using TheSky64Lib;
 
 namespace ImagePlanner
 {

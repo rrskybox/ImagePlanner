@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TheSkyXLib;
+using TheSky64Lib;
 using AstroMath;
 
 namespace ImagePlanner

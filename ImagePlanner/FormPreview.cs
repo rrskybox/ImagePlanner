@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TheSkyXLib;
+using TheSky64Lib;
 
 namespace ImagePlanner
 {
@@ -74,9 +74,9 @@ namespace ImagePlanner
 
             int cnt = tsxo.Count;
             tsxo.Index = 0;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
             double dRA = tsxo.ObjInfoPropOut;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
             double dDec = tsxo.ObjInfoPropOut;
             tsxs.RightAscension = dRA;
             tsxs.Declination = dDec;

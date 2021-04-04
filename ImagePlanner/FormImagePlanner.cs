@@ -40,7 +40,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using TheSkyXLib;
+using TheSky64Lib;
 
 namespace ImagePlanner
 {
@@ -362,9 +362,9 @@ namespace ImagePlanner
             }
             int cnt = tsxo.Count;
             tsxo.Index = 0;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
             double dRA = tsxo.ObjInfoPropOut;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
             double dDec = tsxo.ObjInfoPropOut;
 
             XFiles xfn = new XFiles(tgtName);
@@ -660,21 +660,21 @@ namespace ImagePlanner
             }
             //Reset the target name to whatever TSX found
             tobj.Index = 0;
-            //tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
+            //tobj.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
             //TargetNameBox.Text = tobj.ObjInfoPropOut;
             enteringTargetState = false;
             //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
 
             int vj = tobj.Count;
-            tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
+            tobj.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_RA_2000);
             traH = tobj.ObjInfoPropOut;
-            tobj.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
+            tobj.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
             tdecD = tobj.ObjInfoPropOut;
-            tdoc.DocumentProperty(TheSkyXLib.Sk6DocumentProperty.sk6DocProp_Latitude);
+            tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Latitude);
             tlatD = tdoc.DocPropOut;
-            tdoc.DocumentProperty(TheSkyXLib.Sk6DocumentProperty.sk6DocProp_Longitude);
+            tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Longitude);
             tlongD = tdoc.DocPropOut;
-            tdoc.DocumentProperty(TheSkyXLib.Sk6DocumentProperty.sk6DocProp_Time_Zone);
+            tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Time_Zone);
 
             Celestial.RADec tgtRADec = new Celestial.RADec(Transform.HoursToRadians(traH), Transform.DegreesToRadians(tdecD));
             Celestial.LatLon obsLocation = new Celestial.LatLon(Transform.DegreesToRadians(tlatD), Transform.DegreesToRadians(-tlongD));
@@ -1087,7 +1087,7 @@ namespace ImagePlanner
                 return;
             }
             tsxo.Index = 0;
-            tsxo.Property(TheSkyXLib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
             string sAllInfo = tsxo.ObjInfoPropOut;
             sAllInfo = sAllInfo.Replace("/", "-");
 
