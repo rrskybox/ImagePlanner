@@ -1,5 +1,5 @@
 # ImagePlanner
-Windows DT Astro-imaging Planning Tool utilizing TheSkyX
+Windows 10 Astro-imaging Planning Tool utilizing TheSkyX
 
 Overview
 
