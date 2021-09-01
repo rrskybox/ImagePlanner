@@ -16,9 +16,9 @@ namespace ImagePlanner
             Nebula
         }
         
-        private static string ImagePlannerGalaxyDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition 64\\Database Queries\\ImagePlannerGalaxy.dbq";
-        private static string ImagePlannerClusterDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition 64\\Database Queries\\ImagePlannerCluster.dbq";
-        private static string ImagePlannerNebulaDestinationSubPath = "Software Bisque\\TheSkyX Professional Edition 64\\Database Queries\\ImagePlannerNebula.dbq";
+        private static string ImagePlannerGalaxyDestinationSubPath = "Software Bisque\\TheSky Professional Edition 64\\Database Queries\\ImagePlannerGalaxy.dbq";
+        private static string ImagePlannerClusterDestinationSubPath = "Software Bisque\\TheSky Professional Edition 64\\Database Queries\\ImagePlannerCluster.dbq";
+        private static string ImagePlannerNebulaDestinationSubPath = "Software Bisque\\TheSky Professional Edition 64\\Database Queries\\ImagePlannerNebula.dbq";
 
         public static bool DBQsInstalled()
         {
