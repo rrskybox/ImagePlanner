@@ -512,7 +512,7 @@ namespace ImagePlanner
                     TargetNameBox.Focus();
                     TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
                 }
-             }
+            }
             if (e.KeyChar == '\r')
             {
                 enteringTargetState = false;
@@ -708,6 +708,14 @@ namespace ImagePlanner
             string pIcon;
             string cellText = "";
 
+            Color MedYellow = Color.FromArgb(255, 255, 255, 102);
+            Color PaleYellow = Color.FromArgb(255, 255, 255, 153);
+            Color PaleYellowGreen = Color.FromArgb(255, 204, 255, 85);
+            Color MedYellowGreen = Color.FromArgb(255, 153, 255, 153);
+            Color MedBlueGreen = Color.FromArgb(255, 51, 153, 153);
+            Color DeepBlueGreen = Color.FromArgb(255, 51, 0, 253);
+            Color VeryLightPink = Color.FromArgb(255, 255, 204, 255);
+
             foreach (DailyPosition dp in tgtdata)
             {
                 if (dp.UTCdate.Year == CurrentYearPick.Value)
@@ -716,27 +724,27 @@ namespace ImagePlanner
                     iRow = dp.Rising.Day - 1;
                     if (dp.MoonFree == 0)
                     {
-                        PaintCell(iRow, jCol, Color.Gold, Color.Black);
+                        PaintCell(iRow, jCol, MedYellow, Color.Black);
                     }
                     else if (dp.MoonFree < 0.25)
                     {
-                        PaintCell(iRow, jCol, Color.YellowGreen, Color.Black);
+                        PaintCell(iRow, jCol, PaleYellow, Color.Black);
                     }
                     else if (dp.MoonFree < 0.5)
                     {
-                        PaintCell(iRow, jCol, Color.CadetBlue, Color.White);
+                        PaintCell(iRow, jCol, PaleYellowGreen, Color.Black);
                     }
                     else if (dp.MoonFree < 0.75)
                     {
-                        PaintCell(iRow, jCol, Color.DodgerBlue, Color.White);
+                        PaintCell(iRow, jCol, MedYellowGreen, Color.Black);
                     }
                     else if (dp.MoonFree < 1)
                     {
-                        PaintCell(iRow, jCol, Color.DarkBlue, Color.White);
+                        PaintCell(iRow, jCol, MedBlueGreen, Color.White);
                     }
                     else
                     {
-                        PaintCell(iRow, jCol, Color.MidnightBlue, Color.White);
+                        PaintCell(iRow, jCol, DeepBlueGreen, Color.White);
                     }
                     if (dp.MoonPhase <= 0.05)
                     {
@@ -763,7 +771,7 @@ namespace ImagePlanner
                     {
                         case (DailyPosition.VisibilityState.UpNever):
                             cellText = "Too Low  " + pIcon;
-                            PaintCell(iRow, jCol, Color.DarkGray, Color.Black);
+                            PaintCell(iRow, jCol, VeryLightPink, Color.Black);
                             break;
                         case (DailyPosition.VisibilityState.UpAlways):
                             imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
@@ -1056,7 +1064,7 @@ namespace ImagePlanner
             //assumes an input string of a catelog object:  ccccnnnn where cccc are characters and nnnn are numbers
             //this function parses the string and return s a new string whre the number as been incremented
             char[] s = new char[] { ' ' };
-            string[] parts = targetName.Split(s,StringSplitOptions.RemoveEmptyEntries);
+            string[] parts = targetName.Split(s, StringSplitOptions.RemoveEmptyEntries);
             int nextDigit = (Convert.ToInt32(parts[1]) + increment);
             if (nextDigit > 1) return parts[0] + " " + nextDigit.ToString("0");
             else return parts[0] + " 1";
