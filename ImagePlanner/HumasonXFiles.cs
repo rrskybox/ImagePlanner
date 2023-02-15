@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Humason
@@ -32,6 +28,7 @@ namespace Humason
         string HumasonTargetPlanXName = "HumasonTargetPlan";
         string HumasonDefaultTargetPlanFilename = "TargetPlanDefault.xml";
         string HumasonTargetPlanSearchPattern = "*.TargetPlan.xml";
+        string HumasonSessionControlFilename = "SessionControl.xml";
 
         string nhDir;
 
@@ -44,14 +41,16 @@ namespace Humason
         public static string sbTargetPAName = "TargetPA";
 
         public Xccess Xmlf;
+        public Xccess Xses;
 
         public XFiles()
         {
             nhDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + HumasonFolderName;
-            if ((!(Directory.Exists(nhDir + "\\" + HumasonFolderName))))  //no directory, so create it
-            {
+            if (!Directory.Exists(nhDir))  //no directory, so create it
                 Directory.CreateDirectory(nhDir);
-            }
+            else
+                //Open session control xml file
+                Xses = new Xccess(nhDir + "\\" + HumasonSessionControlFilename);
             return;
         }
 
@@ -63,6 +62,7 @@ namespace Humason
             nhDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + HumasonFolderName;
             string nhTargetFilePath = nhDir + "\\" + targetName + "." + HumasonTargetPlanFilename;
             string nhDefaultFilePath = nhDir + "\\" + HumasonDefaultTargetPlanFilename;
+            string nhSessionControlPath = nhDir + "\\" + HumasonSessionControlFilename;
             //convert target name to file name, notably change "/" to "_"
             string targetFileName = targetName.Replace("/", "_");
             if ((!(Directory.Exists(nhDir + "\\" + HumasonFolderName))))
@@ -140,7 +140,6 @@ namespace Humason
                 if (fname.Length == 2)
                 {
                     string fixName = fname[0].Replace("_", "/");
-                    //fixName = fixName.Replace("")
                     targetNames.Add(fixName);
                 }
                 if ((fname.Length == 4))
@@ -151,121 +150,32 @@ namespace Humason
             return targetNames;
         }
 
+        public string GetCurrentHumasonTarget()
+        {
+            //return target name currently loaded in Humason, if any
+            if (Xses != null)
+                return Xses.GetItem("CurrentTargetName");
+            else
+                return null;
+        }
+
         public string GetItem(string itemName)
         {
             return Xmlf.GetItem(itemName);
-            //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
-            //XElement hnCfgX = XElement.Load(hnCfgFilePath);
-            //IEnumerable<XElement> itemX = hnCfgX.Elements(itemName);
-            //if (itemX.Count() == 0)
-            //{
-            //    hnCfgX.Add(new XElement(itemName, null));
-            //    return null;
-            //}
-            //else { return (itemX.ElementAt(0).Value); }
         }
-
-        //public string GetItem(string itemSection, string itemName)
-        //{
-        //    return Xmlf.GetItem(itemSection, itemName);
-        //    ////Retrieves entry from two levels deep
-        //    //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
-        //    //XElement hnCfgX = XElement.Load(hnCfgFilePath);
-        //    //XElement sectionX = hnCfgX.Element(itemSection);
-        //    ////Check section, if doesn//t exist, then return nothing
-        //    //if (!sectionX.HasElements)
-        //    //{
-        //    //    return null;
-        //    //}
-        //    //else
-        //    //{
-        //    //    //Otherwise, look through the section for the itemname
-        //    //    //if found, then return the entry, if Not, make a nothing entry
-        //    //    IEnumerable<XElement> itemX = sectionX.Elements(itemName);
-        //    //    if (itemX.Count() == 0)
-        //    //    {
-        //    //        return null;
-        //    //    }
-        //    //    else
-        //    //    {
-        //    //        return itemX.ElementAt(0).Value;
-        //    //    }
-        //    //}
-        //}
 
         public void SetItem(string itemName, string item)
         {
             Xmlf.SetItem(itemName, item);
-            //string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
-            //XElement hnCfgX = XElement.Load(hnCfgFilePath);
-            //IEnumerable<XElement> sscfgXel = hnCfgX.Elements(itemName);
-            //if ((sscfgXel.Count() == 0))
-            //{
-            //    hnCfgX.Add(new XElement(itemName, item));
-            //}
-            //else
-            //{
-            //    sscfgXel.ElementAt(0).ReplaceWith(new XElement(itemName, item));
-            //}
-            //hnCfgX.Save(hnCfgFilePath);
-            //return;
         }
 
-        //public void SetItem(string sectionName, string itemName, string item)
-        //{
-        //    //Set entry for level two-deep element
-        //    //if ( the item Is in the file, but the entry Is "nothing" then just delete the entry
 
-        //    string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename;
-        //    XElement hnCfgX = XElement.Load(hnCfgFilePath);
-        //    IEnumerable<XElement> sectionX = hnCfgX.Elements(sectionName);
-        //    if ((sectionX.Count() == 0))
-        //    {
-        //        XElement itemX = new XElement(itemName, item);
-        //        hnCfgX.Add(new XElement(sectionName, itemX));
-        //    }
-        //    else
-        //    {
-        //        //check section for entry with itemName, if none then add, otherwise replace
-        //        XElement itemX = sectionX.Element(itemName);
-        //            if ((!itemX.HasAttributes))
-        //        {
-        //            if ((item <> ""))
-        //            {
-        //                sectionX.Add(new XElement(itemName, item))
-        //                         }
-        //            else
-        //            {
-        //                if ((item <> ""))
-        //                {
-        //                    itemX.ReplaceWith(new XElement(itemName, item))
-        //                    }
-        //                else
-        //                {
-        //                    itemX.Remove()
-        //                    }
-        //            }
-        //        }
-        //    }
-        //    hnCfgX.Save(hnCfgFilePath)
-        //            return;
-
-        //}
 
         public bool InitialItem(string ItemName, bool Item)
         {
             //if ( the xfile doesn//t have the member, then the original item is returned,
             // otherwise the element in the xfile Is returned
             return Xmlf.InitialItem(ItemName, Item);
-            //string itemStr = GetItem(ItemName)
-            //    if ((itemStr = ""))
-            //            {
-            //                SetItem(ItemName, Convert.ToString(Item))
-            //        return; Item
-            //} else {
-            //        return; (Convert.ToBoolean(GetItem(ItemName)))
-            //    }
-
         }
 
         public double InitialItem(string ItemName, double Item)
@@ -273,14 +183,6 @@ namespace Humason
             //if ( the xfile doesn//t have the member, then the original item is returned,
             // otherwise the element in the xfile Is returned
             return Xmlf.InitialItem(ItemName, Item);
-            //string itemStr = GetItem(ItemName)
-            //if ((itemStr = ""))
-            //        {
-            //            SetItem(ItemName, Convert.ToString(Item))
-            //    return Item;
-            //     } else {
-            //    return;(Convert.ToDouble(GetItem(ItemName)))
-            //     }
         }
 
         public int InitialItem(string ItemName, int Item)
@@ -288,34 +190,11 @@ namespace Humason
             //if ( the xfile doesn//t have the member, then the original item is returned,
             // otherwise the element in the xfile Is returned
             return Xmlf.InitialItem(ItemName, Item);
-            //string itemStr = GetItem(ItemName)
-            //if ((itemStr = ""))
-            //{
-            //    SetItem(ItemName, Convert.ToString(Item))
-            //return; Item
-            // }
-            //else
-            //{
-            //    return; (Convert.ToInt32(GetItem(ItemName)))
-            //  }
         }
 
         public string InitialItem(string ItemName, string Item)
         {
             return Xmlf.InitialItem(ItemName, Item);
-            //if ( the xfile doesn//t have the member, then the original item is returned,
-            // otherwise the element in the xfile is returned
-
-            //    string itemStr = GetItem(ItemName)
-            //    if ((itemStr = ""))
-            //    {
-            //        SetItem(ItemName, " ")
-            //    return; Item
-            //}
-            //    else
-            //    {
-            //        return; (Convert.ToString(GetItem(ItemName)))
-            //        }
         }
 
         public DateTime InitialItem(string ItemName, DateTime Item)
@@ -323,50 +202,8 @@ namespace Humason
         // otherwise the element in the xfile is returned
         {
             return Xmlf.InitialItem(ItemName, Item);
-            //    string itemStr = GetItem(ItemName)
-            //if ((itemStr = ""))
-            //        {
-            //            SetItem(ItemName, Convert.ToString(Item))
-            //    return; Item
-            //} else {
-            //    return;(DateTime.Parse(itemStr))
-            //}
         }
 
-        //        public InitialItem(string fSectionName, Filter fItem As Filter) As Boolean
-        //        //For filters, this is a bit different.
-        //        //if ( the filter is in the configuration file, then it is assumed active
-        //        //  && only the filter index is updated.  if ( it is !in the configuration file,
-        //        //  then no entry is made.  The return is either a true or false -- true indicates the filter
-        //        //  is in the configuration file && thus, should be checked off.
-
-        //string eFilterIndex = GetItem(fSectionName, fItem.Name)
-        //        if ((eFilterIndex = ""))
-        //                {
-        //                    return; False
-        //    } else {
-        //            SetItem(fSectionName, fItem.Name, fItem.Index.ToString())
-        //            return; true
-        //        }
-
-        //                }
-
-        //        public InitialItem(string fSectionName, Flat fItem) As Boolean
-
-        //        //For flats, this is a bit different
-        //        //  if the side of pier is there, && the ra is the same, then move on
-        //        //  otherwise, save the side of pier && pa
-
-        //string eFlatPA = GetItem(fSectionName, fItem.SideOfPier)
-        //        if ((eFlatPA = ""))
-        //                { //no flat for this side
-        //                    return; False
-        //    } else {if((Convert.ToDouble(eFlatPA) <> fItem.RotationPA)) {
-        //                        SetItem(fSectionName, fItem.SideOfPier, fItem.RotationPA.ToString())
-        //            return; true
-        //        }
-        //                    return; False
-        //    }
 
         public void ReplaceItem(string ItemName, bool Item)
         //The item is placed in the xfile -- boolean
@@ -403,60 +240,12 @@ namespace Humason
             return;
         }
 
-        //        public void ReplaceItem(string fSectionName, Filter fItem As Filter)
-        //        //The item is placed in the xfile -- inside the filter sub-element
-        //        //string eFilterNumber = GetItem(fSectionName, fItem.Name)
-        //SetItem(fSectionName, fItem.Name, Convert.ToString(fItem.Index))
-        //        return;
-        //    }
-
-        //    public void ReplaceItem(string fSectionName, Flat fItem As Flat)
-        //        //The item is placed in the xfile -- inside the flat sub-element
-        //        SetItem(fSectionName, fItem.SideOfPier, Convert.ToString(fItem.RotationPA))
-        //        return;
-        //    }
-
         public bool CheckItem(string ItemName)
         {
             //Checks to see if any element named ItemName exists in the configuration file
             //The item is placed in the xfile -- string
             return Xmlf.CheckItem(ItemName);
         }
-
-        //public void NullItem(string fSectionName, Filter fItem As Filter)
-        //        //The filter item is nulled in the xfile, although the entry is kept
-        //        string eFilterNumber = GetItem(fSectionName, fItem.Name)
-        //        SetItem(fSectionName, fItem.Name, Nothing)
-        //    }
-
-        //        public List<Filter> GetFilters()
-        //        {
-        //            //Read && return the set of entries stored in the configuration file
-        //            // , in ths case, in the form of Filter objects
-
-        //            string hnCfgFilePath = nhDir + "\\" + HumasonTargetPlanFilename
-        //            XElement hnCfgX = XElement.Load(hnCfgFilePath)
-        //            XElement sectionX = hnCfgX.Element(suFilterSetName)
-        //            //Check section, if doesn//t exist, then return nothing
-        //        if ((sectionX Is Nothing)) {
-        //                return; Nothing
-        //} else {
-        //                //Otherwise, look through the section for the itemname
-        //                //if found, then return the entry, if not, make a nothing entry
-        //                Dim filterCount As Integer = sectionX.Elements().Count()
-        //                 List<Filter> fSet = new List<Filter>();
-        //                foreach (fx in sectionX.Elements()
-        //                                fSet.Add(new Filter(fx.Name.ToString(), Convert.ToInt32(fx.Value)))
-        //                 }
-        //            return; fSet
-        //            }
-        //    }
-
-        // <summary>
-        // Read && return the set of entries stored in the configuration file
-        // </summary>
-        // <returns>List of type Flats in flats file</returns>
-
 
     }
 }

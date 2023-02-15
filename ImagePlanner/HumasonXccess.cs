@@ -1,8 +1,8 @@
 ﻿//Class for accessing XML files in Humason
 
 using System;
-using System.Xml.Linq;
 using System.IO;
+using System.Xml.Linq;
 
 namespace Humason
 {

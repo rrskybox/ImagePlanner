@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AstroChart;
+using AstroMath;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
-using AstroMath;
-using AstroChart;
 using TheSky64Lib;
 
 namespace ImagePlanner

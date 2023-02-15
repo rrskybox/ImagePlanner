@@ -1,8 +1,8 @@
-﻿using System;
+﻿using AstroMath;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TheSky64Lib;
-using AstroMath;
 
 namespace ImagePlanner
 {

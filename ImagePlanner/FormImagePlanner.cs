@@ -139,44 +139,19 @@ namespace ImagePlanner
                     ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
                 }
             }
+            //Set selected item to current Humason target, if any
+            string currentTarget = xf.GetCurrentHumasonTarget();
+            if (currentTarget != "")
+                for (int i = 0; i < ImagePlannerTargetList.Items.Count; i++)
+                    if (ImagePlannerTargetList.Items[i].ToString().Contains(currentTarget))
+                        ImagePlannerTargetList.SelectedIndex = i;
+
             QPUpdate.WazzupEventHandler += WazzupEvent_Handler;
 
             return;
         }
 
         #region Button Handlers
-
-        private void TargetNameUpButton_Click(Object sender, EventArgs e)  // Handles TargetNameUpButton.Click
-        {
-            string tName = TargetNameBox.Text;
-            //if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
-            //{
-            string upName = IncrementCatalogNumber(TargetNameBox.Text, +1);
-            TargetNameBox.Text = upName;
-            RegenerateForms();
-            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-            int iRow = selcel[0].RowIndex;
-            int iCol = selcel[0].ColumnIndex;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            //}
-        }
-
-        private void TargetNameDownButton_Click(Object sender, EventArgs e)  // Handles TargetNameDownButton.Click
-        {
-            string tName = TargetNameBox.Text;
-            //if (tName.StartsWith("N") || tName.StartsWith("M") || tName.StartsWith("I"))
-            //{
-            string downName = IncrementCatalogNumber(TargetNameBox.Text, -1);
-            TargetNameBox.Text = downName;
-            RegenerateForms();
-            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-            int iRow = selcel[0].RowIndex;
-            int iCol = selcel[0].ColumnIndex;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
-            // }
-        }
 
         private void CurrentYearPick_TextChanged(Object sender, KeyPressEventArgs e) //Handles CurrentYearPick.KeyPress
         {
@@ -366,8 +341,8 @@ namespace ImagePlanner
             double dRA = tsxo.ObjInfoPropOut;
             tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_DEC_2000);
             double dDec = tsxo.ObjInfoPropOut;
-
             XFiles xfn = new XFiles(tgtName);
+
             if (xfn != null)
             {
                 xfn.ReplaceItem(XFiles.sbTargetNameName, tgtName);
@@ -1059,7 +1034,6 @@ namespace ImagePlanner
         #region Miscellaneous Helper Methods
 
         private string IncrementCatalogNumber(string targetName, int increment)
-
         {
             //assumes an input string of a catelog object:  ccccnnnn where cccc are characters and nnnn are numbers
             //this function parses the string and return s a new string whre the number as been incremented
@@ -1226,6 +1200,7 @@ namespace ImagePlanner
         }
 
         #endregion
+
 
     }
 }

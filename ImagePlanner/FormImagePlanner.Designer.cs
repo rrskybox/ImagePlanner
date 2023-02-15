@@ -53,8 +53,6 @@
             this.AddTargetPlanButton = new System.Windows.Forms.Button();
             this.Label4 = new System.Windows.Forms.Label();
             this.ImagePlannerTargetList = new System.Windows.Forms.ComboBox();
-            this.TargetNameDownButton = new System.Windows.Forms.Button();
-            this.TargetNameUpButton = new System.Windows.Forms.Button();
             this.Label3 = new System.Windows.Forms.Label();
             this.Label2 = new System.Windows.Forms.Label();
             this.Label1 = new System.Windows.Forms.Label();
@@ -90,7 +88,7 @@
             // 
             this.InfoButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.InfoButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoButton.Location = new System.Drawing.Point(1336, 9);
+            this.InfoButton.Location = new System.Drawing.Point(1265, 9);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(46, 20);
             this.InfoButton.TabIndex = 59;
@@ -102,7 +100,7 @@
             // 
             this.AltitudeButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AltitudeButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AltitudeButton.Location = new System.Drawing.Point(420, 9);
+            this.AltitudeButton.Location = new System.Drawing.Point(349, 9);
             this.AltitudeButton.Name = "AltitudeButton";
             this.AltitudeButton.Size = new System.Drawing.Size(60, 20);
             this.AltitudeButton.TabIndex = 57;
@@ -123,7 +121,7 @@
             // 
             this.DetailsButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DetailsButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DetailsButton.Location = new System.Drawing.Point(550, 9);
+            this.DetailsButton.Location = new System.Drawing.Point(479, 9);
             this.DetailsButton.Name = "DetailsButton";
             this.DetailsButton.Size = new System.Drawing.Size(60, 20);
             this.DetailsButton.TabIndex = 56;
@@ -135,7 +133,7 @@
             // 
             this.DeleteTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DeleteTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1209, 9);
+            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1138, 9);
             this.DeleteTargetPlanButton.Name = "DeleteTargetPlanButton";
             this.DeleteTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.DeleteTargetPlanButton.TabIndex = 55;
@@ -147,7 +145,7 @@
             // 
             this.AddTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AddTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AddTargetPlanButton.Location = new System.Drawing.Point(1143, 9);
+            this.AddTargetPlanButton.Location = new System.Drawing.Point(1072, 9);
             this.AddTargetPlanButton.Name = "AddTargetPlanButton";
             this.AddTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.AddTargetPlanButton.TabIndex = 54;
@@ -159,7 +157,7 @@
             // 
             this.Label4.AutoSize = true;
             this.Label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label4.Location = new System.Drawing.Point(916, 13);
+            this.Label4.Location = new System.Drawing.Point(845, 13);
             this.Label4.Name = "Label4";
             this.Label4.Size = new System.Drawing.Size(94, 13);
             this.Label4.TabIndex = 53;
@@ -170,42 +168,18 @@
             this.ImagePlannerTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ImagePlannerTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ImagePlannerTargetList.FormattingEnabled = true;
-            this.ImagePlannerTargetList.Location = new System.Drawing.Point(1016, 9);
+            this.ImagePlannerTargetList.Location = new System.Drawing.Point(945, 9);
             this.ImagePlannerTargetList.MaxDropDownItems = 20;
             this.ImagePlannerTargetList.Name = "ImagePlannerTargetList";
             this.ImagePlannerTargetList.Size = new System.Drawing.Size(121, 21);
             this.ImagePlannerTargetList.TabIndex = 52;
             this.ImagePlannerTargetList.SelectedIndexChanged += new System.EventHandler(this.ImagePlannerTargetList_SelectedIndexChanged);
             // 
-            // TargetNameDownButton
-            // 
-            this.TargetNameDownButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.TargetNameDownButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TargetNameDownButton.Location = new System.Drawing.Point(301, 9);
-            this.TargetNameDownButton.Name = "TargetNameDownButton";
-            this.TargetNameDownButton.Size = new System.Drawing.Size(27, 20);
-            this.TargetNameDownButton.TabIndex = 51;
-            this.TargetNameDownButton.Text = "\\/";
-            this.TargetNameDownButton.UseVisualStyleBackColor = false;
-            this.TargetNameDownButton.Click += new System.EventHandler(this.TargetNameDownButton_Click);
-            // 
-            // TargetNameUpButton
-            // 
-            this.TargetNameUpButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.TargetNameUpButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TargetNameUpButton.Location = new System.Drawing.Point(268, 9);
-            this.TargetNameUpButton.Name = "TargetNameUpButton";
-            this.TargetNameUpButton.Size = new System.Drawing.Size(27, 20);
-            this.TargetNameUpButton.TabIndex = 50;
-            this.TargetNameUpButton.Text = "/\\";
-            this.TargetNameUpButton.UseVisualStyleBackColor = false;
-            this.TargetNameUpButton.Click += new System.EventHandler(this.TargetNameUpButton_Click);
-            // 
             // Label3
             // 
             this.Label3.AutoSize = true;
             this.Label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label3.Location = new System.Drawing.Point(748, 13);
+            this.Label3.Location = new System.Drawing.Point(677, 13);
             this.Label3.Name = "Label3";
             this.Label3.Size = new System.Drawing.Size(115, 13);
             this.Label3.TabIndex = 49;
@@ -233,7 +207,7 @@
             // 
             // MinAltitudeBox
             // 
-            this.MinAltitudeBox.Location = new System.Drawing.Point(869, 9);
+            this.MinAltitudeBox.Location = new System.Drawing.Point(798, 9);
             this.MinAltitudeBox.Maximum = new decimal(new int[] {
             90,
             0,
@@ -251,7 +225,7 @@
             // DoneButton
             // 
             this.DoneButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.DoneButton.Location = new System.Drawing.Point(1388, 9);
+            this.DoneButton.Location = new System.Drawing.Point(1317, 9);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(46, 20);
             this.DoneButton.TabIndex = 45;
@@ -263,7 +237,7 @@
             // 
             this.PrintButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PrintButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PrintButton.Location = new System.Drawing.Point(1284, 9);
+            this.PrintButton.Location = new System.Drawing.Point(1213, 9);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(46, 20);
             this.PrintButton.TabIndex = 44;
@@ -327,7 +301,7 @@
             this.MonthCalendar.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.MonthCalendar.RowHeadersWidth = 60;
             this.MonthCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.MonthCalendar.Size = new System.Drawing.Size(1400, 731);
+            this.MonthCalendar.Size = new System.Drawing.Size(1362, 731);
             this.MonthCalendar.TabIndex = 40;
             this.MonthCalendar.SelectionChanged += new System.EventHandler(this.MonthCalendar_SelectionChanged);
             // 
@@ -469,7 +443,7 @@
             // 
             this.PreviewButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PreviewButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PreviewButton.Location = new System.Drawing.Point(615, 9);
+            this.PreviewButton.Location = new System.Drawing.Point(544, 9);
             this.PreviewButton.Name = "PreviewButton";
             this.PreviewButton.Size = new System.Drawing.Size(60, 20);
             this.PreviewButton.TabIndex = 58;
@@ -482,7 +456,7 @@
             this.TargetNameBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
             this.TargetNameBox.Location = new System.Drawing.Point(165, 9);
             this.TargetNameBox.Name = "TargetNameBox";
-            this.TargetNameBox.Size = new System.Drawing.Size(97, 20);
+            this.TargetNameBox.Size = new System.Drawing.Size(99, 20);
             this.TargetNameBox.TabIndex = 42;
             this.TargetNameBox.Text = "M1";
             this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -492,7 +466,7 @@
             // 
             this.AssessButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AssessButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AssessButton.Location = new System.Drawing.Point(334, 9);
+            this.AssessButton.Location = new System.Drawing.Point(282, 8);
             this.AssessButton.Name = "AssessButton";
             this.AssessButton.Size = new System.Drawing.Size(61, 20);
             this.AssessButton.TabIndex = 41;
@@ -530,7 +504,7 @@
             // 
             this.ProspectButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ProspectButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ProspectButton.Location = new System.Drawing.Point(680, 9);
+            this.ProspectButton.Location = new System.Drawing.Point(609, 9);
             this.ProspectButton.Name = "ProspectButton";
             this.ProspectButton.Size = new System.Drawing.Size(60, 20);
             this.ProspectButton.TabIndex = 61;
@@ -542,7 +516,7 @@
             // 
             this.TrackButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.TrackButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TrackButton.Location = new System.Drawing.Point(485, 9);
+            this.TrackButton.Location = new System.Drawing.Point(414, 9);
             this.TrackButton.Name = "TrackButton";
             this.TrackButton.Size = new System.Drawing.Size(60, 20);
             this.TrackButton.TabIndex = 62;
@@ -555,7 +529,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(1440, 788);
+            this.ClientSize = new System.Drawing.Size(1390, 788);
             this.Controls.Add(this.TrackButton);
             this.Controls.Add(this.ProspectButton);
             this.Controls.Add(this.InfoButton);
@@ -565,8 +539,6 @@
             this.Controls.Add(this.AddTargetPlanButton);
             this.Controls.Add(this.Label4);
             this.Controls.Add(this.ImagePlannerTargetList);
-            this.Controls.Add(this.TargetNameDownButton);
-            this.Controls.Add(this.TargetNameUpButton);
             this.Controls.Add(this.Label3);
             this.Controls.Add(this.Label2);
             this.Controls.Add(this.Label1);
@@ -599,8 +571,6 @@
         internal System.Windows.Forms.Button AddTargetPlanButton;
         internal System.Windows.Forms.Label Label4;
         internal System.Windows.Forms.ComboBox ImagePlannerTargetList;
-        internal System.Windows.Forms.Button TargetNameDownButton;
-        internal System.Windows.Forms.Button TargetNameUpButton;
         internal System.Windows.Forms.Label Label3;
         internal System.Windows.Forms.Label Label2;
         internal System.Windows.Forms.Label Label1;
