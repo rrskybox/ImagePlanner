@@ -40,6 +40,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Deployment.Application;
 using TheSky64Lib;
 
 namespace ImagePlanner
@@ -544,7 +545,11 @@ namespace ImagePlanner
         public void WriteTitle(string tgtName, string tYear)
         {
             //Write title line in header of form
-            this.Text = tYear + " Imaging Conditions Forecast for (" + tgtName +
+            // Acquire the version information and put it in the form header
+            try { this.Text = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(); }
+            catch { this.Text = " in Debug"; } //probably in debug, no version info available
+            this.Text = "Image Planner " + this.Text + ":  ";
+            this.Text += tYear + " Imaging Conditions Forecast for (" + tgtName +
                 "       ( @ Imaging Start Time > Imaging Duration (in hours) with Moon Phase " +
                 "and constrained by Astronomical Twilight)";
             //update tooltip for (target name

@@ -88,7 +88,7 @@
             // 
             this.InfoButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.InfoButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoButton.Location = new System.Drawing.Point(1265, 9);
+            this.InfoButton.Location = new System.Drawing.Point(1317, 10);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(46, 20);
             this.InfoButton.TabIndex = 59;
@@ -225,7 +225,7 @@
             // DoneButton
             // 
             this.DoneButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.DoneButton.Location = new System.Drawing.Point(1317, 9);
+            this.DoneButton.Location = new System.Drawing.Point(1369, 10);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(46, 20);
             this.DoneButton.TabIndex = 45;
@@ -237,7 +237,7 @@
             // 
             this.PrintButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PrintButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PrintButton.Location = new System.Drawing.Point(1213, 9);
+            this.PrintButton.Location = new System.Drawing.Point(1265, 10);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(46, 20);
             this.PrintButton.TabIndex = 44;
@@ -301,7 +301,7 @@
             this.MonthCalendar.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.MonthCalendar.RowHeadersWidth = 60;
             this.MonthCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.MonthCalendar.Size = new System.Drawing.Size(1362, 731);
+            this.MonthCalendar.Size = new System.Drawing.Size(1426, 708);
             this.MonthCalendar.TabIndex = 40;
             this.MonthCalendar.SelectionChanged += new System.EventHandler(this.MonthCalendar_SelectionChanged);
             // 
@@ -529,7 +529,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
-            this.ClientSize = new System.Drawing.Size(1390, 788);
+            this.ClientSize = new System.Drawing.Size(1454, 765);
             this.Controls.Add(this.TrackButton);
             this.Controls.Add(this.ProspectButton);
             this.Controls.Add(this.InfoButton);
