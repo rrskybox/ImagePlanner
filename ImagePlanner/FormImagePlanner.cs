@@ -48,6 +48,7 @@ namespace ImagePlanner
     public partial class FormImagePlanner : Form
     {
         public DateTime SelectedDate;
+        public double MinimumAltitude = 0;
 
         public DailyPosition[] sundata;
         public DailyPosition[] tgtdata;
@@ -56,6 +57,7 @@ namespace ImagePlanner
         public DateTime TargetUTCDate;
         public bool SelectionEnabled;
         public bool ProspectProtected = false;  //set to false if prospect pop up is not active, true otherwise -- used for selection
+        public bool ExoPlanetProtected = false;  //set to false if exoplanet pop up is not active, true otherwise -- used for selection
         public string moonDataDescription;
 
         public FormPreview previewForm = null;
@@ -68,6 +70,9 @@ namespace ImagePlanner
         public Point trackFormLocation = new Point(0, 0);
         public FormWazzup wazzupForm = null;
         public Point wazzupFormLocation = new Point(0, 0);
+        public FormExoPlanet exoPlanetForm = null;
+        public Point exoPlanetFormLocation = new Point(0, 0);
+
 
         public bool enteringTargetState;  //true if writing target in, false if target has been entered
 
@@ -89,6 +94,7 @@ namespace ImagePlanner
             ButtonGreen(ProspectButton);
             ButtonGreen(AssessButton);
             ButtonGreen(TrackButton);
+            ButtonGreen(ExoPlanetButton);
 
             this.FontHeight = 1;
             MonthCalendar.RowCount = 31;
@@ -317,6 +323,22 @@ namespace ImagePlanner
             return;
         }
 
+        private void ExoPlanetButton_Click(object sender, EventArgs e)
+        {
+            if (ButtonIsGreen(ExoPlanetButton))
+            {
+                ButtonRed(ExoPlanetButton);
+                OpenExoPlanet();
+            }
+            else
+            {
+                exoPlanetForm.Close();
+                ButtonGreen(ExoPlanetButton);
+            }
+            return;
+
+        }
+
         private void AddTargetPlanButton_Click(Object sender, EventArgs e)  // Handles AddTargetPlanButton.Click
         {
             ButtonRed(AddTargetPlanButton);
@@ -507,10 +529,11 @@ namespace ImagePlanner
             return;
         }
 
-        private void MinAltitudeBox_TextChanged(Object sender, KeyPressEventArgs e) //Handles MinAltitudeBox.KeyPress
+        private void MinAltitudeBox_ValueChanged(Object sender, KeyPressEventArgs e) //Handles MinAltitudeBox.KeyPress
         {
             if (e.KeyChar == '\r')
             {
+                MinimumAltitude = (double)MinAltitudeBox.Value;
                 RegenerateForms();
                 return;
             }
@@ -980,6 +1003,52 @@ namespace ImagePlanner
             return;
         }
 
+        private void OpenExoPlanet()
+        {
+            //Opens the exoplanet form and window
+            if (ButtonIsGreen(ExoPlanetButton))
+            {
+                return;
+            }
+            //Don't open a new pop up if the old one isn't ready to be closed
+            if (ExoPlanetProtected)
+            { return; }
+
+            //First, close the old one, if (any
+            if (this.exoPlanetForm != null)
+            {
+                this.exoPlanetFormLocation = this.exoPlanetForm.Location;
+                this.exoPlanetForm.Close();
+            }
+
+            DateTime dawnDateUTC = sundata[TargetIndex + 1].Rising;
+            DateTime duskDateUTC = sundata[TargetIndex].Setting;
+
+            this.exoPlanetForm = new FormExoPlanet(duskDateUTC, dawnDateUTC, (double)MinAltitudeBox.Value);
+            //set this form as the owner
+            exoPlanetForm.Owner = this;
+            //Locate the start position of this form at the lower left hand corner of the parent form
+            int twPosX = this.Location.X;
+            int twposY = this.Location.Y;
+            int twSizeW = this.Size.Width;
+            int twSizeH = this.Size.Height;
+            int pvSizeW = this.exoPlanetForm.Size.Width;
+            int pvSizeH = this.exoPlanetForm.Size.Height;
+            Point pvLoc = new Point(twPosX + ((twSizeW / 2) - (pvSizeW / 2)), (twposY + twSizeH - pvSizeH));
+            if (this.exoPlanetFormLocation != new Point(0, 0))
+            {
+                this.exoPlanetForm.Location = this.exoPlanetFormLocation;
+            }
+            else
+            {
+                this.exoPlanetForm.Location = pvLoc;
+            }
+            this.exoPlanetForm.StartPosition = FormStartPosition.Manual;
+            //show the form
+            this.exoPlanetForm.Show();
+            return;
+        }
+
         private void OpenTrack()
         {
             //Opens the target preview form and window
@@ -1204,8 +1273,9 @@ namespace ImagePlanner
             }
         }
 
-        #endregion
 
+
+        #endregion
 
     }
 }

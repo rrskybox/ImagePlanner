@@ -53,8 +53,8 @@ namespace ImagePlanner
 
             //Get some target stuff that's hard to calculate
             tsxs.Find(targetName);
-            //wait a second
-            System.Threading.Thread.Sleep(500);
+            ////wait a second
+            //System.Threading.Thread.Sleep(500);
             tsxo.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_TRANSIT_TIME);
             tgtTransitH = tsxo.ObjInfoPropOut;
 
@@ -64,8 +64,8 @@ namespace ImagePlanner
             //Get some moon stuff now
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, Celestial.DateToJulian(moonDateUTC));
             tsxs.Find("Moon");
-            //wait a second
-            System.Threading.Thread.Sleep(500);
+            ////wait a second
+            //System.Threading.Thread.Sleep(500);
             tsxo.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_RISE_TIME);
             moonRiseH = tsxo.ObjInfoPropOut;
             tsxo.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_SET_TIME);

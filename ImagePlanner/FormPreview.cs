@@ -110,7 +110,7 @@ namespace ImagePlanner
                 // Do nothing
             }
 
-            System.Threading.Thread.Sleep(1000);
+            System.Threading.Thread.Sleep(1);
             this.Show();
             fovXML = null;
             tsxo = null;

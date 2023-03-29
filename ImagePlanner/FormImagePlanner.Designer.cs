@@ -79,6 +79,7 @@
             this.printCalendar = new System.Drawing.Printing.PrintDocument();
             this.ProspectButton = new System.Windows.Forms.Button();
             this.TrackButton = new System.Windows.Forms.Button();
+            this.ExoPlanetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -133,7 +134,7 @@
             // 
             this.DeleteTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DeleteTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1138, 9);
+            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1184, 9);
             this.DeleteTargetPlanButton.Name = "DeleteTargetPlanButton";
             this.DeleteTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.DeleteTargetPlanButton.TabIndex = 55;
@@ -145,7 +146,7 @@
             // 
             this.AddTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AddTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AddTargetPlanButton.Location = new System.Drawing.Point(1072, 9);
+            this.AddTargetPlanButton.Location = new System.Drawing.Point(1118, 9);
             this.AddTargetPlanButton.Name = "AddTargetPlanButton";
             this.AddTargetPlanButton.Size = new System.Drawing.Size(60, 20);
             this.AddTargetPlanButton.TabIndex = 54;
@@ -157,7 +158,7 @@
             // 
             this.Label4.AutoSize = true;
             this.Label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label4.Location = new System.Drawing.Point(845, 13);
+            this.Label4.Location = new System.Drawing.Point(891, 13);
             this.Label4.Name = "Label4";
             this.Label4.Size = new System.Drawing.Size(94, 13);
             this.Label4.TabIndex = 53;
@@ -168,7 +169,7 @@
             this.ImagePlannerTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ImagePlannerTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ImagePlannerTargetList.FormattingEnabled = true;
-            this.ImagePlannerTargetList.Location = new System.Drawing.Point(945, 9);
+            this.ImagePlannerTargetList.Location = new System.Drawing.Point(991, 9);
             this.ImagePlannerTargetList.MaxDropDownItems = 20;
             this.ImagePlannerTargetList.Name = "ImagePlannerTargetList";
             this.ImagePlannerTargetList.Size = new System.Drawing.Size(121, 21);
@@ -179,11 +180,11 @@
             // 
             this.Label3.AutoSize = true;
             this.Label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label3.Location = new System.Drawing.Point(677, 13);
+            this.Label3.Location = new System.Drawing.Point(752, 13);
             this.Label3.Name = "Label3";
-            this.Label3.Size = new System.Drawing.Size(115, 13);
+            this.Label3.Size = new System.Drawing.Size(91, 13);
             this.Label3.TabIndex = 49;
-            this.Label3.Text = "Minimum Altitude (Deg)";
+            this.Label3.Text = "Min Altitude (Deg)";
             // 
             // Label2
             // 
@@ -207,7 +208,7 @@
             // 
             // MinAltitudeBox
             // 
-            this.MinAltitudeBox.Location = new System.Drawing.Point(798, 9);
+            this.MinAltitudeBox.Location = new System.Drawing.Point(844, 9);
             this.MinAltitudeBox.Maximum = new decimal(new int[] {
             90,
             0,
@@ -524,12 +525,25 @@
             this.TrackButton.UseVisualStyleBackColor = false;
             this.TrackButton.Click += new System.EventHandler(this.TrackButton_Click);
             // 
+            // ExoPlanetButton
+            // 
+            this.ExoPlanetButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ExoPlanetButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ExoPlanetButton.Location = new System.Drawing.Point(675, 9);
+            this.ExoPlanetButton.Name = "ExoPlanetButton";
+            this.ExoPlanetButton.Size = new System.Drawing.Size(64, 20);
+            this.ExoPlanetButton.TabIndex = 63;
+            this.ExoPlanetButton.Text = "ExoPlanet";
+            this.ExoPlanetButton.UseVisualStyleBackColor = false;
+            this.ExoPlanetButton.Click += new System.EventHandler(this.ExoPlanetButton_Click);
+            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HotTrack;
             this.ClientSize = new System.Drawing.Size(1454, 765);
+            this.Controls.Add(this.ExoPlanetButton);
             this.Controls.Add(this.TrackButton);
             this.Controls.Add(this.ProspectButton);
             this.Controls.Add(this.InfoButton);
@@ -597,6 +611,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn October;
         private System.Windows.Forms.DataGridViewTextBoxColumn November;
         private System.Windows.Forms.DataGridViewTextBoxColumn December;
+        internal System.Windows.Forms.Button ExoPlanetButton;
     }
 }
 

@@ -67,11 +67,22 @@ namespace ImagePlanner
         public double MaxAltitude;
         public double JDate; //Not initialized
 
+        public DateTime XpTransitMid;
+        public DateTime XpTransitEarly;
+        public DateTime XpTransitLate;
+        public double XpDurationHrs;
+        public double XpDepth;
+        public double XpVmag;
+        public double XpPl_TransMid;
+        public double XpPl_TransPer;
+
         public double DawnAlt;
         public double DuskAlt;
 
         public DBQObject(string noname, int notype, double nosize, DateTime norise, DateTime noset,
-            double noDec, double noRA, double noLat, double noLong, double noduration, double nomaxalt)
+            double noDec, double noRA, double noLat, double noLong, double noduration, double nomaxalt,
+            DateTime xpTransitMid, DateTime xpTransitEarly, DateTime xpTransitLate, double xpDurationHrs,
+            double xpDepth, double xpVmag, double xpPl_TransMid, double xpPl_TransPer)
         {
             Name = noname;
             Type = notype;
@@ -85,6 +96,15 @@ namespace ImagePlanner
             Long = noLong;
             Duration = noduration;
             MaxAltitude = nomaxalt;
+            XpTransitMid = xpTransitMid;
+            XpTransitEarly = xpTransitEarly;
+            XpTransitLate = xpTransitLate;
+            XpDurationHrs = xpDurationHrs;
+            XpDepth = xpDepth;
+            XpVmag = xpVmag;
+            XpPl_TransMid = xpPl_TransMid;
+            XpPl_TransPer = xpPl_TransPer;
+
             return;
         }
     }
@@ -102,6 +122,14 @@ namespace ImagePlanner
         private double oLong;
         private double oduration;
         private double omaxaltitude;
+        private DateTime? xpTransitMid;
+        private DateTime? xpTransitEarly;
+        private DateTime? xpTransitLate;
+        private double xpDurationHrs;
+        private double xpDepth;
+        private double xpVmag;
+        private double xpPl_TransMid;
+        private double xpPl_TransPer;
 
         private List<DBQObject> dbqList = new List<DBQObject>();
 
@@ -111,8 +139,11 @@ namespace ImagePlanner
             if (!DBQFileManagement.DBQsInstalled())
             { DBQFileManagement.InstallDBQs(); }
 
+            sky6Utils tsxu = new sky6Utils();
+            TimeSpan utDiff = Utilities.OffsetUTC();
             //Load the path to the selected search database query
             sky6DataWizard tsxdw = new sky6DataWizard();
+
             tsxdw.Path = DBQFileManagement.GetDBQPath(searchDB);
             //Set the search date for the dusk query
             sky6StarChart tsxs = new sky6StarChart();
@@ -123,7 +154,6 @@ namespace ImagePlanner
             double jdate = Celestial.DateToJulian(duskDateLocal.ToUniversalTime());
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jdate);
             tsxdw.Open();
-            //sky6ObjectInformation tsxoi = new sky6ObjectInformation();
             sky6ObjectInformation tsxoi = tsxdw.RunQuery;
 
             //Fill in data arrays (for speed purposes)
@@ -131,9 +161,6 @@ namespace ImagePlanner
             for (int i = 0; i < tgtcount; i++)
             {
                 tsxoi.Index = i;
-                //tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
-                //var AllInfo = tsxoi.ObjInfoPropOut;
-
                 tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
                 oname = (tsxoi.ObjInfoPropOut);
                 tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_OBJECTTYPE);
@@ -152,10 +179,46 @@ namespace ImagePlanner
                 oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                 //compute the maximum altitude
                 omaxaltitude = ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
-                // if the duration is greater than zero, then add it
-                if (oduration > 0)
+
+                //Diagnostic:  List<string> dfList = ListDataFields(tsxoi);
+
+                //ExoPlanet Fields
+                if (searchDB == DBQFileManagement.SearchType.ConfirmedExoPlanet || searchDB == DBQFileManagement.SearchType.CandidateExoPlanet)
                 {
-                    dbqList.Add(new DBQObject(oname, otype, osize, oset, orise, oDec, oRA, oLat, oLong, oduration, omaxaltitude));
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_8);
+                    //Probable transit
+                    try { xpTransitMid = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                    catch { xpTransitMid = null; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_9);  //Earliest transit
+                    try { xpTransitEarly = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                    catch { xpTransitEarly = xpTransitMid; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_10);  //Lastest transit
+                    try { xpTransitLate = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                    catch { xpTransitLate = xpTransitMid; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_5);  //Transit duration
+                    try { xpDurationHrs = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpDurationHrs = 0; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_6);  //Transit depth in magnitude
+                    try { xpDepth = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpDepth = 0; };
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_1);  //Star mag in V
+                    try { xpVmag = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpVmag = 0; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_7);  //Transit midpoint
+                    try { xpPl_TransMid = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpPl_TransMid = 0; }
+                    tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_2);  //Transit midpoint
+                    try { xpPl_TransPer = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpPl_TransPer = 0; }
+                }
+
+                // if the duration is greater than zero, then add it
+                if (oduration > 0 && xpTransitMid != null)
+                {
+
+                    dbqList.Add(new DBQObject(oname, otype, osize, orise, oset, oDec, oRA, oLat, oLong, oduration, omaxaltitude,
+                        xpTransitMid ?? DateTime.MinValue, xpTransitEarly ?? DateTime.MinValue, xpTransitLate ?? DateTime.MinValue,
+                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMid, xpPl_TransPer));
                 }
             }
             //Note that all these entries should have at least some duration
@@ -166,7 +229,7 @@ namespace ImagePlanner
             tsxoi = tsxdw.RunQuery;
 
             //check each entry to see if it is already in the dusk list
-            //  if so, just ignor, if not get the resf of the info and add it
+            //  if so, just ignor, if not get the rest of the info and add it
             for (int i = 0; i < tsxoi.Count; i++)
             {
                 tsxoi.Index = i;
@@ -199,10 +262,41 @@ namespace ImagePlanner
                     oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                     //compute the maximum altitude
                     omaxaltitude = ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
+                    //ExoPlanet Fields
+                    if (searchDB == DBQFileManagement.SearchType.ConfirmedExoPlanet || searchDB == DBQFileManagement.SearchType.CandidateExoPlanet)
+                    {
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_8);
+                        //Probable transit
+                        try { xpTransitMid = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                        catch { xpTransitMid = DateTime.Now; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_9);  //Earlies transit
+                        try { xpTransitEarly = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                        catch { xpTransitEarly = xpTransitMid; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_10);  //Lastest transit
+                        try { xpTransitLate = Convert.ToDateTime(tsxoi.ObjInfoPropOut); }
+                        catch { xpTransitLate = xpTransitMid; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_5);  //Transit duration
+                        try { xpDurationHrs = tsxoi.ObjInfoPropOut; }
+                        catch { xpDurationHrs = 0; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_6);  //Transit depth in magnitude
+                        try { xpDepth = tsxoi.ObjInfoPropOut; }
+                        catch { xpDepth = 0; };
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_1);  //Star mag in V
+                        try { xpVmag = (tsxoi.ObjInfoPropOut); }
+                        catch { xpVmag = 0; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_7);  //Transit midpoint
+                        try { xpPl_TransMid = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                        catch { xpDurationHrs = 0; }
+                        tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_2);  //Transit midpoint
+                        try { xpPl_TransPer = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                        catch { xpPl_TransPer = 0; }
+                    }
                     // if the duration is greater than zero, then add it
                     if (oduration > 0)
                     {
-                        dbqList.Add(new DBQObject(oname, otype, osize, oset, orise, oDec, oRA, oLat, oLong, oduration, omaxaltitude));
+                        dbqList.Add(new DBQObject(oname, otype, osize, orise, oset, oDec, oRA, oLat, oLong, oduration, omaxaltitude,
+                        xpTransitMid ?? DateTime.MinValue, xpTransitEarly ?? DateTime.MinValue, xpTransitLate ?? DateTime.MinValue,
+                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMid, xpPl_TransPer));
                     }
                 }
             }
@@ -338,6 +432,44 @@ namespace ImagePlanner
             return maxAlt;
         }
 
+
+        private List<string> ListDataFields(sky6ObjectInformation tsxoi)
+        {
+            List<string> dfList = new List<string>();
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_0);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_1);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_2);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_3);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_4);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_5);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_6);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_7);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_8);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_9);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_10);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_11);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_12);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_13);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_14);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_15);
+            dfList.Add(tsxoi.ObjInfoPropOut.ToString());
+            return dfList;
+        }
     }
 }
 

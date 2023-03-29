@@ -62,7 +62,7 @@ namespace ImagePlanner
                 if (!(CatalogedTypesList.Items.Contains(ProspectList.TypeName(oi))))
                 { CatalogedTypesList.Items.Add(ProspectList.TypeName(oi)); }
             }
-            return; 
+            return;
         }
 
         private void ProspectGrid_CellDoubleClickEvent(object sender, DataGridViewCellEventArgs e)
@@ -229,7 +229,6 @@ namespace ImagePlanner
                 WazzupLaunch(DBQFileManagement.SearchType.Cluster);
                 SelectClusterButton.ForeColor = saveColor;
             }
-
             return;
         }
 
