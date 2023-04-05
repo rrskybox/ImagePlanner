@@ -44,7 +44,7 @@ namespace ImagePlanner
         public FOVX()
         {
 
-            fovdir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Software Bisque\\TheSkyX Professional Edition\\Field of View Indicators";
+            fovdir = System.Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\Software Bisque\\TheSky Professional Edition 64\\Field of View Indicators";
             fovfile = fovdir + "\\My Equipment.txt";
             fovXfile = fovdir + "\\My Equipment.xml";
             System.IO.TextReader fovDataFile = System.IO.File.OpenText(fovfile);
