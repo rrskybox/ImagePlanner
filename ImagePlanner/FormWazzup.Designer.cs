@@ -33,7 +33,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormExoPlanet));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormWazzup));
             this.DurationNumeric = new System.Windows.Forms.NumericUpDown();
             this.SizeNumeric = new System.Windows.Forms.NumericUpDown();
             this.SelectNebulaButton = new System.Windows.Forms.RadioButton();
@@ -289,6 +289,7 @@
             this.ProspectGrid.AllowUserToDeleteRows = false;
             this.ProspectGrid.AllowUserToResizeColumns = false;
             this.ProspectGrid.AllowUserToResizeRows = false;
+            this.ProspectGrid.BackgroundColor = System.Drawing.Color.DarkCyan;
             this.ProspectGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ProspectGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
@@ -356,7 +357,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.BackColor = System.Drawing.Color.Teal;
             this.ClientSize = new System.Drawing.Size(572, 282);
             this.Controls.Add(this.ProspectGrid);
             this.Controls.Add(this.DurationNumeric);

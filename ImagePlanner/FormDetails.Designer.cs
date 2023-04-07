@@ -34,7 +34,7 @@
             // 
             // DetailTextBox
             // 
-            this.DetailTextBox.BackColor = System.Drawing.SystemColors.HotTrack;
+            this.DetailTextBox.BackColor = System.Drawing.Color.Teal;
             this.DetailTextBox.ForeColor = System.Drawing.SystemColors.ControlLightLight;
             this.DetailTextBox.Location = new System.Drawing.Point(1, -2);
             this.DetailTextBox.Multiline = true;

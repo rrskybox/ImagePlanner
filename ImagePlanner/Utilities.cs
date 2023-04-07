@@ -88,5 +88,41 @@ namespace ImagePlanner
             return nextTransit;
         }
 
+        public static double ComputeAltitude(DateTime timeLocal, double RAHours, double DecDegrees, double latitudeDegrees, double longitudeDegrees)
+        // Returns maximum altitude for object at RA/Dec between times dusk and dawn
+        {
+            //Note: MaxAltitude expects the location longitude in positive East.  TSX is otherwise, so longitude has to be inverted.
+            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(-longitudeDegrees));
+            Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
+            DateTime timeUTC = timeLocal.ToUniversalTime();
+            double maxAlt = Transform.RadiansToDegrees(position.Altitude((position.HourAngle(timeUTC, location)), location));
+            return maxAlt;
+        }
+
+        public static double ComputeMaxAltitude(DateTime duskLocal, DateTime dawnLocal, double RAHours, double DecDegrees, double latitudeDegrees, double longitudeDegrees)
+        // Returns maximum altitude for object at RA/Dec between times dusk and dawn
+        {
+            //Note: MaxAltitude expects the location longitude in positive East.  TSX is otherwise, so longitude has to be inverted.
+            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(-longitudeDegrees));
+            Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
+            DateTime duskUTC = duskLocal.ToUniversalTime();
+            DateTime dawnUTC = dawnLocal.ToUniversalTime();
+            double maxAlt = Transform.RadiansToDegrees(AstroMath.DailyPosition.MaxAltitude(duskUTC, dawnUTC, position, location));
+            return maxAlt;
+        }
+
+        public static double ComputeMinAltitude(DateTime duskLocal, DateTime dawnLocal, double RAHours, double DecDegrees, double latitudeDegrees, double longitudeDegrees)
+        // Returns maximum altitude for object at RA/Dec between times dusk and dawn
+        {
+            //Note: MaxAltitude expects the location longitude in positive East.  TSX is otherwise, so longitude has to be inverted.
+            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(-longitudeDegrees));
+            Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
+            DateTime startUTC = duskLocal.ToUniversalTime();
+            DateTime endUTC = dawnLocal.ToUniversalTime();
+            double maxAlt = Transform.RadiansToDegrees(AstroMath.DailyPosition.MinAltitude(startUTC, endUTC, position, location));
+            return maxAlt;
+        }
+
+
     }
 }
