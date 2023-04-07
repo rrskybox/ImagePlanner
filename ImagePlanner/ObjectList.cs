@@ -73,7 +73,7 @@ namespace ImagePlanner
         public double XpDurationHrs;
         public double XpDepth;
         public double XpVmag;
-        public double XpPl_TransMid;
+        public double XpPl_TransMidJD;
         public double XpPl_TransPer;
 
         public double DawnAlt;
@@ -82,7 +82,7 @@ namespace ImagePlanner
         public DBQObject(string noname, int notype, double nosize, DateTime norise, DateTime noset,
             double noDec, double noRA, double noLat, double noLong, double noduration, double nomaxalt,
             DateTime xpTransitMid, DateTime xpTransitEarly, DateTime xpTransitLate, double xpDurationHrs,
-            double xpDepth, double xpVmag, double xpPl_TransMid, double xpPl_TransPer)
+            double xpDepth, double xpVmag, double xpPl_TransMidJD, double xpPl_TransPer)
         {
             Name = noname;
             Type = notype;
@@ -102,7 +102,7 @@ namespace ImagePlanner
             XpDurationHrs = xpDurationHrs;
             XpDepth = xpDepth;
             XpVmag = xpVmag;
-            XpPl_TransMid = xpPl_TransMid;
+            XpPl_TransMidJD = xpPl_TransMidJD;
             XpPl_TransPer = xpPl_TransPer;
 
             return;
@@ -128,11 +128,10 @@ namespace ImagePlanner
         private double xpDurationHrs;
         private double xpDepth;
         private double xpVmag;
-        private double xpPl_TransMid;
+        private double xpPl_TransMidJD;
         private double xpPl_TransPer;
 
         private List<DBQObject> dbqList = new List<DBQObject>();
-
         public ObjectList(DBQFileManagement.SearchType searchDB, DateTime duskDateLocal, DateTime dawnDateLocal)
         {
             //Determine if search database file exists, if not, create it
@@ -140,7 +139,6 @@ namespace ImagePlanner
             { DBQFileManagement.InstallDBQs(); }
 
             sky6Utils tsxu = new sky6Utils();
-            TimeSpan utDiff = Utilities.OffsetUTC();
             //Load the path to the selected search database query
             sky6DataWizard tsxdw = new sky6DataWizard();
 
@@ -179,7 +177,6 @@ namespace ImagePlanner
                 oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                 //compute the maximum altitude
                 omaxaltitude = ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
-
                 //Diagnostic:  List<string> dfList = ListDataFields(tsxoi);
 
                 //ExoPlanet Fields
@@ -205,8 +202,8 @@ namespace ImagePlanner
                     try { xpVmag = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
                     catch { xpVmag = 0; }
                     tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_7);  //Transit midpoint
-                    try { xpPl_TransMid = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
-                    catch { xpPl_TransMid = 0; }
+                    try { xpPl_TransMidJD = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                    catch { xpPl_TransMidJD = 0; }
                     tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_2);  //Transit midpoint
                     try { xpPl_TransPer = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
                     catch { xpPl_TransPer = 0; }
@@ -218,7 +215,7 @@ namespace ImagePlanner
 
                     dbqList.Add(new DBQObject(oname, otype, osize, orise, oset, oDec, oRA, oLat, oLong, oduration, omaxaltitude,
                         xpTransitMid ?? DateTime.MinValue, xpTransitEarly ?? DateTime.MinValue, xpTransitLate ?? DateTime.MinValue,
-                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMid, xpPl_TransPer));
+                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMidJD, xpPl_TransPer));
                 }
             }
             //Note that all these entries should have at least some duration
@@ -285,7 +282,7 @@ namespace ImagePlanner
                         try { xpVmag = (tsxoi.ObjInfoPropOut); }
                         catch { xpVmag = 0; }
                         tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_7);  //Transit midpoint
-                        try { xpPl_TransMid = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
+                        try { xpPl_TransMidJD = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
                         catch { xpDurationHrs = 0; }
                         tsxoi.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_DB_FIELD_2);  //Transit midpoint
                         try { xpPl_TransPer = Convert.ToDouble(tsxoi.ObjInfoPropOut); }
@@ -296,7 +293,7 @@ namespace ImagePlanner
                     {
                         dbqList.Add(new DBQObject(oname, otype, osize, orise, oset, oDec, oRA, oLat, oLong, oduration, omaxaltitude,
                         xpTransitMid ?? DateTime.MinValue, xpTransitEarly ?? DateTime.MinValue, xpTransitLate ?? DateTime.MinValue,
-                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMid, xpPl_TransPer));
+                        xpDurationHrs, xpDepth, xpVmag, xpPl_TransMidJD, xpPl_TransPer));
                     }
                 }
             }
@@ -417,18 +414,23 @@ namespace ImagePlanner
         private double ComputeMaxAltitude(DateTime duskLocal, DateTime dawnLocal, double RAHours, double DecDegrees, double latitudeDegrees, double longitudeDegrees)
         // Returns maximum altitude for object at RA/Dec between times dusk and dawn
         {
-            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(longitudeDegrees));
+            //Note: MaxAltitude expects the location longitude in positive East.  TSX is otherwise, so longitude has to be inverted.
+            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(-longitudeDegrees));
             Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
-            double maxAlt = Transform.RadiansToDegrees(AstroMath.DailyPosition.MaxAltitude(duskLocal.ToUniversalTime(), dawnLocal.ToUniversalTime(), position, location));
+            DateTime duskUTC = duskLocal.ToUniversalTime();
+            DateTime dawnUTC = dawnLocal.ToUniversalTime();
+            double maxAlt = Transform.RadiansToDegrees(AstroMath.DailyPosition.MaxAltitude(duskUTC, dawnUTC, position, location));
             return maxAlt;
         }
 
         private double ComputeAltitude(DateTime timeLocal, double RAHours, double DecDegrees, double latitudeDegrees, double longitudeDegrees)
         // Returns maximum altitude for object at RA/Dec between times dusk and dawn
         {
-            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(longitudeDegrees));
+            //Note: MaxAltitude expects the location longitude in positive East.  TSX is otherwise, so longitude has to be inverted.
+            Celestial.LatLon location = new Celestial.LatLon(Transform.DegreesToRadians(latitudeDegrees), Transform.DegreesToRadians(-longitudeDegrees));
             Celestial.RADec position = new Celestial.RADec(Transform.HoursToRadians(RAHours), Transform.DegreesToRadians(DecDegrees));
-            double maxAlt = Transform.RadiansToDegrees(position.Altitude((position.HourAngle(timeLocal.ToUniversalTime(), location)), location));
+            DateTime timeUTC = timeLocal.ToUniversalTime();
+            double maxAlt = Transform.RadiansToDegrees(position.Altitude((position.HourAngle(timeUTC, location)), location));
             return maxAlt;
         }
 

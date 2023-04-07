@@ -114,7 +114,11 @@ namespace ImagePlanner
             double tzTSX = tsxsc.DocPropOut;
             tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
             double tzIndexTSX = tsxsc.DocPropOut;
-            DateTime dateTSX = dateTSXutc.AddHours(tzTSX + tzIndexTSX);
+            DateTime dateTSX;
+            if (tzIndexTSX == 0)
+                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzTSX));
+            else
+                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX-24));
             CurrentYearPick.Value = dateTSX.Year;
             GenerateCalendar();
             Show();

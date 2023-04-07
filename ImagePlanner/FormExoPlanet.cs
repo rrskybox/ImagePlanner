@@ -35,14 +35,16 @@ namespace ImagePlanner
         private double AltitudeMax;
         private double AltitudeMin;
 
-        public FormExoPlanet(DateTime duskDateUTC, DateTime dawnDateUTC, double minimumAltitude)
+        private double MinimumPlanningAltitude;
+
+        public FormExoPlanet(DateTime duskDateUTC, DateTime dawnDateUTC, double minimumListedAltitude)
         {
             InitializeComponent();
             DuskDateLocal = duskDateUTC.ToLocalTime();
             DawnDateLocal = dawnDateUTC.ToLocalTime();
-            SessionDate = Convert.ToDateTime(DawnDateLocal.ToString("yyyy MM dd"));
+            SessionDate = Convert.ToDateTime(DuskDateLocal.ToString("yyyy MM dd"));
             this.Text = "ExoPlanets for " + DuskDateLocal.ToString("MMM dd, yyyy");
-            AltitudeMin = minimumAltitude;
+            MinimumPlanningAltitude = minimumListedAltitude;
             ManageTSX.MinimizeTSX();
             return;
         }
@@ -60,19 +62,25 @@ namespace ImagePlanner
             FormSearchingNotice fnote = new FormSearchingNotice();
             fnote.Show();
             ExoPlanetList = new ObjectList(searchDB, DuskDateLocal, DawnDateLocal);
+            //Check for zero objects
+            if (ExoPlanetList.Count == 0)
+            {
+                fnote.Close();
+                MessageBox.Show("No exoplanet targets listed.  Check to see if the associated Confirmed or Candidate catalog is loaded as an SDB.  " +
+                    "If not, use Transient Search to acquire current exoplanet catalog.");
+                return;
+            }
             //Clear the object listing
             ProspectGrid.Rows.Clear();
             //Reset the Max and Min for the Type picked
             ResetMaxMin();
             //Set the numeric minimums displayed to the new minimum values
-            AltitudeNumeric.Value = (decimal)AltitudeMin;
+            AltitudeNumeric.Value = (decimal)MinimumPlanningAltitude;
             DurationNumeric.Value = (decimal)DurationMin;
             //Sort the prospect list by object size
-            List<DBQObject> sortList = ExoPlanetList.SizeSort();
+            List<DBQObject> exoList = ExoPlanetList.DurationSort();
             //list the sorted objects
-
-            ListSelectedObjects(sortList);
-
+            ListSelectedObjects(exoList, AltitudeMin, DurationMin);
             fnote.Close();
             return;
         }
@@ -100,9 +108,9 @@ namespace ImagePlanner
             AltitudeNumeric.Value = (decimal)AltitudeMin;
             DurationNumeric.Value = (decimal)DurationMin;
             //Sort the prospect list by object size
-            List<DBQObject> sortList = ExoPlanetList.SizeSort();
+            List<DBQObject> culledList = ExoPlanetList.DurationSort();
             //list the sorted objects
-            ListSelectedObjects(sortList);
+            ListSelectedObjects(culledList, AltitudeMin, DurationMin);
             return;
         }
 
@@ -113,20 +121,14 @@ namespace ImagePlanner
             return;
         }
 
-        private void PresetMaxMin()
+        private void ResetMaxMin()
         {
+            //Determine the minimum and maximum values in the current list of objects for the given objectType 
             //Zero out all the slider max and min
             DurationMax = 0;
             DurationMin = 24;
             AltitudeMax = 0;
             AltitudeMin = 90;
-            return;
-        }
-
-        private void ResetMaxMin()
-        {
-            //Determine the minimum and maximum values in the current list of objects for the given objectType 
-            PresetMaxMin();
             for (int oi = 0; oi < ExoPlanetList.Count; oi++)
             {
 
@@ -153,42 +155,43 @@ namespace ImagePlanner
 
             AltitudeNumeric.Maximum = (decimal)AltitudeMax;
             AltitudeTBMax.Text = AltitudeMax.ToString("0");
-            AltitudeNumeric.Minimum = (decimal)AltitudeMin;
+            AltitudeNumeric.Minimum = (decimal)MinimumPlanningAltitude;
             AltitudeTBMin.Text = AltitudeMin.ToString("0");
             return;
         }
 
-        private void ListSelectedObjects(List<DBQObject> sortList)
+        private void ListSelectedObjects(List<DBQObject> sortedExoList, double minAlt, double minDur)
         {
             // builds a new one for all objects that
             ProspectGrid.Rows.Clear();
 
             int pidx = 0;
-            foreach (DBQObject tgt in sortList)
+            foreach (DBQObject tgt in sortedExoList)
             {
                 string typeName = tgt.TypeName;
                 double tgtSize = tgt.Size;
                 double tgtDuration = tgt.Duration;
                 double tgtMaxAltitude = tgt.MaxAltitude;
-                TimeSpan tdiff = Utilities.OffsetUTC();
+                //TimeSpan tdiff = Utilities.OffsetUTC();
                 TimeSpan tgtTransitFirstHalf = TimeSpan.FromHours(tgt.XpDurationHrs / 2);
 
-                //DateTime transitStart = (tgt.XpTransitMid + tdiff) - tgtTransitFirstHalf;
-                //DateTime transitEnd = (tgt.XpTransitMid + tdiff) + tgtTransitFirstHalf;
-
-                DateTime transitPlMid = Utilities.NextTransit(DuskDateLocal.ToUniversalTime(), tgt.XpPl_TransMid, tgt.XpPl_TransPer);
-                DateTime transitPlStart = (transitPlMid + tdiff) - tgtTransitFirstHalf;
-                DateTime transitPlEnd = (transitPlMid + tdiff) + tgtTransitFirstHalf;
-
-                if ((tgtDuration >= DurationMin) &&
-                    (tgtMaxAltitude >= AltitudeMin) &&
+                DateTime transitPlMidUTC = Utilities.NextTransitUTC(Utilities.LocalToUTCTime(DuskDateLocal), tgt.XpPl_TransMidJD, tgt.XpPl_TransPer);
+                DateTime transitPlStartLocal = Utilities.UTCToLocalTime(transitPlMidUTC - tgtTransitFirstHalf);
+                DateTime transitPlEndLocal = Utilities.UTCToLocalTime(transitPlMidUTC + tgtTransitFirstHalf);
+                bool startOnSessionDate = Utilities.IsInSessionRange(SessionDate, transitPlStartLocal);
+                bool endOnSessionDate = Utilities.IsInSessionRange(SessionDate, transitPlEndLocal);
+                bool transitionStartOK = Utilities.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlStartLocal);
+                bool transitionEndOK = Utilities.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlEndLocal);
+                //
+                if ((tgtDuration >= minDur) &&
+                    (tgtMaxAltitude >= minAlt) &&
                     (tgt.XpDurationHrs > 0) &&
-                    (Utilities.IsInDateRange(SessionDate, transitPlStart)))
+                    startOnSessionDate && endOnSessionDate && transitionStartOK && transitionEndOK )
                 {
                     ProspectGrid.Rows.Add();
                     ProspectGrid.Rows[pidx].Cells[0].Value = tgt.Name;
-                    ProspectGrid.Rows[pidx].Cells[1].Value = transitPlStart.ToString("HH:mm");
-                    ProspectGrid.Rows[pidx].Cells[2].Value = transitPlEnd.ToString("HH:mm");
+                    ProspectGrid.Rows[pidx].Cells[1].Value = transitPlStartLocal.ToString("HH:mm");
+                    ProspectGrid.Rows[pidx].Cells[2].Value = transitPlEndLocal.ToString("HH:mm");
                     ProspectGrid.Rows[pidx].Cells[3].Value = tgt.XpDurationHrs.ToString();
                     ProspectGrid.Rows[pidx].Cells[4].Value = tgt.XpDepth.ToString();
                     ProspectGrid.Rows[pidx].Cells[5].Value = tgt.XpVmag.ToString();
@@ -238,8 +241,8 @@ namespace ImagePlanner
             AltitudeMin = (double)AltitudeNumeric.Value;
             if (ExoPlanetList != null)
             {
-                List<DBQObject> sortList = ExoPlanetList.AltitudeSort();
-                ListSelectedObjects(sortList);
+                List<DBQObject> exoList = ExoPlanetList.AltitudeSort();
+                ListSelectedObjects(exoList, AltitudeMin, DurationMin);
             }
             return;
         }
@@ -249,8 +252,8 @@ namespace ImagePlanner
             DurationMin = (double)DurationNumeric.Value;
             if (ExoPlanetList != null)
             {
-                List<DBQObject> sortList = ExoPlanetList.DurationSort();
-                ListSelectedObjects(sortList);
+                List<DBQObject> exoList = ExoPlanetList.DurationSort();
+                ListSelectedObjects(exoList, AltitudeMin, DurationMin);
             }
             return;
 

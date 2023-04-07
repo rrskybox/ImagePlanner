@@ -11,9 +11,23 @@ namespace ImagePlanner
     public partial class Utilities
     {
 
+        public static DateTime LocalToUTCTime(DateTime localTime)
+        {
+            //Converts TSX location time to UTC
+            //return (localTime - OffsetUTC());
+            return localTime.ToUniversalTime();
+        }
+
+        public static DateTime UTCToLocalTime(DateTime utcTime)
+        {
+            //Converts UTC to TSX location time
+            //return (utcTime + OffsetUTC());
+            return utcTime.ToLocalTime();
+        }
+
         public static TimeSpan OffsetUTC()
         {
-            //Determines difference in timespan between TSX time and UTC time based on TSX terrestrial location settings
+            //Determines difference in timespan between TSX location time and UTC time based on TSX terrestrial location settings
             sky6StarChart tsxsc = new sky6StarChart();
             tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
             TimeSpan tz = TimeSpan.FromHours(tsxsc.DocPropOut);
@@ -22,7 +36,7 @@ namespace ImagePlanner
             if (st == 0)
                 return tz;
             else
-                return (TimeSpan.FromHours(24 - st));
+                return (TimeSpan.FromHours(st - 24));
         }
 
         public static DateTime JulianToUTC(double jDAte)
@@ -30,21 +44,46 @@ namespace ImagePlanner
             return Celestial.JulianToDate(jDAte);
         }
 
-        public static Boolean IsInDateRange(DateTime sessionDate, DateTime comparisonDate)
+        public static bool IsBetweenDuskAndDawn(DateTime localDuskDate, DateTime localDawnDate, DateTime localDate)
         {
-            if (comparisonDate > sessionDate - TimeSpan.FromHours(12) && comparisonDate < sessionDate + TimeSpan.FromHours(12))
-                return 
-                    true;
-            else 
+            if (localDate >= localDuskDate && localDate <= localDawnDate)
+                return true;
+            else
                 return false;
         }
 
-        public static DateTime NextTransit(DateTime rightNow, double julDate, double periodDays)
+
+
+        //Note on Session Date
+        //  A Session Date is the date starting at 12 noon and ending at 11:59AM the next day.
+        public static DateTime DateToSessionDate(DateTime localDate)
         {
-            DateTime firstTransit = JulianToUTC(julDate);
-            TimeSpan span = rightNow - firstTransit;
-            int cycles = (int)(span.TotalDays / periodDays) + 1;
-            TimeSpan spanToNext = TimeSpan.FromDays(cycles * periodDays);
+            DateTime sessionDate = localDate.Date;
+            if (localDate < sessionDate - TimeSpan.FromHours(12))
+                return sessionDate - TimeSpan.FromDays(1);
+            else
+                return sessionDate;
+        }
+
+        //Note on Session Date
+        //  A Session Date is the date starting at 12 noon and ending at 11:59AM the next day.
+        public static Boolean IsInSessionRange(DateTime sessionDate, DateTime comparisonDate)
+        {
+            //session Date is a DateTime for mm/dd/yyyy at 00:00
+            //  scrub it just in case
+            sessionDate = sessionDate.Date;
+            if (comparisonDate >= sessionDate + TimeSpan.FromHours(12) && comparisonDate < sessionDate + TimeSpan.FromHours(36))
+                return true;
+            else
+                return false;
+        }
+
+        public static DateTime NextTransitUTC(DateTime rightNowUTC, double firstTransitJD, double transitPeriodDays)
+        {
+            DateTime firstTransit = JulianToUTC(firstTransitJD);
+            TimeSpan span = rightNowUTC - firstTransit;
+            int cycles = (int)(span.TotalDays / transitPeriodDays) + 1;
+            TimeSpan spanToNext = TimeSpan.FromDays(cycles * transitPeriodDays);
             DateTime nextTransit = firstTransit + spanToNext;
             return nextTransit;
         }
