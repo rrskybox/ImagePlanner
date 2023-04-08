@@ -73,6 +73,7 @@ namespace ImagePlanner
         public FormExoPlanet exoPlanetForm = null;
         public Point exoPlanetFormLocation = new Point(0, 0);
 
+        private bool isInInit = false;
 
         public bool enteringTargetState;  //true if writing target in, false if target has been entered
 
@@ -80,6 +81,8 @@ namespace ImagePlanner
 
         public FormImagePlanner()
         {
+            isInInit = true;
+
             InitializeComponent();
 
             SelectionEnabled = false;
@@ -118,7 +121,7 @@ namespace ImagePlanner
             if (tzIndexTSX == 0)
                 dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzTSX));
             else
-                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX-24));
+                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX - 24));
             CurrentYearPick.Value = dateTSX.Year;
             GenerateCalendar();
             Show();
@@ -158,7 +161,7 @@ namespace ImagePlanner
                         ImagePlannerTargetList.SelectedIndex = i;
 
             QPUpdate.WazzupEventHandler += WazzupEvent_Handler;
-
+            isInInit = false;
             return;
         }
 
@@ -210,22 +213,22 @@ namespace ImagePlanner
             int iRow = cellpick.ColumnIndex;
             moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
             //If the Path pop up is open then update it.
-            OpenPath();
+            if (pathForm != null && IsFormOpen(pathForm.Name))
+                OpenPath();
             //If the Track pop up is open then update i.
-            OpenTrack();
+            if (trackForm != null && IsFormOpen(trackForm.Name))
+                OpenTrack();
+            //If the Prospect pop up is open then update i.
+            if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
+                OpenProspect();
+            if (exoPlanetForm != null && IsFormOpen(exoPlanetForm.Name))
+                OpenExoPlanet();
 
             //If the prospect popup is open then just close it otherwise it's a whole 'nother wait to get it filled out.
             if (!ProspectProtected)
             {
-                if (ButtonIsGreen(ProspectButton))
-                {
-                    return;
-                }
-                else
-                {
-                    wazzupForm.Close();
-                    ButtonGreen(ProspectButton);
-                }
+                if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
+                    OpenProspect();
             }
             return;
         }
@@ -248,99 +251,49 @@ namespace ImagePlanner
         private void TrackButton_Click(object sender, EventArgs e)
         {
             //Opens a target track form -- and force it if (one is not already open
-            if (ButtonIsGreen(TrackButton))
-            {
-                ButtonRed(TrackButton);
-                OpenTrack();
-            }
-            else
-            {
-                trackForm.Close();
-                ButtonGreen(TrackButton);
-            }
+            OpenTrack();
             return;
         }
 
         private void DetailsButton_Click(Object sender, EventArgs e)  // Handles DetailsButton.Click
         {
             //Opens a target details form -- and force it if (one is not already open
-            if (ButtonIsGreen(DetailsButton))
-            {
-                ButtonRed(DetailsButton);
-                OpenDetail();
-            }
-            else
-            {
-                detailForm.Close();
-                ButtonGreen(DetailsButton);
-            }
+            OpenDetail();
             return;
         }
 
         private void AltitudeButton_Click(Object sender, EventArgs e)  // Handles AltitudeButton.Click
         {
             //Opens a target details form -- and force it if (one is not already open
-            if (ButtonIsGreen(AltitudeButton))
-            {
-                ButtonRed(AltitudeButton);
-                DataGridViewSelectedCellCollection selcells = MonthCalendar.SelectedCells;
-                DataGridViewCell cellpick = selcells[0];
-                moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
-                OpenPath();
-            }
-            else
-            {
-                pathForm.Close();
-                ButtonGreen(AltitudeButton);
-            }
+            //if (ButtonIsGreen(AltitudeButton))
+            //{
+            //ButtonRed(AltitudeButton);
+            DataGridViewSelectedCellCollection selcells = MonthCalendar.SelectedCells;
+            DataGridViewCell cellpick = selcells[0];
+            moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
+            OpenPath();
             return;
         }
 
         private void PreviewButton_Click(Object sender, EventArgs e)  // Handles PreviewButton.Click
         {
             //Opens a target details form -- and force it if (one is not already open
-            if (ButtonIsGreen(PreviewButton))
-            {
-                ButtonRed(PreviewButton);
-                OpenPreview();
-            }
-            else
-            {
-                previewForm.Close();
-                ButtonGreen(PreviewButton);
-            }
+            OpenPreview();
             return;
         }
 
         private void ProspectButton_Click(object sender, EventArgs e)
         {
-            if (ButtonIsGreen(ProspectButton))
-            {
-                ButtonRed(ProspectButton);
-                OpenProspect();
-            }
-            else
-            {
-                wazzupForm.Close();
-                ButtonGreen(ProspectButton);
-            }
+            //Opens prospect form
+            OpenProspect();
             return;
         }
 
         private void ExoPlanetButton_Click(object sender, EventArgs e)
         {
-            if (ButtonIsGreen(ExoPlanetButton))
-            {
-                ButtonRed(ExoPlanetButton);
-                OpenExoPlanet();
-            }
-            else
-            {
-                exoPlanetForm.Close();
-                ButtonGreen(ExoPlanetButton);
-            }
+            //Opens exoplanent form
+            OpenExoPlanet();
             return;
-
         }
 
         private void AddTargetPlanButton_Click(Object sender, EventArgs e)  // Handles AddTargetPlanButton.Click
@@ -841,10 +794,8 @@ namespace ImagePlanner
         private void OpenPreview()
         {
             //Opens the target preview form and window
-            if (ButtonIsGreen(PreviewButton))
-            {
+            if (isInInit)
                 return;
-            }
             //First, close the old one, if (any
             if (this.previewForm != null)
             {
@@ -874,18 +825,14 @@ namespace ImagePlanner
             previewForm.Owner = this;
             //show the form
             this.previewForm.Show();
-
             return;
         }
 
         private void OpenPath()
         {
             //Opens the target preview form and window
-            if (ButtonIsGreen(AltitudeButton))
-            {
+            if (isInInit)
                 return;
-            }
-            //First, close the old one, if (any
             //First, close the old one, if (any
             if (this.pathForm != null)
             {
@@ -914,7 +861,6 @@ namespace ImagePlanner
             this.pathForm.StartPosition = FormStartPosition.Manual;
             //set this form as the owner
             pathForm.Owner = this;
-
             //show the form
             this.pathForm.Show();
             return;
@@ -925,10 +871,8 @@ namespace ImagePlanner
             //Opens the detail information for (the current target
             //if (forced is false, { the form is not opened if (not already open
 
-            if (ButtonIsGreen(DetailsButton))
-            {
+            if (isInInit)
                 return;
-            }
             //First, close the old one, if (any
             if (this.detailForm != null)
             {
@@ -964,13 +908,11 @@ namespace ImagePlanner
         private void OpenProspect()
         {
             //Opens the target preview form and window
-            if (ButtonIsGreen(ProspectButton))
-            {
+            if (isInInit)
                 return;
-            }
             //Don't open a new pop up if the old one isn't ready to be closed
             if (ProspectProtected)
-            { return; }
+                return;
 
             //First, close the old one, if (any
             if (this.wazzupForm != null)
@@ -1010,13 +952,11 @@ namespace ImagePlanner
         private void OpenExoPlanet()
         {
             //Opens the exoplanet form and window
-            if (ButtonIsGreen(ExoPlanetButton))
-            {
+            if (isInInit)
                 return;
-            }
             //Don't open a new pop up if the old one isn't ready to be closed
             if (ExoPlanetProtected)
-            { return; }
+                return;
 
             //First, close the old one, if (any
             if (this.exoPlanetForm != null)
@@ -1055,11 +995,8 @@ namespace ImagePlanner
 
         private void OpenTrack()
         {
-            //Opens the target preview form and window
-            if (ButtonIsGreen(TrackButton))
-            {
+            if (isInInit)
                 return;
-            }
             //First, close the old one, if (any
             if (this.trackForm != null)
             {
@@ -1090,7 +1027,6 @@ namespace ImagePlanner
             this.trackForm.StartPosition = FormStartPosition.Manual;
             //show the form
             this.trackForm.Show();
-
             trackForm.ShowTrack();
             return;
         }
@@ -1100,10 +1036,14 @@ namespace ImagePlanner
             //Common method for (rebuilding all the forms with new target, etc
             WriteTitle(TargetNameBox.Text, CurrentYearPick.Value.ToString());
             GenerateCalendar();
-            OpenDetail();
-            OpenPreview();
-            OpenPath();
-            OpenTrack();
+            if (detailForm != null && IsFormOpen(detailForm.Name))
+                OpenDetail();
+            if (previewForm != null && IsFormOpen(previewForm.Name))
+                OpenPreview();
+            if (pathForm != null && IsFormOpen(pathForm.Name))
+                OpenPath();
+            if (trackForm != null && IsFormOpen(trackForm.Name))
+                OpenTrack();
             return;
         }
 
@@ -1277,7 +1217,14 @@ namespace ImagePlanner
             }
         }
 
-
+        private bool IsFormOpen(string fName)
+        {
+            FormCollection fc = System.Windows.Forms.Application.OpenForms;
+            foreach (Form f in fc)
+                if (f.Name == fName)
+                    return true;
+            return false;
+        }
 
         #endregion
 

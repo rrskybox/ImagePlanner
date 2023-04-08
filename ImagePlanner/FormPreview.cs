@@ -105,9 +105,10 @@ namespace ImagePlanner
             {
                 WebBrowserFrame.DocumentText = iframer;
             }
-            catch
+            catch (Exception ex)
             {
-                // Do nothing
+                MessageBox.Show(ex.Message);
+                Close();
             }
 
             System.Threading.Thread.Sleep(1);

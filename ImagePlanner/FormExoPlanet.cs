@@ -38,7 +38,7 @@ namespace ImagePlanner
             DuskDateLocal = duskDateUTC.ToLocalTime();
             DawnDateLocal = dawnDateUTC.ToLocalTime();
             SessionDate = Convert.ToDateTime(DuskDateLocal.ToString("yyyy MM dd"));
-            this.Text = "ExoPlanets for " + DuskDateLocal.ToString("MMM dd, yyyy");
+            this.Text = "ExoPlanet Transits for the night of " + DuskDateLocal.ToString("MMM dd") + "-"+DawnDateLocal.ToString("dd, yyyy");
             MinimumPlanningAltitude = minimumListedAltitude;
             ManageTSX.MinimizeTSX();
             return;

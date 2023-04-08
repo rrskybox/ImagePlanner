@@ -29,9 +29,7 @@ namespace ImagePlanner
             InitializeComponent();
             DuskDateLocal = duskDateUTC.ToLocalTime();
             DawnDateLocal = dawnDateUTC.ToLocalTime();
-            this.Text = "WazzUp for " + DuskDateLocal.ToString("MMM dd, yyyy");
-            //WazzupLaunch(ObjectList.SearchType.Nebula);
-            //SelectNebulaButton.Checked = true;
+            this.Text = "Catalog Objects for the night of " + DuskDateLocal.ToString("MMM dd") + "-" + DawnDateLocal.ToString("dd, yyyy");
             //Minimize TSX to improve speed
             ManageTSX.MinimizeTSX();
             return;
