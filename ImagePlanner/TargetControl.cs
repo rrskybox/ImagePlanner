@@ -21,7 +21,7 @@ namespace ImagePlanner
             Celestial.RADec sunpos;
 
             DateTime ndate = new DateTime(dYear, 1, 1, 0, 0, 0);     //create datetime object for jan 1, dYear
-            DateTime udate = ndate.ToUniversalTime();                //convert to UTC
+            DateTime udate = TimeManagement.LocalToUTCTime(ndate);                //convert to UTC
             DateTime sdate = udate.AddDays(-1);                 //back up one day to make sure Jan 1 is covered
 
             for (int dayidx = 0; dayidx < sunspots.Length; dayidx++)

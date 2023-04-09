@@ -27,8 +27,8 @@ namespace ImagePlanner
         public FormWazzup(DateTime duskDateUTC, DateTime dawnDateUTC)
         {
             InitializeComponent();
-            DuskDateLocal = duskDateUTC.ToLocalTime();
-            DawnDateLocal = dawnDateUTC.ToLocalTime();
+            DuskDateLocal = TimeManagement.UTCToLocalTime(duskDateUTC);
+            DawnDateLocal = TimeManagement.UTCToLocalTime(dawnDateUTC);
             this.Text = "Catalog Objects for the night of " + DuskDateLocal.ToString("MMM dd") + "-" + DawnDateLocal.ToString("dd, yyyy");
             //Minimize TSX to improve speed
             ManageTSX.MinimizeTSX();

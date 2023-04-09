@@ -12,8 +12,8 @@ namespace ImagePlanner
             //Windows Form to show path of target over one imaging session (one night) in graphical form
             InitializeComponent();
             string tName = targetName;
-            DateTime localtoday = dp.UTCdate.ToLocalTime();
-            DateTime localtomorrow = dp.UTCdate.ToLocalTime().AddDays(1);
+            DateTime localtoday = TimeManagement.UTCToLocalTime(dp.UTCdate);
+            DateTime localtomorrow = TimeManagement.UTCToLocalTime(dp.UTCdate).AddDays(1);
             this.Text = tName + ": " + "Altitude on night of " + localtoday.ToString("MMM dd") + " / " + localtomorrow.ToString("MMM dd");
 
             if (dp.Visibility == DailyPosition.VisibilityState.UpNever)
@@ -53,7 +53,7 @@ namespace ImagePlanner
                                 
                 if (altitude > 0)
                 {
-                    DateTime localTime = gTime.ToLocalTime();
+                    DateTime localTime = TimeManagement.UTCToLocalTime(gTime);
                     AltitudeChart.Series[gName].Points.AddXY(localTime, altitude);
                 }
                 //If (TargetControl.IsMoonUp(ImageForecastForm.tgtdata, ImageForecastForm.moondata, gTime))) Then

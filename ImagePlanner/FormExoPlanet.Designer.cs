@@ -103,6 +103,7 @@
             this.ProspectGrid.AllowUserToDeleteRows = false;
             this.ProspectGrid.AllowUserToResizeColumns = false;
             this.ProspectGrid.AllowUserToResizeRows = false;
+            this.ProspectGrid.BackgroundColor = System.Drawing.Color.DarkCyan;
             this.ProspectGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.ProspectGrid.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.NameColumn,
@@ -128,7 +129,7 @@
             this.ProspectGrid.ReadOnly = true;
             this.ProspectGrid.RowHeadersVisible = false;
             this.ProspectGrid.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.DisableResizing;
-            this.ProspectGrid.Size = new System.Drawing.Size(598, 258);
+            this.ProspectGrid.Size = new System.Drawing.Size(583, 258);
             this.ProspectGrid.TabIndex = 91;
             this.ProspectGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ProspectGrid_CellDoubleClickEvent);
             // 
@@ -223,7 +224,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Teal;
-            this.ClientSize = new System.Drawing.Size(736, 282);
+            this.ClientSize = new System.Drawing.Size(716, 282);
             this.Controls.Add(this.ProspectGrid);
             this.Controls.Add(this.TargetClassBox);
             this.Controls.Add(this.Closebutton);

@@ -48,7 +48,7 @@ namespace ImagePlanner
     public partial class FormImagePlanner : Form
     {
         public DateTime SelectedDate;
-        public double MinimumAltitude = 0;
+        //public double MinimumAltitude = 0;
 
         public DailyPosition[] sundata;
         public DailyPosition[] tgtdata;
@@ -110,6 +110,7 @@ namespace ImagePlanner
             //  this allows star charts to be in different locations and time zones
             //  as set up by user
             sky6StarChart tsxsc = new sky6StarChart();
+
             //Get the star chart julian date and convert to current date/time
             tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
             DateTime dateTSXutc = AstroMath.Celestial.JulianToDate(tsxsc.DocPropOut);
@@ -119,9 +120,10 @@ namespace ImagePlanner
             double tzIndexTSX = tsxsc.DocPropOut;
             DateTime dateTSX;
             if (tzIndexTSX == 0)
-                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzTSX));
+                dateTSX = TimeManagement.DateToSessionDate(dateTSXutc.AddHours(tzTSX));
             else
-                dateTSX = Utilities.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX - 24));
+                dateTSX = TimeManagement.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX - 24));
+
             CurrentYearPick.Value = dateTSX.Year;
             GenerateCalendar();
             Show();
@@ -135,7 +137,8 @@ namespace ImagePlanner
             int jCol = dateTSX.Month - 1;
             int iRow = dateTSX.Day - 1;
             MonthCalendar.Rows[iRow].Cells[jCol].Selected = true;
-
+            //Set minimum altitude field
+            MinAltitudeBox.Value = (decimal)Properties.Settings.Default.MinimumAltitude;
             //Fill in Humason target plans
             XFiles xf = new XFiles();
             if (xf != null)
@@ -200,7 +203,7 @@ namespace ImagePlanner
             //Find dailyposition index for (this date
             for (int idx = 0; idx < tgtdata.Length; idx++)
             {
-                DateTime selectDay = tgtdata[idx].UTCdate.ToLocalTime();
+                DateTime selectDay = TimeManagement.UTCToLocalTime(tgtdata[idx].UTCdate);
                 if (SelectedDate.Year == selectDay.Year &&
                 SelectedDate.Month == selectDay.Month &&
                 SelectedDate.Day == selectDay.Day)
@@ -486,14 +489,12 @@ namespace ImagePlanner
             return;
         }
 
-        private void MinAltitudeBox_ValueChanged(Object sender, KeyPressEventArgs e) //Handles MinAltitudeBox.KeyPress
+        private void MinAltitudeBox_ValueChanged(Object sender, EventArgs e) //Handles MinAltitudeBox.KeyPress
         {
-            if (e.KeyChar == '\r')
-            {
-                MinimumAltitude = (double)MinAltitudeBox.Value;
-                RegenerateForms();
-                return;
-            }
+            Properties.Settings.Default.MinimumAltitude = (double)MinAltitudeBox.Value;
+            Properties.Settings.Default.Save();
+            //MinimumAltitude = (double)MinAltitudeBox.Value;
+            RegenerateForms();
             return;
         }
 
@@ -529,8 +530,8 @@ namespace ImagePlanner
             try { this.Text = ApplicationDeployment.CurrentDeployment.CurrentVersion.ToString(); }
             catch { this.Text = " in Debug"; } //probably in debug, no version info available
             this.Text = "Image Planner " + this.Text + ":  ";
-            this.Text += tYear + " Imaging Conditions Forecast for (" + tgtName +
-                "       ( @ Imaging Start Time > Imaging Duration (in hours) with Moon Phase " +
+            this.Text += tYear + " Conditions Forecast for " + tgtName + " at " + TimeManagement.LocateTSX() +
+                "     ( @ Imaging Start Time > Imaging Duration (in hours) with Moon Phase " +
                 "and constrained by Astronomical Twilight)";
             //update tooltip for (target name
             FillInTargetDetails(tgtName);
@@ -540,8 +541,8 @@ namespace ImagePlanner
         //Write detail data for (individual cells as tool tips for (cursor hover
         public void WriteToolTip(int iRow, int jCol, DailyPosition dpt)
         {
-            string tiptext = "Start Imaging: " + dpt.Rising.ToLocalTime().ToString("t") + "\r\n" +
-                "End Imaging: " + dpt.Setting.ToLocalTime().ToString("t") + "\r\n" +
+            string tiptext = "Start Imaging: " + TimeManagement.UTCToLocalTime(dpt.Rising).ToString("t") + "\r\n" +
+                "End Imaging: " + TimeManagement.UTCToLocalTime(dpt.Setting).ToString("t") + "\r\n" +
                 "Moon Up: " + ((1 - dpt.MoonFree) * 100).ToString("0") + "%" + "\r\n" +
                 "Moon Phase: " + (dpt.MoonPhase * 100).ToString("0") + "%" + "\r\n";
             MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText = tiptext;
@@ -555,36 +556,36 @@ namespace ImagePlanner
             int iRow;
             foreach (DailyPosition dp in moondata)
             {
-                if (dp.UTCdate.ToLocalTime().Year == CurrentYearPick.Value)
+                if (TimeManagement.UTCToLocalTime(dp.UTCdate).Year == CurrentYearPick.Value)
                 {
                     switch (dp.Visibility)
                     {
                         case (DailyPosition.VisibilityState.UpSome):
-                            tiptext = "Moonrise at " + dp.Rising.ToLocalTime().ToString("t") + "\r\n" +
-                        "Moonset at " + dp.Setting.ToLocalTime().ToString("t") + "\r\n";
+                            tiptext = "Moonrise at " + TimeManagement.UTCToLocalTime(dp.Rising).ToString("t") + "\r\n" +
+                        "Moonset at " + TimeManagement.UTCToLocalTime(dp.Setting).ToString("t") + "\r\n";
                             break;
                         case (DailyPosition.VisibilityState.UpAlways):
                             tiptext = "Moonrise before imaging" + "\r\n" +
                                 "Moonset after imaging";
                             break;
                         case (DailyPosition.VisibilityState.Rises):
-                            tiptext = "Moonrise at " + dp.Rising.ToLocalTime().ToString("t") + "\r\n" +
+                            tiptext = "Moonrise at " + TimeManagement.UTCToLocalTime(dp.Rising).ToString("t") + "\r\n" +
                         "Moonset after imaging" + "\r\n";
                             break;
                         case (DailyPosition.VisibilityState.Falls):
                             tiptext = "Moonrise before imaging" + "\r\n" +
-                        "Moonset at " + dp.Setting.ToLocalTime().ToString("t") + "\r\n";
+                        "Moonset at " + TimeManagement.UTCToLocalTime(dp.Setting).ToString("t") + "\r\n";
                             break;
                         case (DailyPosition.VisibilityState.DownSome):
-                            tiptext = "Moonset at " + dp.Rising.ToLocalTime().ToString("t") + "\r\n" +
-                        "Moon rises at " + dp.Setting.ToLocalTime().ToString("t") + "\r\n";
+                            tiptext = "Moonset at " + TimeManagement.UTCToLocalTime(dp.Rising).ToString("t") + "\r\n" +
+                        "Moon rises at " + TimeManagement.UTCToLocalTime(dp.Setting).ToString("t") + "\r\n";
                             break;
                         case (DailyPosition.VisibilityState.UpNever):
                             tiptext = "No Moon during imaging" + "\r\n";
                             break;
                     }
-                    jCol = dp.Rising.ToLocalTime().Month - 1;
-                    iRow = dp.Rising.ToLocalTime().Day - 1;
+                    jCol = TimeManagement.UTCToLocalTime(dp.Rising).Month - 1;
+                    iRow = TimeManagement.UTCToLocalTime(dp.Rising).Day - 1;
                     MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText += tiptext;
                 }
             }
@@ -734,28 +735,28 @@ namespace ImagePlanner
                             PaintCell(iRow, jCol, VeryLightPink, Color.Black);
                             break;
                         case (DailyPosition.VisibilityState.UpAlways):
-                            imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
+                            imgStart = TimeManagement.UTCToLocalTime(dp.Rising).ToString("HH:mm");
                             imgTime = ((dp.Setting - dp.Rising).TotalHours).ToString("0.0");
                             cellText = "@" + imgStart + " >" + imgTime + "h " + pIcon;
                             break;
                         case (DailyPosition.VisibilityState.UpSome):
-                            imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
+                            imgStart = TimeManagement.UTCToLocalTime(dp.Rising).ToString("HH:mm");
                             imgTime = ((dp.Setting - dp.Rising).TotalHours).ToString("0.0");
                             cellText = "@" + imgStart + " >" + imgTime + "h " + pIcon;
                             break;
                         case (DailyPosition.VisibilityState.Rises):
-                            imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
+                            imgStart = TimeManagement.UTCToLocalTime(dp.Rising).ToString("HH:mm");
                             imgTime = ((dp.Setting - dp.Rising).TotalHours).ToString("0.0");
                             cellText = "@" + imgStart + " >" + imgTime + "h " + pIcon;
                             break;
                         case (DailyPosition.VisibilityState.Falls):
-                            imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
+                            imgStart = TimeManagement.UTCToLocalTime(dp.Rising).ToString("HH:mm");
                             imgTime = ((dp.Setting - dp.Rising).TotalHours).ToString("0.0");
                             cellText = "@" + imgStart + " >" + imgTime + "h " + pIcon;
                             break;
                         case (DailyPosition.VisibilityState.DownSome):
                             //Note that imaging time is split with this state, and the longest interval has been preselected
-                            imgStart = dp.Rising.ToLocalTime().ToString("HH:mm");
+                            imgStart = TimeManagement.UTCToLocalTime(dp.Rising).ToString("HH:mm");
                             imgTime = ((dp.Setting - dp.Rising).TotalHours).ToString("0.0");
                             cellText = "*" + imgStart + " >" + imgTime + "h " + pIcon;
                             break;

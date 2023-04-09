@@ -149,7 +149,7 @@ namespace ImagePlanner
             oLat = tsxs.DocPropOut;
             tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Longitude);
             oLong = tsxs.DocPropOut;
-            double jdate = Celestial.DateToJulian(duskDateLocal.ToUniversalTime());
+            double jdate = Celestial.DateToJulian(TimeManagement.LocalToUTCTime(duskDateLocal));
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jdate);
             tsxdw.Open();
             sky6ObjectInformation tsxoi = tsxdw.RunQuery;
@@ -176,7 +176,7 @@ namespace ImagePlanner
                 //compute the duration
                 oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                 //compute the maximum altitude
-                omaxaltitude = Utilities.ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
+                omaxaltitude = TimeManagement.ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
                 //Diagnostic:  List<string> dfList = ListDataFields(tsxoi);
 
                 //ExoPlanet Fields
@@ -220,7 +220,7 @@ namespace ImagePlanner
             }
             //Note that all these entries should have at least some duration
             //Set the search date for the dawn query
-            jdate = Celestial.DateToJulian(dawnDateLocal.ToUniversalTime());
+            jdate = Celestial.DateToJulian(TimeManagement.LocalToUTCTime(dawnDateLocal));
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jdate);
             tsxdw.Open();
             tsxoi = tsxdw.RunQuery;
@@ -258,7 +258,7 @@ namespace ImagePlanner
                     //compute the duration
                     oduration = Celestial.IntervalOverlap(duskDateLocal, dawnDateLocal, orise, oset);
                     //compute the maximum altitude
-                    omaxaltitude = Utilities.ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
+                    omaxaltitude = TimeManagement.ComputeMaxAltitude(duskDateLocal, dawnDateLocal, oRA, oDec, oLat, oLong);
                     //ExoPlanet Fields
                     if (searchDB == DBQFileManagement.SearchType.ConfirmedExoPlanet || searchDB == DBQFileManagement.SearchType.CandidateExoPlanet)
                     {

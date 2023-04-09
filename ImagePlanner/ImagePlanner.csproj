@@ -27,7 +27,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>83</ApplicationRevision>
+    <ApplicationRevision>88</ApplicationRevision>
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -142,7 +142,7 @@
     <Compile Include="ObjectList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Utilities.cs" />
+    <Compile Include="TimeManagement.cs" />
     <Compile Include="WazzupEvent.cs" />
     <Compile Include="TargetControl.cs" />
     <Compile Include="HumasonXccess.cs" />

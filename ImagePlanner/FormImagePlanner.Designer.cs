@@ -60,6 +60,14 @@
             this.DoneButton = new System.Windows.Forms.Button();
             this.PrintButton = new System.Windows.Forms.Button();
             this.MonthCalendar = new System.Windows.Forms.DataGridView();
+            this.PreviewButton = new System.Windows.Forms.Button();
+            this.TargetNameBox = new System.Windows.Forms.TextBox();
+            this.AssessButton = new System.Windows.Forms.Button();
+            this.CurrentYearPick = new System.Windows.Forms.NumericUpDown();
+            this.printCalendar = new System.Drawing.Printing.PrintDocument();
+            this.ProspectButton = new System.Windows.Forms.Button();
+            this.TrackButton = new System.Windows.Forms.Button();
+            this.ExoPlanetButton = new System.Windows.Forms.Button();
             this.January = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Februrary = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.March = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -72,14 +80,6 @@
             this.October = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.November = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.December = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.PreviewButton = new System.Windows.Forms.Button();
-            this.TargetNameBox = new System.Windows.Forms.TextBox();
-            this.AssessButton = new System.Windows.Forms.Button();
-            this.CurrentYearPick = new System.Windows.Forms.NumericUpDown();
-            this.printCalendar = new System.Drawing.Printing.PrintDocument();
-            this.ProspectButton = new System.Windows.Forms.Button();
-            this.TrackButton = new System.Windows.Forms.Button();
-            this.ExoPlanetButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -217,11 +217,7 @@
             this.MinAltitudeBox.Name = "MinAltitudeBox";
             this.MinAltitudeBox.Size = new System.Drawing.Size(41, 20);
             this.MinAltitudeBox.TabIndex = 46;
-            this.MinAltitudeBox.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
+            this.MinAltitudeBox.ValueChanged += new System.EventHandler(this.MinAltitudeBox_ValueChanged);
             // 
             // DoneButton
             // 
@@ -281,7 +277,7 @@
             dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.TopLeft;
             dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle14.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle14.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
             dataGridViewCellStyle14.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
@@ -306,6 +302,103 @@
             this.MonthCalendar.TabIndex = 40;
             this.MonthCalendar.SelectionChanged += new System.EventHandler(this.MonthCalendar_SelectionChanged);
             // 
+            // PreviewButton
+            // 
+            this.PreviewButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.PreviewButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.PreviewButton.Location = new System.Drawing.Point(544, 9);
+            this.PreviewButton.Name = "PreviewButton";
+            this.PreviewButton.Size = new System.Drawing.Size(60, 20);
+            this.PreviewButton.TabIndex = 58;
+            this.PreviewButton.Text = "Preview";
+            this.PreviewButton.UseVisualStyleBackColor = false;
+            this.PreviewButton.Click += new System.EventHandler(this.PreviewButton_Click);
+            // 
+            // TargetNameBox
+            // 
+            this.TargetNameBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+            this.TargetNameBox.Location = new System.Drawing.Point(165, 9);
+            this.TargetNameBox.Name = "TargetNameBox";
+            this.TargetNameBox.Size = new System.Drawing.Size(99, 20);
+            this.TargetNameBox.TabIndex = 42;
+            this.TargetNameBox.Text = "M1";
+            this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TargetNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TargetNameBox_TextChanged);
+            // 
+            // AssessButton
+            // 
+            this.AssessButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.AssessButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.AssessButton.Location = new System.Drawing.Point(282, 8);
+            this.AssessButton.Name = "AssessButton";
+            this.AssessButton.Size = new System.Drawing.Size(61, 20);
+            this.AssessButton.TabIndex = 41;
+            this.AssessButton.Text = "Assess";
+            this.AssessButton.UseVisualStyleBackColor = false;
+            this.AssessButton.Click += new System.EventHandler(this.CreateButton_Click);
+            // 
+            // CurrentYearPick
+            // 
+            this.CurrentYearPick.Location = new System.Drawing.Point(48, 9);
+            this.CurrentYearPick.Maximum = new decimal(new int[] {
+            2200,
+            0,
+            0,
+            0});
+            this.CurrentYearPick.Minimum = new decimal(new int[] {
+            1900,
+            0,
+            0,
+            0});
+            this.CurrentYearPick.Name = "CurrentYearPick";
+            this.CurrentYearPick.Size = new System.Drawing.Size(67, 20);
+            this.CurrentYearPick.TabIndex = 43;
+            this.CurrentYearPick.Value = new decimal(new int[] {
+            2018,
+            0,
+            0,
+            0});
+            // 
+            // printCalendar
+            // 
+            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintCalendar_PrintPage);
+            // 
+            // ProspectButton
+            // 
+            this.ProspectButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ProspectButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ProspectButton.Location = new System.Drawing.Point(609, 9);
+            this.ProspectButton.Name = "ProspectButton";
+            this.ProspectButton.Size = new System.Drawing.Size(60, 20);
+            this.ProspectButton.TabIndex = 61;
+            this.ProspectButton.Text = "Prospect";
+            this.ProspectButton.UseVisualStyleBackColor = false;
+            this.ProspectButton.Click += new System.EventHandler(this.ProspectButton_Click);
+            // 
+            // TrackButton
+            // 
+            this.TrackButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.TrackButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TrackButton.Location = new System.Drawing.Point(414, 9);
+            this.TrackButton.Name = "TrackButton";
+            this.TrackButton.Size = new System.Drawing.Size(60, 20);
+            this.TrackButton.TabIndex = 62;
+            this.TrackButton.Text = "Track";
+            this.TrackButton.UseVisualStyleBackColor = false;
+            this.TrackButton.Click += new System.EventHandler(this.TrackButton_Click);
+            // 
+            // ExoPlanetButton
+            // 
+            this.ExoPlanetButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ExoPlanetButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ExoPlanetButton.Location = new System.Drawing.Point(675, 9);
+            this.ExoPlanetButton.Name = "ExoPlanetButton";
+            this.ExoPlanetButton.Size = new System.Drawing.Size(64, 20);
+            this.ExoPlanetButton.TabIndex = 63;
+            this.ExoPlanetButton.Text = "ExoPlanet";
+            this.ExoPlanetButton.UseVisualStyleBackColor = false;
+            this.ExoPlanetButton.Click += new System.EventHandler(this.ExoPlanetButton_Click);
+            // 
             // January
             // 
             this.January.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
@@ -321,7 +414,7 @@
             // Februrary
             // 
             this.Februrary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.Transparent;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.Februrary.DefaultCellStyle = dataGridViewCellStyle3;
             this.Februrary.HeaderText = "February";
@@ -440,103 +533,6 @@
             this.December.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.December.Width = 5;
             // 
-            // PreviewButton
-            // 
-            this.PreviewButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.PreviewButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PreviewButton.Location = new System.Drawing.Point(544, 9);
-            this.PreviewButton.Name = "PreviewButton";
-            this.PreviewButton.Size = new System.Drawing.Size(60, 20);
-            this.PreviewButton.TabIndex = 58;
-            this.PreviewButton.Text = "Preview";
-            this.PreviewButton.UseVisualStyleBackColor = false;
-            this.PreviewButton.Click += new System.EventHandler(this.PreviewButton_Click);
-            // 
-            // TargetNameBox
-            // 
-            this.TargetNameBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.TargetNameBox.Location = new System.Drawing.Point(165, 9);
-            this.TargetNameBox.Name = "TargetNameBox";
-            this.TargetNameBox.Size = new System.Drawing.Size(99, 20);
-            this.TargetNameBox.TabIndex = 42;
-            this.TargetNameBox.Text = "M1";
-            this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.TargetNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TargetNameBox_TextChanged);
-            // 
-            // AssessButton
-            // 
-            this.AssessButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.AssessButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AssessButton.Location = new System.Drawing.Point(282, 8);
-            this.AssessButton.Name = "AssessButton";
-            this.AssessButton.Size = new System.Drawing.Size(61, 20);
-            this.AssessButton.TabIndex = 41;
-            this.AssessButton.Text = "Assess";
-            this.AssessButton.UseVisualStyleBackColor = false;
-            this.AssessButton.Click += new System.EventHandler(this.CreateButton_Click);
-            // 
-            // CurrentYearPick
-            // 
-            this.CurrentYearPick.Location = new System.Drawing.Point(48, 9);
-            this.CurrentYearPick.Maximum = new decimal(new int[] {
-            2200,
-            0,
-            0,
-            0});
-            this.CurrentYearPick.Minimum = new decimal(new int[] {
-            1900,
-            0,
-            0,
-            0});
-            this.CurrentYearPick.Name = "CurrentYearPick";
-            this.CurrentYearPick.Size = new System.Drawing.Size(67, 20);
-            this.CurrentYearPick.TabIndex = 43;
-            this.CurrentYearPick.Value = new decimal(new int[] {
-            2018,
-            0,
-            0,
-            0});
-            // 
-            // printCalendar
-            // 
-            this.printCalendar.PrintPage += new System.Drawing.Printing.PrintPageEventHandler(this.PrintCalendar_PrintPage);
-            // 
-            // ProspectButton
-            // 
-            this.ProspectButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ProspectButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ProspectButton.Location = new System.Drawing.Point(609, 9);
-            this.ProspectButton.Name = "ProspectButton";
-            this.ProspectButton.Size = new System.Drawing.Size(60, 20);
-            this.ProspectButton.TabIndex = 61;
-            this.ProspectButton.Text = "Prospect";
-            this.ProspectButton.UseVisualStyleBackColor = false;
-            this.ProspectButton.Click += new System.EventHandler(this.ProspectButton_Click);
-            // 
-            // TrackButton
-            // 
-            this.TrackButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.TrackButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.TrackButton.Location = new System.Drawing.Point(414, 9);
-            this.TrackButton.Name = "TrackButton";
-            this.TrackButton.Size = new System.Drawing.Size(60, 20);
-            this.TrackButton.TabIndex = 62;
-            this.TrackButton.Text = "Track";
-            this.TrackButton.UseVisualStyleBackColor = false;
-            this.TrackButton.Click += new System.EventHandler(this.TrackButton_Click);
-            // 
-            // ExoPlanetButton
-            // 
-            this.ExoPlanetButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.ExoPlanetButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ExoPlanetButton.Location = new System.Drawing.Point(675, 9);
-            this.ExoPlanetButton.Name = "ExoPlanetButton";
-            this.ExoPlanetButton.Size = new System.Drawing.Size(64, 20);
-            this.ExoPlanetButton.TabIndex = 63;
-            this.ExoPlanetButton.Text = "ExoPlanet";
-            this.ExoPlanetButton.UseVisualStyleBackColor = false;
-            this.ExoPlanetButton.Click += new System.EventHandler(this.ExoPlanetButton_Click);
-            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -564,6 +560,7 @@
             this.Controls.Add(this.TargetNameBox);
             this.Controls.Add(this.AssessButton);
             this.Controls.Add(this.CurrentYearPick);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormImagePlanner";
             this.Text = "Image Planner";
@@ -599,6 +596,7 @@
         private System.Drawing.Printing.PrintDocument printCalendar;
         internal System.Windows.Forms.Button ProspectButton;
         internal System.Windows.Forms.Button TrackButton;
+        internal System.Windows.Forms.Button ExoPlanetButton;
         private System.Windows.Forms.DataGridViewTextBoxColumn January;
         private System.Windows.Forms.DataGridViewTextBoxColumn Februrary;
         private System.Windows.Forms.DataGridViewTextBoxColumn March;
@@ -611,7 +609,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn October;
         private System.Windows.Forms.DataGridViewTextBoxColumn November;
         private System.Windows.Forms.DataGridViewTextBoxColumn December;
-        internal System.Windows.Forms.Button ExoPlanetButton;
     }
 }
 

@@ -35,8 +35,8 @@ namespace ImagePlanner
         public FormExoPlanet(DateTime duskDateUTC, DateTime dawnDateUTC, double minimumListedAltitude)
         {
             InitializeComponent();
-            DuskDateLocal = duskDateUTC.ToLocalTime();
-            DawnDateLocal = dawnDateUTC.ToLocalTime();
+            DuskDateLocal = TimeManagement.UTCToLocalTime(duskDateUTC);
+            DawnDateLocal = TimeManagement.UTCToLocalTime(dawnDateUTC);
             SessionDate = Convert.ToDateTime(DuskDateLocal.ToString("yyyy MM dd"));
             this.Text = "ExoPlanet Transits for the night of " + DuskDateLocal.ToString("MMM dd") + "-"+DawnDateLocal.ToString("dd, yyyy");
             MinimumPlanningAltitude = minimumListedAltitude;
@@ -107,14 +107,14 @@ namespace ImagePlanner
                 //TimeSpan tdiff = Utilities.OffsetUTC();
                 TimeSpan tgtTransitFirstHalf = TimeSpan.FromHours(tgt.XpDurationHrs / 2);
 
-                DateTime transitPlMidUTC = Utilities.NextTransitUTC(Utilities.LocalToUTCTime(DuskDateLocal), tgt.XpPl_TransMidJD, tgt.XpPl_TransPer);
-                DateTime transitPlStartLocal = Utilities.UTCToLocalTime(transitPlMidUTC - tgtTransitFirstHalf);
-                DateTime transitPlEndLocal = Utilities.UTCToLocalTime(transitPlMidUTC + tgtTransitFirstHalf);
-                bool startOnSessionDate = Utilities.IsInSessionRange(SessionDate, transitPlStartLocal);
-                bool endOnSessionDate = Utilities.IsInSessionRange(SessionDate, transitPlEndLocal);
-                bool transitionStartOK = Utilities.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlStartLocal);
-                bool transitionEndOK = Utilities.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlEndLocal);
-                double tgtMinAltitude = Utilities.ComputeMinAltitude(transitPlStartLocal, transitPlEndLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long);
+                DateTime transitPlMidUTC = TimeManagement.NextTransitUTC(TimeManagement.LocalToUTCTime(DuskDateLocal), tgt.XpPl_TransMidJD, tgt.XpPl_TransPer);
+                DateTime transitPlStartLocal = TimeManagement.UTCToLocalTime(transitPlMidUTC - tgtTransitFirstHalf);
+                DateTime transitPlEndLocal = TimeManagement.UTCToLocalTime(transitPlMidUTC + tgtTransitFirstHalf);
+                bool startOnSessionDate = TimeManagement.IsInSessionRange(SessionDate, transitPlStartLocal);
+                bool endOnSessionDate = TimeManagement.IsInSessionRange(SessionDate, transitPlEndLocal);
+                bool transitionStartOK = TimeManagement.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlStartLocal);
+                bool transitionEndOK = TimeManagement.IsBetweenDuskAndDawn(DuskDateLocal, DawnDateLocal, transitPlEndLocal);
+                double tgtMinAltitude = TimeManagement.ComputeMinAltitude(transitPlStartLocal, transitPlEndLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long);
                 //
                 if ((tgtMinAltitude >= MinimumPlanningAltitude) &&
                     (tgt.XpDurationHrs > 0) &&
@@ -124,9 +124,9 @@ namespace ImagePlanner
                     ProspectGrid.Rows.Add();
                     ProspectGrid.Rows[pidx].Cells[i++].Value = tgt.Name;
                     ProspectGrid.Rows[pidx].Cells[i++].Value = transitPlStartLocal.ToString("HH:mm");
-                    ProspectGrid.Rows[pidx].Cells[i++].Value = Utilities.ComputeAltitude(transitPlStartLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long).ToString("0");
+                    ProspectGrid.Rows[pidx].Cells[i++].Value = TimeManagement.ComputeAltitude(transitPlStartLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long).ToString("0");
                     ProspectGrid.Rows[pidx].Cells[i++].Value = transitPlEndLocal.ToString("HH:mm");
-                    ProspectGrid.Rows[pidx].Cells[i++].Value = Utilities.ComputeAltitude(transitPlEndLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long).ToString("0");
+                    ProspectGrid.Rows[pidx].Cells[i++].Value = TimeManagement.ComputeAltitude(transitPlEndLocal, tgt.RA, tgt.Dec, tgt.Lat, tgt.Long).ToString("0");
                     ProspectGrid.Rows[pidx].Cells[i++].Value = tgt.XpDurationHrs.ToString("0.0");
                     ProspectGrid.Rows[pidx].Cells[i++].Value = tgt.XpDepth.ToString("0.00");
                     ProspectGrid.Rows[pidx].Cells[i++].Value = tgt.XpVmag.ToString("0.0");

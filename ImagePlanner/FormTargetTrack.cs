@@ -33,8 +33,8 @@ namespace ImagePlanner
 
             tgtDateUTC = dp.UTCdate;
             moonDateUTC = mp.iRise;
-            tgtUpH = dp.Rising.ToLocalTime().Hour + (dp.Rising.ToLocalTime().Minute / 60.0);
-            tgtDownH = dp.Setting.ToLocalTime().Hour + (dp.Setting.ToLocalTime().Minute / 60.0);
+            tgtUpH = TimeManagement.UTCToLocalTime(dp.Rising).Hour + (TimeManagement.UTCToLocalTime(dp.Rising).Minute / 60.0);
+            tgtDownH = TimeManagement.UTCToLocalTime(dp.Setting).Hour + (TimeManagement.UTCToLocalTime(dp.Setting).Minute / 60.0);
             tgtDecD = 90.0 - Transform.RadiansToDegrees(dp.Position.Dec);
             tgtPosition = dp.Position;
             MoonPosition = mp.Position;
