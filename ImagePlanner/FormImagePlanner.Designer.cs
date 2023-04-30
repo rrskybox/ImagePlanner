@@ -80,6 +80,8 @@
             this.ProspectButton = new System.Windows.Forms.Button();
             this.TrackButton = new System.Windows.Forms.Button();
             this.ExoPlanetButton = new System.Windows.Forms.Button();
+            this.ExportListButton = new System.Windows.Forms.Button();
+            this.SaveTargetsDialog = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -89,7 +91,7 @@
             // 
             this.InfoButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.InfoButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoButton.Location = new System.Drawing.Point(1317, 10);
+            this.InfoButton.Location = new System.Drawing.Point(1344, 9);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(46, 20);
             this.InfoButton.TabIndex = 59;
@@ -134,11 +136,11 @@
             // 
             this.DeleteTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DeleteTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1184, 9);
+            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1173, 9);
             this.DeleteTargetPlanButton.Name = "DeleteTargetPlanButton";
-            this.DeleteTargetPlanButton.Size = new System.Drawing.Size(60, 20);
+            this.DeleteTargetPlanButton.Size = new System.Drawing.Size(49, 20);
             this.DeleteTargetPlanButton.TabIndex = 55;
-            this.DeleteTargetPlanButton.Text = "Remove";
+            this.DeleteTargetPlanButton.Text = "Delete";
             this.DeleteTargetPlanButton.UseVisualStyleBackColor = false;
             this.DeleteTargetPlanButton.Click += new System.EventHandler(this.DeleteTargetPlanButton_Click);
             // 
@@ -148,7 +150,7 @@
             this.AddTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
             this.AddTargetPlanButton.Location = new System.Drawing.Point(1118, 9);
             this.AddTargetPlanButton.Name = "AddTargetPlanButton";
-            this.AddTargetPlanButton.Size = new System.Drawing.Size(60, 20);
+            this.AddTargetPlanButton.Size = new System.Drawing.Size(49, 20);
             this.AddTargetPlanButton.TabIndex = 54;
             this.AddTargetPlanButton.Text = "Add";
             this.AddTargetPlanButton.UseVisualStyleBackColor = false;
@@ -222,7 +224,7 @@
             // DoneButton
             // 
             this.DoneButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.DoneButton.Location = new System.Drawing.Point(1369, 10);
+            this.DoneButton.Location = new System.Drawing.Point(1396, 9);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(46, 20);
             this.DoneButton.TabIndex = 45;
@@ -234,7 +236,7 @@
             // 
             this.PrintButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PrintButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PrintButton.Location = new System.Drawing.Point(1265, 10);
+            this.PrintButton.Location = new System.Drawing.Point(1292, 9);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(46, 20);
             this.PrintButton.TabIndex = 44;
@@ -533,6 +535,18 @@
             this.ExoPlanetButton.UseVisualStyleBackColor = false;
             this.ExoPlanetButton.Click += new System.EventHandler(this.ExoPlanetButton_Click);
             // 
+            // ExportListButton
+            // 
+            this.ExportListButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.ExportListButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.ExportListButton.Location = new System.Drawing.Point(1228, 9);
+            this.ExportListButton.Name = "ExportListButton";
+            this.ExportListButton.Size = new System.Drawing.Size(49, 20);
+            this.ExportListButton.TabIndex = 64;
+            this.ExportListButton.Text = "Export";
+            this.ExportListButton.UseVisualStyleBackColor = false;
+            this.ExportListButton.Click += new System.EventHandler(this.ExportListButton_Click);
+            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -540,6 +554,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Teal;
             this.ClientSize = new System.Drawing.Size(1454, 765);
+            this.Controls.Add(this.ExportListButton);
             this.Controls.Add(this.ExoPlanetButton);
             this.Controls.Add(this.TrackButton);
             this.Controls.Add(this.ProspectButton);
@@ -611,6 +626,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn October;
         private System.Windows.Forms.DataGridViewTextBoxColumn November;
         private System.Windows.Forms.DataGridViewTextBoxColumn December;
+        internal System.Windows.Forms.Button ExportListButton;
+        private System.Windows.Forms.SaveFileDialog SaveTargetsDialog;
     }
 }
 

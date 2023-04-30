@@ -41,6 +41,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Deployment.Application;
+using System.IO;
 using TheSky64Lib;
 
 namespace ImagePlanner
@@ -56,8 +57,8 @@ namespace ImagePlanner
         public int TargetIndex;
         public DateTime TargetUTCDate;
         public bool SelectionEnabled;
-        public bool ProspectProtected = false;  //set to false if prospect pop up is not active, true otherwise -- used for selection
-        public bool ExoPlanetProtected = false;  //set to false if exoplanet pop up is not active, true otherwise -- used for selection
+        public static bool ProspectProtected = false;  //set to false if prospect pop up is not active, true otherwise -- used for selection
+        public static bool ExoPlanetProtected = false;  //set to false if exoplanet pop up is not active, true otherwise -- used for selection
         public string moonDataDescription;
 
         public FormPreview previewForm = null;
@@ -98,6 +99,7 @@ namespace ImagePlanner
             ButtonGreen(AssessButton);
             ButtonGreen(TrackButton);
             ButtonGreen(ExoPlanetButton);
+            ButtonGreen(ExportListButton);
 
             this.FontHeight = 1;
             MonthCalendar.RowCount = 31;
@@ -295,6 +297,11 @@ namespace ImagePlanner
         private void ExoPlanetButton_Click(object sender, EventArgs e)
         {
             //Opens exoplanent form
+            if (ExoPlanetProtected)
+            {
+                ExoPlanetProtected = false;
+                exoPlanetForm.Close();
+            }
             OpenExoPlanet();
             return;
         }
@@ -966,6 +973,9 @@ namespace ImagePlanner
                 this.exoPlanetForm.Close();
             }
 
+            //Protect the exoplanet popup from being inadvertantly closed
+            ExoPlanetProtected = true;
+
             DateTime dawnDateUTC = sundata[TargetIndex + 1].Rising;
             DateTime duskDateUTC = sundata[TargetIndex].Setting;
 
@@ -1229,5 +1239,21 @@ namespace ImagePlanner
 
         #endregion
 
+        private void ExportListButton_Click(object sender, EventArgs e)
+        {
+            //Export target list to a text file
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Target List Save File";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK) 
+            {
+                string fileName = saveFileDialog.FileName;
+                StreamWriter sw = File.CreateText(fileName);
+                foreach (string tgt in ImagePlannerTargetList.Items)
+                {
+                    sw.WriteLine(tgt);
+                                    }
+                sw.Close();
+            } 
+        }
     }
 }

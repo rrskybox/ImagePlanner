@@ -88,6 +88,8 @@ namespace ImagePlanner
         private void Closebutton_Click(Object sender, EventArgs e) // Handles Closebutton.Click
         {
             //Handles Close button: close window, end Quick Pick
+            //unprotect the pop up
+            FormImagePlanner.ExoPlanetProtected = false;
             Close();
             return;
         }
