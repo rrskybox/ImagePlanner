@@ -27,7 +27,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>90</ApplicationRevision>
+    <ApplicationRevision>92</ApplicationRevision>
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -65,7 +65,7 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>ImageForecast.ico</ApplicationIcon>
+    <ApplicationIcon>ImagePlanner.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AstroMath, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -181,6 +181,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="ImagePlanner.ico" />
     <Content Include="ImagePlannerDescription.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -226,9 +227,6 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ImageForecast.ico" />
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="TheSky64Lib">

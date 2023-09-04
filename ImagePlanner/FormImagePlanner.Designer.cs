@@ -459,6 +459,7 @@
             this.TargetNameBox.TabIndex = 42;
             this.TargetNameBox.Text = "M1";
             this.TargetNameBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.TargetNameBox.TextChanged += new System.EventHandler(this.TargetNameBox_TextChanged);
             this.TargetNameBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TargetNameBox_TextChanged);
             // 
             // AssessButton

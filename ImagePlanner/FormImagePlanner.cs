@@ -104,9 +104,7 @@ namespace ImagePlanner
             this.FontHeight = 1;
             MonthCalendar.RowCount = 31;
             for (int i = 0; i <= 30; i++)
-            {
                 MonthCalendar.Rows[i].HeaderCell.Value = (i + 1).ToString();
-            }
 
             //Compute current dates based on TSX star chart julian date
             //  this allows star charts to be in different locations and time zones
@@ -431,53 +429,6 @@ namespace ImagePlanner
 
         private void TargetNameBox_TextChanged(Object sender, KeyPressEventArgs e)  // Handles TargetNameBox.KeyPress
         {
-            if (!enteringTargetState) //just started collecting characters
-            {
-                enteringTargetState = true;
-                TargetNameBox.Text = null;
-                if ((e.KeyChar == 'N') || (e.KeyChar == 'n'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "NGC";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-                else if ((e.KeyChar == 'M') || (e.KeyChar == 'm'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "M";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-                else if ((e.KeyChar == 'P') || (e.KeyChar == 'p'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "PGC";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-                else if ((e.KeyChar == 'I') || (e.KeyChar == 'i'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "IC";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-                else if ((e.KeyChar == 'H') || (e.KeyChar == 'h'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "HERSCHEL";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-                else if ((e.KeyChar == 'C') || (e.KeyChar == 'c'))
-                {
-                    e.KeyChar = ' ';
-                    TargetNameBox.Text = "CALDWELL";
-                    TargetNameBox.Focus();
-                    TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-                }
-            }
             if (e.KeyChar == '\r')
             {
                 enteringTargetState = false;
@@ -485,6 +436,57 @@ namespace ImagePlanner
                 return;
             }
             return;
+
+            //Removed code for autofill and autocorrection
+
+            //if (!enteringTargetState) //just started collecting characters
+            //{
+            //    enteringTargetState = true;
+            //    TargetNameBox.Text = null;
+            //    if ((e.KeyChar == 'N') || (e.KeyChar == 'n'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "NGC";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //    else if ((e.KeyChar == 'M') || (e.KeyChar == 'm'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "M";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //    else if ((e.KeyChar == 'P') || (e.KeyChar == 'p'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "PGC";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //    else if ((e.KeyChar == 'I') || (e.KeyChar == 'i'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "IC";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //    else if ((e.KeyChar == 'H') || (e.KeyChar == 'h'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "HERSCHEL";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //    else if ((e.KeyChar == 'C') || (e.KeyChar == 'c'))
+            //    {
+            //        e.KeyChar = ' ';
+            //        TargetNameBox.Text = "CALDWELL";
+            //        TargetNameBox.Focus();
+            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
+            //    }
+            //}
+            //return;
         }
 
         private void ImagePlannerTargetList_SelectedIndexChanged(Object sender, EventArgs e)  // Handles ImagePlannerTargetList.SelectedIndexChanged
@@ -1244,16 +1246,21 @@ namespace ImagePlanner
             //Export target list to a text file
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "Target List Save File";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK) 
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string fileName = saveFileDialog.FileName;
                 StreamWriter sw = File.CreateText(fileName);
                 foreach (string tgt in ImagePlannerTargetList.Items)
                 {
                     sw.WriteLine(tgt);
-                                    }
+                }
                 sw.Close();
-            } 
+            }
+        }
+
+        private void TargetNameBox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
