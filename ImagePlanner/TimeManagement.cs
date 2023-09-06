@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TheSky64Lib;
 using AstroMath;
+using System.Drawing;
 
 namespace ImagePlanner
 {
@@ -34,17 +35,22 @@ namespace ImagePlanner
             //Uses local nullable variable offsetHours to avoid querying TSX for every conversion -- that is very, very slow
             if (offsetHours == null)
             {
-                sky6StarChart tsxsc = new sky6StarChart();
-                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
-                TimeSpan tz = TimeSpan.FromHours(tsxsc.DocPropOut);
-                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
-                double st = (double)tsxsc.DocPropOut;
-                if (st == 0)
-                    offsetHours = tz;
-                else
-                    offsetHours = (TimeSpan.FromHours(st - 24));
+                DateTime julDateTime = JulianDateNow();
+                DateTime utcNow = DateTime.UtcNow;
+                offsetHours = TimeSpan.FromHours((julDateTime-utcNow).Hours);
             }
             return (TimeSpan)offsetHours;
+        }
+
+        public static DateTime JulianDateNow()
+        {
+            //Returns the current Julian Date of the Star Chart
+            sky6Utils tsxu = new sky6Utils();
+            tsxu.ComputeJulianDate();
+            double julDate = tsxu.dOut0;
+            tsxu.ConvertJulianDateToCalender(julDate);
+            DateTime julDateTime = new DateTime((int)tsxu.dOut0, (int)tsxu.dOut1, (int)tsxu.dOut2, (int)tsxu.dOut3, (int)tsxu.dOut4, (int)tsxu.dOut5);
+            return (julDateTime);
         }
 
         public static string LocateTSX()

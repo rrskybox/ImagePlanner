@@ -41,16 +41,14 @@ namespace ImagePlanner
             DateTime gTime = gStart;
             while (gTime <= gEnd)
             {
-
                 double haR = gRaDec.HourAngle(gTime, gloc);
-               double haH = Transform.RadiansToHours(haR);
+                double haH = Transform.RadiansToHours(haR);
                 double altR = gRaDec.Altitude(haR, gloc);
                 double altitude = Transform.RadiansToDegrees(altR);
                 //
                 double gst = Celestial.DateUTCToGST(gTime);
                 double lst = Celestial.GSTToLST(gst, gloc.Lon);
                 //
-                                
                 if (altitude > 0)
                 {
                     DateTime localTime = TimeManagement.UTCToLocalTime(gTime);

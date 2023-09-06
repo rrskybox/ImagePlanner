@@ -112,18 +112,7 @@ namespace ImagePlanner
             sky6StarChart tsxsc = new sky6StarChart();
 
             //Get the star chart julian date and convert to current date/time
-            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
-            DateTime dateTSXutc = AstroMath.Celestial.JulianToDate(tsxsc.DocPropOut);
-            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
-            double tzTSX = tsxsc.DocPropOut;
-            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
-            double tzIndexTSX = tsxsc.DocPropOut;
-            DateTime dateTSX;
-            if (tzIndexTSX == 0)
-                dateTSX = TimeManagement.DateToSessionDate(dateTSXutc.AddHours(tzTSX));
-            else
-                dateTSX = TimeManagement.DateToSessionDate(dateTSXutc.AddHours(tzIndexTSX - 24));
-
+            DateTime dateTSX = TimeManagement.JulianDateNow();
             CurrentYearPick.Value = dateTSX.Year;
             GenerateCalendar();
             Show();
@@ -145,20 +134,14 @@ namespace ImagePlanner
             {
                 List<string> tgtList = xf.GetTargetFiles();
                 foreach (string tgt in tgtList)
-                {
                     if (!(tgt.Contains("Default")))
-                    {
                         ImagePlannerTargetList.Items.Add(tgt);
-                    }
-                }
                 if (ImagePlannerTargetList.Items.Count > 0)
-                {
                     ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
-                }
             }
             //Set selected item to current Humason target, if any
             string currentTarget = xf.GetCurrentHumasonTarget();
-            if (currentTarget != "")
+            if (currentTarget != null)
                 for (int i = 0; i < ImagePlannerTargetList.Items.Count; i++)
                     if (ImagePlannerTargetList.Items[i].ToString().Contains(currentTarget))
                         ImagePlannerTargetList.SelectedIndex = i;
@@ -644,7 +627,7 @@ namespace ImagePlanner
             tlatD = tdoc.DocPropOut;
             tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Longitude);
             tlongD = tdoc.DocPropOut;
-            tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Time_Zone);
+            //tdoc.DocumentProperty(TheSky64Lib.Sk6DocumentProperty.sk6DocProp_Time_Zone);
 
             Celestial.RADec tgtRADec = new Celestial.RADec(Transform.HoursToRadians(traH), Transform.DegreesToRadians(tdecD));
             Celestial.LatLon obsLocation = new Celestial.LatLon(Transform.DegreesToRadians(tlatD), Transform.DegreesToRadians(-tlongD));
