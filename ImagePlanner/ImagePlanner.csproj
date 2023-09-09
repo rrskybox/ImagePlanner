@@ -27,7 +27,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>93</ApplicationRevision>
+    <ApplicationRevision>95</ApplicationRevision>
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,7 +70,7 @@
   <ItemGroup>
     <Reference Include="AstroMath, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AstroMath\AstroMath\bin\Release\AstroMath.dll</HintPath>
+      <HintPath>..\..\AstroMath\AstroMath\bin\Debug\AstroMath.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -113,11 +113,11 @@
     <Compile Include="FormSearchingNotice.Designer.cs">
       <DependentUpon>FormSearchingNotice.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormTargetPath.cs">
+    <Compile Include="FormTargetAltitude.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormTargetPath.Designer.cs">
-      <DependentUpon>FormTargetPath.cs</DependentUpon>
+    <Compile Include="FormTargetAltitude.Designer.cs">
+      <DependentUpon>FormTargetAltitude.cs</DependentUpon>
     </Compile>
     <Compile Include="FormTargetTrack.cs">
       <SubType>Form</SubType>
@@ -160,8 +160,8 @@
     <EmbeddedResource Include="FormSearchingNotice.resx">
       <DependentUpon>FormSearchingNotice.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FormTargetPath.resx">
-      <DependentUpon>FormTargetPath.cs</DependentUpon>
+    <EmbeddedResource Include="FormTargetAltitude.resx">
+      <DependentUpon>FormTargetAltitude.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTargetTrack.resx">
       <DependentUpon>FormTargetTrack.cs</DependentUpon>

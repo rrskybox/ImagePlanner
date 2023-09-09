@@ -63,7 +63,7 @@ namespace ImagePlanner
 
         public FormPreview previewForm = null;
         public Point previewFormLocation = new Point(0, 0);
-        public FormTargetPath pathForm = null;
+        public FormTargetAltitude pathForm = null;
         public Point pathFormLocation = new Point(0, 0);
         public FormDetails detailForm = null;
         public Point detailFormLocation = new Point(0, 0);
@@ -113,7 +113,7 @@ namespace ImagePlanner
 
             //Get the star chart julian date and convert to current date/time
             DateTime dateTSX = TimeManagement.JulianDateNow();
-            CurrentYearPick.Value = dateTSX.Year;
+            CurrentYearPick.Value = TimeManagement.CorrectFromDST(dateTSX).Year;
             GenerateCalendar();
             Show();
             System.Windows.Forms.Application.DoEvents();
@@ -123,8 +123,8 @@ namespace ImagePlanner
             CurrentYearPick.Value = Convert.ToInt16(thisyear);
             //Pick the current date as the selected cell
             SelectedDate = dateTSX;
-            int jCol = dateTSX.Month - 1;
-            int iRow = dateTSX.Day - 1;
+            int jCol = TimeManagement.CorrectFromDST(dateTSX).Month - 1;
+            int iRow = TimeManagement.CorrectFromDST(dateTSX).Day - 1;
             MonthCalendar.Rows[iRow].Cells[jCol].Selected = true;
             //Set minimum altitude field
             MinAltitudeBox.Value = (decimal)Properties.Settings.Default.MinimumAltitude;
@@ -406,6 +406,22 @@ namespace ImagePlanner
             return;
         }
 
+        private void ExportListButton_Click(object sender, EventArgs e)
+        {
+            //Export target list to a text file
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Title = "Target List Save File";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = saveFileDialog.FileName;
+                StreamWriter sw = File.CreateText(fileName);
+                foreach (string tgt in ImagePlannerTargetList.Items)
+                {
+                    sw.WriteLine(tgt);
+                }
+                sw.Close();
+            }
+        }
         #endregion
 
         #region Input Handlers
@@ -578,7 +594,7 @@ namespace ImagePlanner
                     }
                     jCol = TimeManagement.UTCToLocalTime(dp.Rising).Month - 1;
                     iRow = TimeManagement.UTCToLocalTime(dp.Rising).Day - 1;
-                    MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText += tiptext;
+                    MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText = tiptext;
                 }
             }
             return;
@@ -673,8 +689,12 @@ namespace ImagePlanner
             {
                 if (dp.UTCdate.Year == CurrentYearPick.Value)
                 {
-                    jCol = dp.Rising.Month - 1;
-                    iRow = dp.Rising.Day - 1;
+                    //jCol = dp.Rising.Month - 1;
+                    //iRow = dp.Rising.Day - 1;
+                    DateTime cellDay = TimeManagement.CorrectToDST(dp.UTCdate);
+                    DateTime sessionDay = TimeManagement.DateToSessionDate(cellDay);
+                    jCol = cellDay.Month - 1;
+                    iRow = sessionDay.Day - 1;
                     if (dp.MoonFree == 0)
                     {
                         PaintCell(iRow, jCol, MedYellow, Color.Black);
@@ -833,7 +853,7 @@ namespace ImagePlanner
                 this.pathForm.Close();
             }
 
-            this.pathForm = new FormTargetPath(tgtdata[TargetIndex], moondata[TargetIndex], this.TargetNameBox.Text, moonDataDescription);
+            this.pathForm = new FormTargetAltitude(tgtdata[TargetIndex], moondata[TargetIndex], this.TargetNameBox.Text, moonDataDescription);
 
             //Locate the start position of this form at the lower left hand corner of the parent form
             int twPosX = this.Location.X;
@@ -1180,6 +1200,10 @@ namespace ImagePlanner
 
         }
 
+        private void TargetNameBox_TextChanged(object sender, EventArgs e)
+        {
+
+        }
         #endregion
 
         #region Button Color
@@ -1224,26 +1248,6 @@ namespace ImagePlanner
 
         #endregion
 
-        private void ExportListButton_Click(object sender, EventArgs e)
-        {
-            //Export target list to a text file
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Title = "Target List Save File";
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string fileName = saveFileDialog.FileName;
-                StreamWriter sw = File.CreateText(fileName);
-                foreach (string tgt in ImagePlannerTargetList.Items)
-                {
-                    sw.WriteLine(tgt);
-                }
-                sw.Close();
-            }
-        }
 
-        private void TargetNameBox_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
