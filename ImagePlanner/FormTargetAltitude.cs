@@ -17,7 +17,7 @@ namespace ImagePlanner
             this.Text = tName + ": " + "Altitude on night of " + localtoday.ToString("MMM dd") + " / " + localtomorrow.ToString("MMM dd");
 
             if (dp.Visibility == DailyPosition.VisibilityState.UpNever)
-            { //Can//t get a rise out of it
+            { //Cant get a rise out of it
                 return;
             }
             else

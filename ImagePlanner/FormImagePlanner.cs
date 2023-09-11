@@ -113,7 +113,7 @@ namespace ImagePlanner
 
             //Get the star chart julian date and convert to current date/time
             DateTime dateTSX = TimeManagement.JulianDateNow();
-            CurrentYearPick.Value = TimeManagement.CorrectFromDST(dateTSX).Year;
+            CurrentYearPick.Value = TimeManagement.StandardTimeFromDST(dateTSX).Year;
             GenerateCalendar();
             Show();
             System.Windows.Forms.Application.DoEvents();
@@ -123,8 +123,8 @@ namespace ImagePlanner
             CurrentYearPick.Value = Convert.ToInt16(thisyear);
             //Pick the current date as the selected cell
             SelectedDate = dateTSX;
-            int jCol = TimeManagement.CorrectFromDST(dateTSX).Month - 1;
-            int iRow = TimeManagement.CorrectFromDST(dateTSX).Day - 1;
+            int jCol = TimeManagement.StandardTimeFromDST(dateTSX).Month - 1;
+            int iRow = TimeManagement.StandardTimeFromDST(dateTSX).Day - 1;
             MonthCalendar.Rows[iRow].Cells[jCol].Selected = true;
             //Set minimum altitude field
             MinAltitudeBox.Value = (decimal)Properties.Settings.Default.MinimumAltitude;
@@ -530,7 +530,7 @@ namespace ImagePlanner
             return;
         }
 
-        //Write Form Title
+         //Write Form Title
         public void WriteTitle(string tgtName, string tYear)
         {
             //Write title line in header of form
@@ -594,7 +594,7 @@ namespace ImagePlanner
                     }
                     jCol = TimeManagement.UTCToLocalTime(dp.Rising).Month - 1;
                     iRow = TimeManagement.UTCToLocalTime(dp.Rising).Day - 1;
-                    MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText = tiptext;
+                    MonthCalendar.Rows[iRow].Cells[jCol].ToolTipText += tiptext;
                 }
             }
             return;
@@ -691,10 +691,10 @@ namespace ImagePlanner
                 {
                     //jCol = dp.Rising.Month - 1;
                     //iRow = dp.Rising.Day - 1;
-                    DateTime cellDay = TimeManagement.CorrectToDST(dp.UTCdate);
+                    DateTime cellDay = TimeManagement.StandardTimeToDST(dp.UTCdate);
                     DateTime sessionDay = TimeManagement.DateToSessionDate(cellDay);
-                    jCol = cellDay.Month - 1;
-                    iRow = sessionDay.Day - 1;
+                    jCol = sessionDay.Month - 1;
+                    iRow = sessionDay.Day - 1; 
                     if (dp.MoonFree == 0)
                     {
                         PaintCell(iRow, jCol, MedYellow, Color.Black);

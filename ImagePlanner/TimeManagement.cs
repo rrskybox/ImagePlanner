@@ -22,14 +22,14 @@ namespace ImagePlanner
         public static DateTime LocalToUTCTime(DateTime localTime)
         {
             //Converts TSX location time to UTC
-            return CorrectToDST(localTime) - (TimeSpan)OffsetUTC();
+            return StandardTimeToDST(localTime) - (TimeSpan)OffsetUTC();
             //return localTime.ToUniversalTime();
         }
 
         public static DateTime UTCToLocalTime(DateTime utcTime)
         {
             //Converts UTC to TSX location time
-            return CorrectToDST(utcTime + (TimeSpan)OffsetUTC());
+            return StandardTimeToDST(utcTime + (TimeSpan)OffsetUTC());
             //return utcTime.ToLocalTime();
         }
 
@@ -99,13 +99,13 @@ namespace ImagePlanner
             }
         }
 
-        public static DateTime CorrectToDST(DateTime dt)
+        public static DateTime StandardTimeToDST(DateTime dt)
         {
             //Returns the number of hours to add to the input time dt to account for DST
             return dt += DSTCorrection(dt);
         }
 
-        public static DateTime CorrectFromDST(DateTime dt)
+        public static DateTime StandardTimeFromDST(DateTime dt)
         {
             //Returns the number of hours to add to the input time dt to account for DST
             return dt -= DSTCorrection(dt);
@@ -187,7 +187,7 @@ namespace ImagePlanner
 
         public static DateTime JulianToUTC(double jDAte)
         {
-            return CorrectFromDST(Celestial.JulianToDate(jDAte));
+            return StandardTimeFromDST(Celestial.JulianToDate(jDAte));
         }
 
         public static bool IsBetweenDuskAndDawn(DateTime localDuskDate, DateTime localDawnDate, DateTime localDate)
