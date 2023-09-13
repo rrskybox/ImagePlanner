@@ -49,7 +49,14 @@ namespace ImagePlanner
             sky6StarChart tsxs = new sky6StarChart();
             sky6ObjectInformation tsxo = new sky6ObjectInformation();
             //Set the date/time to the local date for the target
-            tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, Celestial.DateToJulian(tgtDateUTC));
+            double tgtJulian = Celestial.DateToJulian(tgtDateUTC);
+            tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, tgtJulian);
+            do
+            {
+                System.Threading.Thread.Sleep(100);
+                tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+            }
+            while (tsxs.DocPropOut != tgtJulian);
 
             //Get some target stuff that's hard to calculate
             tsxs.Find(targetName);
@@ -164,7 +171,7 @@ namespace ImagePlanner
             }
             int thour = (int)tgtTransitH;
             int tmin = ((int)(tgtTransitH - thour)) * 60;
-            string transitText = thour.ToString("00")  + tmin.ToString("00");
+            string transitText = thour.ToString("00") + tmin.ToString("00");
             this.Text = targetName + " Track <E-W> Transit @ " + transitText;
             return;
 

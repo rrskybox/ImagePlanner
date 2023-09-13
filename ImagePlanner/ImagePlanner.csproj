@@ -27,7 +27,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>97</ApplicationRevision>
+    <ApplicationRevision>98</ApplicationRevision>
     <ApplicationVersion>4.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -70,7 +70,7 @@
   <ItemGroup>
     <Reference Include="AstroMath, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\AstroMath\AstroMath\bin\Debug\AstroMath.dll</HintPath>
+      <HintPath>..\..\AstroMath\AstroMath\bin\Release\AstroMath.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
