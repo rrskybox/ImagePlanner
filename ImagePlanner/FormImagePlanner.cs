@@ -530,7 +530,7 @@ namespace ImagePlanner
             return;
         }
 
-         //Write Form Title
+        //Write Form Title
         public void WriteTitle(string tgtName, string tYear)
         {
             //Write title line in header of form
@@ -694,7 +694,7 @@ namespace ImagePlanner
                     DateTime cellDay = TimeManagement.StandardTimeToDST(dp.UTCdate);
                     DateTime sessionDay = TimeManagement.DateToSessionDate(cellDay);
                     jCol = sessionDay.Month - 1;
-                    iRow = sessionDay.Day - 1; 
+                    iRow = sessionDay.Day - 1;
                     if (dp.MoonFree == 0)
                     {
                         PaintCell(iRow, jCol, MedYellow, Color.Black);
@@ -1102,11 +1102,13 @@ namespace ImagePlanner
             {
                 return;
             }
+ 
+            char[] illegalLeadingChars = { ' ', '~', '_', '^' };
+
             tsxo.Index = 0;
             tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
             string sAllInfo = tsxo.ObjInfoPropOut;
             sAllInfo = sAllInfo.Replace("/", "-");
-
             string[] sInfoDB = sAllInfo.Split('\n');
             XElement infoX = new XElement("All_Properties");
             foreach (string ipair in sInfoDB)
@@ -1116,12 +1118,13 @@ namespace ImagePlanner
                 string[] firstSpace = infoPair[0].Split('(');
                 if (firstSpace[0] != "")
                 {
-                    firstSpace[0] = firstSpace[0].Trim('_');
-                    firstSpace[0] = System.Text.RegularExpressions.Regex.Replace(firstSpace[0], "//", "");
+                    firstSpace[0] = firstSpace[0].Trim(illegalLeadingChars);
                     infoPair[1] = infoPair[1].Trim(' ');
                     infoX.Add(new XElement(firstSpace[0], infoPair[1]));
                 }
             }
+
+
             //Get rid of multiple constellations.  Got to do it twice for (some reason
             foreach (XElement xmv in infoX.Elements("Constellation"))
             {
