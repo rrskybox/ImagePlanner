@@ -17,8 +17,6 @@ namespace ImagePlanner
 
         private void FillInTargetDetails(string tName)
         {
-
-
             //Retrieves details from TSX about the target object
             sky6StarChart tsxs = new sky6StarChart();
             sky6ObjectInformation tsxo = new sky6ObjectInformation();
@@ -31,7 +29,8 @@ namespace ImagePlanner
                 return;
             }
 
-            char[] illegalLeadingChars = { ' ', '~', '_', '^' };
+            char[] illegalChars = { ' ', '^', '~' };
+            char[] trimChars = { ' ', '_' };
 
             tsxo.Index = 0;
             tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
@@ -46,9 +45,10 @@ namespace ImagePlanner
                 string[] firstSpace = infoPair[0].Split('(');
                 if (firstSpace[0] != "")
                 {
-                    firstSpace[0] = firstSpace[0].Trim(illegalLeadingChars);
-                    infoPair[1] = infoPair[1].Trim(' ');
-                    infoX.Add(new XElement(firstSpace[0], infoPair[1]));
+                    string xName = Utility.CullChars(firstSpace[0], illegalChars);
+                    xName = xName.Trim(trimChars);
+                    string xData = infoPair[1].Trim(' ');
+                    infoX.Add(new XElement(xName, xData));
                 }
             }
             //Get rid of multiple constellations.  Got to do it twice for some reason
@@ -81,11 +81,6 @@ namespace ImagePlanner
             details += "Major Axis:    " + EntryCheck(infoX, "Major_Axis");
             details += "Minor Axis:    " + EntryCheck(infoX, "Minor_Axis");
             details += "Axis PA:       " + EntryCheck(infoX, "Axis_Position_Angle");
-            details += "Object:        " + EntryCheck(infoX, "Object_Name");
-            details += "Astro Twilight" + EntryCheck(infoX, "TWIL_ASTRON_START ");
-            details += "Astro Dawn" + EntryCheck(infoX, "TWIL_ASTRON_START ");
-            details += "RA (J2000):    " + EntryCheck(infoX, "RA");
-            details += "Dec (J2000):   " + EntryCheck(infoX, "Dec");
             details += "\r\n";
 
             DetailTextBox.Text = details;
