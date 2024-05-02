@@ -25,11 +25,11 @@ namespace ImagePlanner
                 tsxs.Find(tName);
             }
             catch
-            {
+            { 
                 return;
             }
 
-            char[] illegalChars = { ' ', '^', '~' };
+            char[] illegalChars = { ' ', '^', '~', '#' };
             char[] trimChars = { ' ', '_' };
 
             tsxo.Index = 0;
@@ -45,10 +45,12 @@ namespace ImagePlanner
                 string[] firstSpace = infoPair[0].Split('(');
                 if (firstSpace[0] != "")
                 {
-                    string xName = Utility.CullChars(firstSpace[0], illegalChars);
-                    xName = xName.Trim(trimChars);
-                    string xData = infoPair[1].Trim(' ');
-                    infoX.Add(new XElement(xName, xData));
+                    if (!Utility.HasSpecialCharacters(firstSpace[0], illegalChars))
+                    {
+                        string xName = firstSpace[0].Trim(trimChars);
+                        string xData = infoPair[1].Trim(' ');
+                        infoX.Add(new XElement(xName, xData));
+                    }
                 }
             }
             //Get rid of multiple constellations.  Got to do it twice for some reason

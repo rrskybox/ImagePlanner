@@ -1103,8 +1103,8 @@ namespace ImagePlanner
                 return;
             }
 
-            char[] illegalChars = { ' ','^', '~' };
-            char[] trimChars = { ' ', '_' };
+            char[] illegalChars = { ' ', '^', '~', '#'};
+            char[] trimChars = { ' ', '_', '^' };
 
             tsxo.Index = 0;
             tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_ALL_INFO);
@@ -1119,10 +1119,12 @@ namespace ImagePlanner
                 string[] firstSpace = infoPair[0].Split('(');
                 if (firstSpace[0] != "")
                 {
-                    string xName = Utility.CullChars(firstSpace[0], illegalChars);
-                    xName = xName.Trim(trimChars);
-                    string xData = infoPair[1].Trim(' ');
-                    infoX.Add(new XElement(xName, xData));
+                    if (!Utility.HasSpecialCharacters(firstSpace[0], illegalChars))
+                    {
+                        string xName = firstSpace[0].Trim(trimChars);
+                        string xData = infoPair[1].Trim(' ');
+                        infoX.Add(new XElement(xName, xData));
+                    }
                 }
             }
 
