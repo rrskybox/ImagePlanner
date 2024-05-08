@@ -159,6 +159,25 @@ namespace Humason
                 return null;
         }
 
+        public string? CurrentHumasonTarget
+        {
+            get
+            {
+                //return target name currently loaded in Humason, if any
+                if (Xses != null)
+                    return Xses.GetItem("CurrentTargetName");
+                else
+                    return null;
+            }
+            set
+            {
+                //return target name currently loaded in Humason, if any
+                if (Xses != null)
+                    Xses.SetItem("CurrentTargetName", value);
+
+            }
+        }
+
         public string GetItem(string itemName)
         {
             return Xmlf.GetItem(itemName);
@@ -168,8 +187,6 @@ namespace Humason
         {
             Xmlf.SetItem(itemName, item);
         }
-
-
 
         public bool InitialItem(string ItemName, bool Item)
         {
@@ -203,7 +220,6 @@ namespace Humason
         {
             return Xmlf.InitialItem(ItemName, Item);
         }
-
 
         public void ReplaceItem(string ItemName, bool Item)
         //The item is placed in the xfile -- boolean

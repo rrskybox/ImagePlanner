@@ -43,6 +43,7 @@ using System.Xml.Linq;
 using System.Deployment.Application;
 using System.IO;
 using TheSky64Lib;
+using System.Linq;
 
 namespace ImagePlanner
 {
@@ -101,6 +102,8 @@ namespace ImagePlanner
             ButtonGreen(ExoPlanetButton);
             ButtonGreen(ExportListButton);
 
+            InitializeCurrentTarget();
+
             this.FontHeight = 1;
             MonthCalendar.RowCount = 31;
             for (int i = 0; i <= 30; i++)
@@ -136,15 +139,17 @@ namespace ImagePlanner
                 foreach (string tgt in tgtList)
                     if (!(tgt.Contains("Default")))
                         ImagePlannerTargetList.Items.Add(tgt);
-                if (ImagePlannerTargetList.Items.Count > 0)
-                    ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
             }
             //Set selected item to current Humason target, if any
-            string currentTarget = xf.GetCurrentHumasonTarget();
+            string? currentTarget = xf.CurrentHumasonTarget;
             if (currentTarget != null)
+            {
                 for (int i = 0; i < ImagePlannerTargetList.Items.Count; i++)
                     if (ImagePlannerTargetList.Items[i].ToString().Contains(currentTarget))
                         ImagePlannerTargetList.SelectedIndex = i;
+            }
+            else if (ImagePlannerTargetList.Items.Count > 0)
+                ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
 
             QPUpdate.WazzupEventHandler += WazzupEvent_Handler;
             isInInit = false;
@@ -222,7 +227,9 @@ namespace ImagePlanner
         private void CreateButton_Click(Object sender, EventArgs e)  // Handles CreateButton.Click
         {
             ButtonRed(AssessButton);
-            //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
+            //Check contents of target box.  If empty then load whatever is in the Find window in TSX
+            if (TargetNameBox.Text == "")
+                AcquireTSXTargetName();
             enteringTargetState = false;
             RegenerateForms();
             DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
@@ -1067,6 +1074,26 @@ namespace ImagePlanner
 
         #region Miscellaneous Helper Methods
 
+        public void InitializeCurrentTarget()
+        {
+            //Set the target box text to first non null targat name from
+            // 1) name in humason configuration file
+            // 2) name in TSX find
+            // 23 first in list of target objects in humason folder
+            // 4) Messier M1
+            //in that order
+            string? tgtName;
+            XFiles xf = new XFiles();
+            tgtName = xf.CurrentHumasonTarget;
+            if (tgtName == null)
+                tgtName = AcquireTSXTargetName();
+            if (tgtName == null)
+                tgtName = xf.GetTargetFiles().Where(x => !x.Contains("Default")).FirstOrDefault();
+            if (tgtName == null)
+                tgtName = "M1";
+            TargetNameBox.Text = tgtName;
+        }
+
         private string IncrementCatalogNumber(string targetName, int increment)
         {
             //assumes an input string of a catelog object:  ccccnnnn where cccc are characters and nnnn are numbers
@@ -1076,17 +1103,6 @@ namespace ImagePlanner
             int nextDigit = (Convert.ToInt32(parts[1]) + increment);
             if (nextDigit > 1) return parts[0] + " " + nextDigit.ToString("0");
             else return parts[0] + " 1";
-            //string catNum = System.Text.RegularExpressions.Regex.Match(targetName, "\\d+").Value;
-            //string catName = targetName.Replace(catNum, "");
-            //int catNumInt = Convert.ToInt32(catNum);
-            //catNumInt += increment;
-            //if (catNumInt < 1)
-            //{
-            //    catNumInt = 1;
-            //}
-            //catNum = catNumInt.ToString();
-            //string resultString = catName + catNum;
-            //return resultString;
         }
 
         private void FillInTargetDetails(string tName)
@@ -1103,7 +1119,7 @@ namespace ImagePlanner
                 return;
             }
 
-            char[] illegalChars = { ' ', '^', '~', '#'};
+            char[] illegalChars = { ' ', '^', '~', '#', '\'' };
             char[] trimChars = { ' ', '_', '^' };
 
             tsxo.Index = 0;
@@ -1176,6 +1192,20 @@ namespace ImagePlanner
             {
                 return "\t" + xem.Element(name).Value + "\r\n";
             }
+        }
+
+        private string? AcquireTSXTargetName()
+        {
+            sky6ObjectInformation tsxo = new sky6ObjectInformation();
+            int cnt = tsxo.Count;
+            tsxo.Index = 0;
+            tsxo.Property(TheSky64Lib.Sk6ObjectInformationProperty.sk6ObjInfoProp_NAME1);
+            string tName = tsxo.ObjInfoPropOut;
+            TargetNameBox.Text = tName;
+            if (tName == "")
+                return null;
+            else
+                return tName;
         }
 
         #endregion
