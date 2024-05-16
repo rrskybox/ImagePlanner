@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AstroMath;
+using System;
 using TheSky64Lib;
-using AstroMath;
-using System.Drawing;
-using System.Drawing.Text;
-using System.Collections;
 
 namespace ImagePlanner
 {
@@ -46,6 +39,27 @@ namespace ImagePlanner
                 dstIndex = (int)tsxsc.DocPropOut;
             }
             return localTimeZone;
+        }
+
+        public static void ShiftTSXDate(double shiftDays)
+        {
+            //
+            sky6StarChart tsxsc = new sky6StarChart();
+            tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+            double currentJulDate = tsxsc.DocPropOut;
+            double newJulDate = currentJulDate+shiftDays;
+            tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, newJulDate);
+        }
+
+        public static void SetTSXDate(DateTime localDateTime)
+        {
+            //Convert local to UTC
+            DateTime utcDateTime = TimeManagement.LocalToUTCTime(localDateTime);
+            //Convert UTC to Julian
+            double jDate = AstroMath.Celestial.DateToJulian(utcDateTime);
+            sky6StarChart tsxsc = new sky6StarChart();
+            tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow,jDate);
+
         }
 
         public static TimeSpan DSTCorrection(DateTime dt)

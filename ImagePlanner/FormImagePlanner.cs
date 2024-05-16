@@ -37,13 +37,13 @@ using AstroMath;
 using Humason;
 using System;
 using System.Collections.Generic;
+using System.Deployment.Application;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using System.Deployment.Application;
-using System.IO;
 using TheSky64Lib;
-using System.Linq;
 
 namespace ImagePlanner
 {
@@ -74,6 +74,8 @@ namespace ImagePlanner
         public Point wazzupFormLocation = new Point(0, 0);
         public FormExoPlanet exoPlanetForm = null;
         public Point exoPlanetFormLocation = new Point(0, 0);
+        public FormTargetList tgtListForm = null;
+        public Point tgtListFormLocation = new Point(0, 0);
 
         private bool isInInit = false;
 
@@ -101,6 +103,7 @@ namespace ImagePlanner
             ButtonGreen(TrackButton);
             ButtonGreen(ExoPlanetButton);
             ButtonGreen(ExportListButton);
+            ButtonGreen(CurrentTargetListButton);
 
             InitializeCurrentTarget();
 
@@ -157,72 +160,6 @@ namespace ImagePlanner
         }
 
         #region Button Handlers
-
-        private void CurrentYearPick_TextChanged(Object sender, KeyPressEventArgs e) //Handles CurrentYearPick.KeyPress
-        {
-            if (e.KeyChar == '\r')
-            {
-                WriteTitle(TargetNameBox.Text, CurrentYearPick.Value.ToString());
-                RegenerateForms();
-                return;
-            }
-            return;
-        }
-
-        private void MonthCalendar_SelectionChanged(Object sender, EventArgs e)  // Handles MonthCalendar.SelectionChanged
-        {
-            if (!SelectionEnabled)
-            {
-                MonthCalendar.ClearSelection();
-            }
-            DataGridViewSelectedCellCollection selcells = MonthCalendar.SelectedCells;
-            if (selcells.Count == 0)
-            { return; }
-
-            DataGridViewCell cellpick = selcells[0];
-            try
-            {
-                SelectedDate = new DateTime((int)CurrentYearPick.Value, cellpick.ColumnIndex + 1, cellpick.RowIndex + 1);
-            }
-            catch
-            {
-                return;
-            }
-            //Find dailyposition index for (this date
-            for (int idx = 0; idx < tgtdata.Length; idx++)
-            {
-                DateTime selectDay = TimeManagement.UTCToLocalTime(tgtdata[idx].UTCdate);
-                if (SelectedDate.Year == selectDay.Year &&
-                SelectedDate.Month == selectDay.Month &&
-                SelectedDate.Day == selectDay.Day)
-                {
-                    TargetUTCDate = tgtdata[idx].UTCdate;
-                    TargetIndex = idx;
-                    break;
-                }
-            }
-            int iRow = cellpick.ColumnIndex;
-            moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
-            //If the Path pop up is open then update it.
-            if (pathForm != null && IsFormOpen(pathForm.Name))
-                OpenPath();
-            //If the Track pop up is open then update i.
-            if (trackForm != null && IsFormOpen(trackForm.Name))
-                OpenTrack();
-            //If the Prospect pop up is open then update i.
-            if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
-                OpenProspect();
-            if (exoPlanetForm != null && IsFormOpen(exoPlanetForm.Name))
-                OpenExoPlanet();
-
-            //If the prospect popup is open then just close it otherwise it's a whole 'nother wait to get it filled out.
-            if (!ProspectProtected)
-            {
-                if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
-                    OpenProspect();
-            }
-            return;
-        }
 
         private void CreateButton_Click(Object sender, EventArgs e)  // Handles CreateButton.Click
         {
@@ -379,6 +316,13 @@ namespace ImagePlanner
             return;
         }
 
+        private void CurrentTargetListButton_Click(object sender, EventArgs e)
+        {
+            ButtonRed(CurrentTargetListButton);
+            OpenTargetList();
+            ButtonGreen(CurrentTargetListButton);
+        }
+
         private void PrintButton_Click(Object sender, EventArgs e)  // Handles PrintButton.Click
         {
             ButtonRed(PrintButton);
@@ -429,9 +373,87 @@ namespace ImagePlanner
                 sw.Close();
             }
         }
+
         #endregion
 
         #region Input Handlers
+
+        private void CurrentYearPick_ValueChanged(object sender, EventArgs e)
+        {
+            if (!SelectionEnabled)
+                return;
+            //if the current selected date is feb 29 (column 2, row 29) and the set year is not a leap year,
+            //  then move the selected day up one row before entering the month-calendar selection changed method
+            DateTime newDate;
+            if (SelectedDate.Month == 2 && SelectedDate.Day == 29 && !DateTime.IsLeapYear((int)CurrentYearPick.Value))
+                MonthCalendar.CurrentCell = MonthCalendar[MonthCalendar.CurrentCell.ColumnIndex,MonthCalendar.CurrentCell.RowIndex - 1];
+            //TSX star chart can only be set using Julian Dates, so the best thing to do
+            //  is use a differential in local days (from prior to new) and add that to the TSX julian day setting
+            MonthCalendar_SelectionChanged(sender, e);
+            RegenerateForms();
+        }
+
+        private void MonthCalendar_SelectionChanged(Object sender, EventArgs e)  // Handles MonthCalendar.SelectionChanged
+        {
+            if (!SelectionEnabled)
+            {
+                MonthCalendar.ClearSelection();
+            }
+            //Write to title line
+            WriteTitle(TargetNameBox.Text, CurrentYearPick.Value.ToString());
+            //if multiple cells selected, then just return (but this shouldn't happen
+            DataGridViewSelectedCellCollection selcells = MonthCalendar.SelectedCells;
+            if (selcells.Count == 0) return;
+            //calculate selected date from year and cell position for day and month
+            DataGridViewCell cellpick = selcells[0];
+            try
+            {
+                SelectedDate = new DateTime((int)CurrentYearPick.Value, cellpick.ColumnIndex + 1, cellpick.RowIndex + 1);
+            }
+            catch
+            {
+                return;
+            }
+            //Set TSX to this newly selected date/year
+            TimeManagement.SetTSXDate(SelectedDate);
+            //Find dailyposition index for (this date
+            for (int idx = 0; idx < tgtdata.Length; idx++)
+            {
+                DateTime selectDay = TimeManagement.UTCToLocalTime(tgtdata[idx].UTCdate);
+                if (SelectedDate.Year == selectDay.Year &&
+                SelectedDate.Month == selectDay.Month &&
+                SelectedDate.Day == selectDay.Day)
+                {
+                    TargetUTCDate = tgtdata[idx].UTCdate;
+                    TargetIndex = idx;
+                    break;
+                }
+            }
+            int iRow = cellpick.ColumnIndex;
+            moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
+            //If the Path pop up is open then update it.
+            if (pathForm != null && IsFormOpen(pathForm.Name))
+                OpenPath();
+            //If the Track pop up is open then update i.
+            if (trackForm != null && IsFormOpen(trackForm.Name))
+                OpenTrack();
+            //If the Prospect pop up is open then update i.
+            if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
+                OpenProspect();
+            if (exoPlanetForm != null && IsFormOpen(exoPlanetForm.Name))
+                OpenExoPlanet();
+            //If the Target List pop up is open then update i.
+            if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
+                OpenTargetList();
+
+            //If the prospect popup is open then just close it otherwise it's a whole 'nother wait to get it filled out.
+            if (!ProspectProtected)
+            {
+                if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
+                    OpenProspect();
+            }
+            return;
+        }
 
         private void TargetNameBox_TextChanged(Object sender, KeyPressEventArgs e)  // Handles TargetNameBox.KeyPress
         {
@@ -443,56 +465,6 @@ namespace ImagePlanner
             }
             return;
 
-            //Removed code for autofill and autocorrection
-
-            //if (!enteringTargetState) //just started collecting characters
-            //{
-            //    enteringTargetState = true;
-            //    TargetNameBox.Text = null;
-            //    if ((e.KeyChar == 'N') || (e.KeyChar == 'n'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "NGC";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //    else if ((e.KeyChar == 'M') || (e.KeyChar == 'm'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "M";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //    else if ((e.KeyChar == 'P') || (e.KeyChar == 'p'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "PGC";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //    else if ((e.KeyChar == 'I') || (e.KeyChar == 'i'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "IC";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //    else if ((e.KeyChar == 'H') || (e.KeyChar == 'h'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "HERSCHEL";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //    else if ((e.KeyChar == 'C') || (e.KeyChar == 'c'))
-            //    {
-            //        e.KeyChar = ' ';
-            //        TargetNameBox.Text = "CALDWELL";
-            //        TargetNameBox.Focus();
-            //        TargetNameBox.SelectionStart = TargetNameBox.Text.Length;
-            //    }
-            //}
-            //return;
         }
 
         private void ImagePlannerTargetList_SelectedIndexChanged(Object sender, EventArgs e)  // Handles ImagePlannerTargetList.SelectedIndexChanged
@@ -508,7 +480,6 @@ namespace ImagePlanner
         {
             Properties.Settings.Default.MinimumAltitude = (double)MinAltitudeBox.Value;
             Properties.Settings.Default.Save();
-            //MinimumAltitude = (double)MinAltitudeBox.Value;
             RegenerateForms();
             return;
         }
@@ -606,6 +577,7 @@ namespace ImagePlanner
             }
             return;
         }
+
 
         #endregion
 
@@ -1051,7 +1023,40 @@ namespace ImagePlanner
             //show the form
             this.trackForm.Show();
             trackForm.ShowTrack();
-            return;
+        }
+
+        private void OpenTargetList()
+        {
+            if (isInInit)
+                return;
+            //First, close the old one, if (any
+            if (this.tgtListForm != null)
+            {
+                tgtListFormLocation = this.tgtListForm.Location;
+                this.tgtListForm.Close();
+            }
+            tgtListForm = new FormTargetList(TargetNameBox.Text);
+            tgtListForm.Owner = this;
+            //Locate the start position of this form at the lower left hand corner of the parent form
+            int twPosX = this.Location.X;
+            int twposY = this.Location.Y;
+            int twSizeW = this.Size.Width;
+            int twSizeH = this.Size.Height;
+            int pvSizeW = this.tgtListForm.Size.Width;
+            int pvSizeH = this.tgtListForm.Size.Height;
+            //Point pvLoc = new Point(twPosX + ((twSizeW / 2) - (pvSizeW / 2)), (twposY + twSizeH - pvSizeH));
+            Point pvLoc = new Point(twPosX, twposY + 100);
+            if (this.tgtListFormLocation != new Point(0, 0))
+            {
+                this.tgtListForm.Location = this.tgtListFormLocation;
+            }
+            else
+            {
+                tgtListForm.Location = pvLoc;
+            }
+            this.tgtListForm.StartPosition = FormStartPosition.Manual;
+            this.tgtListForm.Show();
+            tgtListForm.WriteTargetList();
         }
 
         private void RegenerateForms()
@@ -1067,6 +1072,8 @@ namespace ImagePlanner
                 OpenPath();
             if (trackForm != null && IsFormOpen(trackForm.Name))
                 OpenTrack();
+            if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
+                OpenTargetList();
             return;
         }
 
@@ -1281,6 +1288,8 @@ namespace ImagePlanner
                     return true;
             return false;
         }
+
+
 
         #endregion
 

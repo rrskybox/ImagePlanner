@@ -25,7 +25,7 @@ namespace ImagePlanner
                 tsxs.Find(tName);
             }
             catch
-            { 
+            {
                 return;
             }
 

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ImagePlanner
 {
@@ -20,15 +17,36 @@ namespace ImagePlanner
             }
             return str;
         }
- 
-    public static bool HasSpecialCharacters(string str, char[] specialChars)
+
+        public static bool HasSpecialCharacters(string str, char[] specialChars)
         {
             foreach (char c in specialChars)
             {
                 if (str.Contains(c))
-                return true;
+                    return true;
             }
             return false;
         }
+
+        public static double SexyParse(string sData)
+        {
+            //converts a string that contains either a sexidecimal or decimal number, depending
+            //detect number format
+            string[] subS = sData.Split(' ');
+            if (subS.Length == 3)
+            {
+                //trim last character of each substring (deg, min, sec)
+                string degS = subS[0].Remove(subS[0].Length - 1, 1);
+                string minS = subS[1].Remove(subS[1].Length - 1, 1);
+                string secS = subS[2].Remove(subS[2].Length - 1, 1);
+                //calculate decimal
+                return Convert.ToDouble(degS) + Convert.ToDouble(minS) / 60.0 + Convert.ToDouble(secS) / 3600.0;
+            }
+            else if (sData != null)
+                return Convert.ToDouble(sData);
+            else
+                return 0;
+        }
+
     }
 }

@@ -53,7 +53,7 @@ namespace ImagePlanner
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, tgtJulian);
             do
             {
-                System.Threading.Thread.Sleep(100);
+                System.Threading.Thread.Sleep(1000);
                 tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
             }
             while (tsxs.DocPropOut != tgtJulian);

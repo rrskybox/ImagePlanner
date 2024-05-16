@@ -174,7 +174,6 @@ namespace Humason
                 //return target name currently loaded in Humason, if any
                 if (Xses != null)
                     Xses.SetItem("CurrentTargetName", value);
-
             }
         }
 

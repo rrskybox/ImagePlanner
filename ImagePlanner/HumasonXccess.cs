@@ -36,9 +36,9 @@ namespace Humason
 
             //Get the contents of this file
             XElement nhThisX = GetXccessFileX();
-             //Get the contents of the file to be added in
+            //Get the contents of the file to be added in
             XElement nhThatX = XElement.Load(nhXContentsPath);
-           //Build new summary element
+            //Build new summary element
             nhThisX.Add(nhThatX);
             SetXccessFileX(nhThisX);
             return;

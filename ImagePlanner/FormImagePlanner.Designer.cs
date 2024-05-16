@@ -51,7 +51,7 @@
             this.DetailsButton = new System.Windows.Forms.Button();
             this.DeleteTargetPlanButton = new System.Windows.Forms.Button();
             this.AddTargetPlanButton = new System.Windows.Forms.Button();
-            this.Label4 = new System.Windows.Forms.Label();
+            this.CurrentTargetListLabel = new System.Windows.Forms.Label();
             this.ImagePlannerTargetList = new System.Windows.Forms.ComboBox();
             this.Label3 = new System.Windows.Forms.Label();
             this.Label2 = new System.Windows.Forms.Label();
@@ -82,6 +82,7 @@
             this.ExoPlanetButton = new System.Windows.Forms.Button();
             this.ExportListButton = new System.Windows.Forms.Button();
             this.SaveTargetsDialog = new System.Windows.Forms.SaveFileDialog();
+            this.CurrentTargetListButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -91,7 +92,7 @@
             // 
             this.InfoButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.InfoButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.InfoButton.Location = new System.Drawing.Point(1344, 9);
+            this.InfoButton.Location = new System.Drawing.Point(146, 800);
             this.InfoButton.Name = "InfoButton";
             this.InfoButton.Size = new System.Drawing.Size(46, 20);
             this.InfoButton.TabIndex = 59;
@@ -136,7 +137,7 @@
             // 
             this.DeleteTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.DeleteTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1173, 9);
+            this.DeleteTargetPlanButton.Location = new System.Drawing.Point(1116, 9);
             this.DeleteTargetPlanButton.Name = "DeleteTargetPlanButton";
             this.DeleteTargetPlanButton.Size = new System.Drawing.Size(49, 20);
             this.DeleteTargetPlanButton.TabIndex = 55;
@@ -148,7 +149,7 @@
             // 
             this.AddTargetPlanButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.AddTargetPlanButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.AddTargetPlanButton.Location = new System.Drawing.Point(1118, 9);
+            this.AddTargetPlanButton.Location = new System.Drawing.Point(1061, 9);
             this.AddTargetPlanButton.Name = "AddTargetPlanButton";
             this.AddTargetPlanButton.Size = new System.Drawing.Size(49, 20);
             this.AddTargetPlanButton.TabIndex = 54;
@@ -156,22 +157,23 @@
             this.AddTargetPlanButton.UseVisualStyleBackColor = false;
             this.AddTargetPlanButton.Click += new System.EventHandler(this.AddTargetPlanButton_Click);
             // 
-            // Label4
+            // CurrentTargetListLabel
             // 
-            this.Label4.AutoSize = true;
-            this.Label4.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label4.Location = new System.Drawing.Point(891, 13);
-            this.Label4.Name = "Label4";
-            this.Label4.Size = new System.Drawing.Size(94, 13);
-            this.Label4.TabIndex = 53;
-            this.Label4.Text = "Current Target List";
+            this.CurrentTargetListLabel.AutoSize = true;
+            this.CurrentTargetListLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.CurrentTargetListLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.CurrentTargetListLabel.Location = new System.Drawing.Point(834, 13);
+            this.CurrentTargetListLabel.Name = "CurrentTargetListLabel";
+            this.CurrentTargetListLabel.Size = new System.Drawing.Size(96, 15);
+            this.CurrentTargetListLabel.TabIndex = 53;
+            this.CurrentTargetListLabel.Text = "Current Target List";
             // 
             // ImagePlannerTargetList
             // 
             this.ImagePlannerTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
             this.ImagePlannerTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ImagePlannerTargetList.FormattingEnabled = true;
-            this.ImagePlannerTargetList.Location = new System.Drawing.Point(991, 9);
+            this.ImagePlannerTargetList.Location = new System.Drawing.Point(934, 9);
             this.ImagePlannerTargetList.MaxDropDownItems = 20;
             this.ImagePlannerTargetList.Name = "ImagePlannerTargetList";
             this.ImagePlannerTargetList.Size = new System.Drawing.Size(121, 21);
@@ -182,7 +184,7 @@
             // 
             this.Label3.AutoSize = true;
             this.Label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.Label3.Location = new System.Drawing.Point(752, 13);
+            this.Label3.Location = new System.Drawing.Point(1293, 13);
             this.Label3.Name = "Label3";
             this.Label3.Size = new System.Drawing.Size(91, 13);
             this.Label3.TabIndex = 49;
@@ -210,7 +212,7 @@
             // 
             // MinAltitudeBox
             // 
-            this.MinAltitudeBox.Location = new System.Drawing.Point(844, 9);
+            this.MinAltitudeBox.Location = new System.Drawing.Point(1385, 9);
             this.MinAltitudeBox.Maximum = new decimal(new int[] {
             90,
             0,
@@ -224,7 +226,7 @@
             // DoneButton
             // 
             this.DoneButton.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.DoneButton.Location = new System.Drawing.Point(1396, 9);
+            this.DoneButton.Location = new System.Drawing.Point(1380, 800);
             this.DoneButton.Name = "DoneButton";
             this.DoneButton.Size = new System.Drawing.Size(46, 20);
             this.DoneButton.TabIndex = 45;
@@ -236,7 +238,7 @@
             // 
             this.PrintButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.PrintButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.PrintButton.Location = new System.Drawing.Point(1292, 9);
+            this.PrintButton.Location = new System.Drawing.Point(83, 800);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(46, 20);
             this.PrintButton.TabIndex = 44;
@@ -253,6 +255,7 @@
             this.MonthCalendar.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.MonthCalendar.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
             this.MonthCalendar.BackgroundColor = System.Drawing.Color.DarkCyan;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
             dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
@@ -262,6 +265,7 @@
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.MonthCalendar.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.MonthCalendar.ColumnHeadersHeight = 69;
             this.MonthCalendar.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.MonthCalendar.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.January,
@@ -284,7 +288,7 @@
             dataGridViewCellStyle14.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
             dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.MonthCalendar.DefaultCellStyle = dataGridViewCellStyle14;
-            this.MonthCalendar.Location = new System.Drawing.Point(16, 45);
+            this.MonthCalendar.Location = new System.Drawing.Point(12, 36);
             this.MonthCalendar.MultiSelect = false;
             this.MonthCalendar.Name = "MonthCalendar";
             this.MonthCalendar.ReadOnly = true;
@@ -299,144 +303,157 @@
             dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.MonthCalendar.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.MonthCalendar.RowHeadersWidth = 60;
+            this.MonthCalendar.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.MonthCalendar.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.MonthCalendar.Size = new System.Drawing.Size(1426, 708);
+            this.MonthCalendar.Size = new System.Drawing.Size(1417, 756);
             this.MonthCalendar.TabIndex = 40;
             this.MonthCalendar.SelectionChanged += new System.EventHandler(this.MonthCalendar_SelectionChanged);
             // 
             // January
             // 
-            this.January.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.January.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.Transparent;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.January.DefaultCellStyle = dataGridViewCellStyle2;
+            this.January.FillWeight = 20F;
             this.January.HeaderText = "January";
+            this.January.MinimumWidth = 15;
             this.January.Name = "January";
             this.January.ReadOnly = true;
             this.January.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.January.Width = 5;
             // 
             // Februrary
             // 
-            this.Februrary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.Februrary.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
             dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.Februrary.DefaultCellStyle = dataGridViewCellStyle3;
+            this.Februrary.FillWeight = 20F;
             this.Februrary.HeaderText = "February";
+            this.Februrary.MinimumWidth = 15;
             this.Februrary.Name = "Februrary";
             this.Februrary.ReadOnly = true;
             this.Februrary.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Februrary.Width = 5;
             // 
             // March
             // 
-            this.March.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.March.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.March.DefaultCellStyle = dataGridViewCellStyle4;
+            this.March.FillWeight = 20F;
             this.March.HeaderText = "March";
+            this.March.MinimumWidth = 15;
             this.March.Name = "March";
             this.March.ReadOnly = true;
             this.March.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.March.Width = 5;
             // 
             // April
             // 
-            this.April.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.April.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.April.DefaultCellStyle = dataGridViewCellStyle5;
+            this.April.FillWeight = 20F;
             this.April.HeaderText = "April";
+            this.April.MinimumWidth = 15;
             this.April.Name = "April";
             this.April.ReadOnly = true;
             this.April.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.April.Width = 5;
             // 
             // May
             // 
-            this.May.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.May.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.May.DefaultCellStyle = dataGridViewCellStyle6;
+            this.May.FillWeight = 20F;
             this.May.HeaderText = "May";
+            this.May.MinimumWidth = 15;
             this.May.Name = "May";
             this.May.ReadOnly = true;
             this.May.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.May.Width = 5;
             // 
             // June
             // 
-            this.June.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.June.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.June.DefaultCellStyle = dataGridViewCellStyle7;
+            this.June.FillWeight = 20F;
             this.June.HeaderText = "June";
+            this.June.MinimumWidth = 15;
             this.June.Name = "June";
             this.June.ReadOnly = true;
             this.June.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.June.Width = 5;
             // 
             // July
             // 
-            this.July.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.July.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.July.DefaultCellStyle = dataGridViewCellStyle8;
+            this.July.FillWeight = 20F;
             this.July.HeaderText = "July";
+            this.July.MinimumWidth = 15;
             this.July.Name = "July";
             this.July.ReadOnly = true;
             this.July.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.July.Width = 5;
             // 
             // August
             // 
-            this.August.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.August.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.August.DefaultCellStyle = dataGridViewCellStyle9;
+            this.August.FillWeight = 20F;
             this.August.HeaderText = "August";
+            this.August.MinimumWidth = 15;
             this.August.Name = "August";
             this.August.ReadOnly = true;
             this.August.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.August.Width = 5;
             // 
             // September
             // 
-            this.September.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.September.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.September.DefaultCellStyle = dataGridViewCellStyle10;
+            this.September.FillWeight = 20F;
             this.September.HeaderText = "September";
+            this.September.MinimumWidth = 15;
             this.September.Name = "September";
             this.September.ReadOnly = true;
             this.September.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.September.Width = 5;
             // 
             // October
             // 
-            this.October.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.October.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.October.DefaultCellStyle = dataGridViewCellStyle11;
+            this.October.FillWeight = 20F;
             this.October.HeaderText = "Octorber";
+            this.October.MinimumWidth = 15;
             this.October.Name = "October";
             this.October.ReadOnly = true;
             this.October.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.October.Width = 5;
             // 
             // November
             // 
-            this.November.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.November.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.November.DefaultCellStyle = dataGridViewCellStyle12;
+            this.November.FillWeight = 20F;
             this.November.HeaderText = "November";
+            this.November.MinimumWidth = 15;
             this.November.Name = "November";
             this.November.ReadOnly = true;
             this.November.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.November.Width = 5;
             // 
             // December
             // 
-            this.December.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            this.December.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
             this.December.DefaultCellStyle = dataGridViewCellStyle13;
+            this.December.FillWeight = 20F;
             this.December.HeaderText = "December";
+            this.December.MinimumWidth = 15;
             this.December.Name = "December";
             this.December.ReadOnly = true;
             this.December.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.December.Width = 5;
             // 
             // PreviewButton
             // 
@@ -477,12 +494,7 @@
             // 
             this.CurrentYearPick.Location = new System.Drawing.Point(48, 9);
             this.CurrentYearPick.Maximum = new decimal(new int[] {
-            2200,
-            0,
-            0,
-            0});
-            this.CurrentYearPick.Minimum = new decimal(new int[] {
-            1900,
+            10000,
             0,
             0,
             0});
@@ -494,6 +506,7 @@
             0,
             0,
             0});
+            this.CurrentYearPick.ValueChanged += new System.EventHandler(this.CurrentYearPick_ValueChanged);
             // 
             // printCalendar
             // 
@@ -539,7 +552,7 @@
             // 
             this.ExportListButton.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ExportListButton.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.ExportListButton.Location = new System.Drawing.Point(1228, 9);
+            this.ExportListButton.Location = new System.Drawing.Point(17, 800);
             this.ExportListButton.Name = "ExportListButton";
             this.ExportListButton.Size = new System.Drawing.Size(49, 20);
             this.ExportListButton.TabIndex = 64;
@@ -547,13 +560,26 @@
             this.ExportListButton.UseVisualStyleBackColor = false;
             this.ExportListButton.Click += new System.EventHandler(this.ExportListButton_Click);
             // 
+            // CurrentTargetListButton
+            // 
+            this.CurrentTargetListButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CurrentTargetListButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.CurrentTargetListButton.Location = new System.Drawing.Point(1171, 9);
+            this.CurrentTargetListButton.Name = "CurrentTargetListButton";
+            this.CurrentTargetListButton.Size = new System.Drawing.Size(55, 20);
+            this.CurrentTargetListButton.TabIndex = 65;
+            this.CurrentTargetListButton.Text = "List";
+            this.CurrentTargetListButton.UseVisualStyleBackColor = false;
+            this.CurrentTargetListButton.Click += new System.EventHandler(this.CurrentTargetListButton_Click);
+            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Teal;
-            this.ClientSize = new System.Drawing.Size(1454, 765);
+            this.ClientSize = new System.Drawing.Size(1441, 830);
+            this.Controls.Add(this.CurrentTargetListButton);
             this.Controls.Add(this.ExportListButton);
             this.Controls.Add(this.ExoPlanetButton);
             this.Controls.Add(this.TrackButton);
@@ -563,7 +589,7 @@
             this.Controls.Add(this.DetailsButton);
             this.Controls.Add(this.DeleteTargetPlanButton);
             this.Controls.Add(this.AddTargetPlanButton);
-            this.Controls.Add(this.Label4);
+            this.Controls.Add(this.CurrentTargetListLabel);
             this.Controls.Add(this.ImagePlannerTargetList);
             this.Controls.Add(this.Label3);
             this.Controls.Add(this.Label2);
@@ -580,7 +606,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "FormImagePlanner";
-            this.Text = "Image Planner";
+            this.Text = " ";
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).EndInit();
@@ -597,7 +623,7 @@
         internal System.Windows.Forms.Button DetailsButton;
         internal System.Windows.Forms.Button DeleteTargetPlanButton;
         internal System.Windows.Forms.Button AddTargetPlanButton;
-        internal System.Windows.Forms.Label Label4;
+        internal System.Windows.Forms.Label CurrentTargetListLabel;
         internal System.Windows.Forms.ComboBox ImagePlannerTargetList;
         internal System.Windows.Forms.Label Label3;
         internal System.Windows.Forms.Label Label2;
@@ -614,6 +640,8 @@
         internal System.Windows.Forms.Button ProspectButton;
         internal System.Windows.Forms.Button TrackButton;
         internal System.Windows.Forms.Button ExoPlanetButton;
+        internal System.Windows.Forms.Button ExportListButton;
+        private System.Windows.Forms.SaveFileDialog SaveTargetsDialog;
         private System.Windows.Forms.DataGridViewTextBoxColumn January;
         private System.Windows.Forms.DataGridViewTextBoxColumn Februrary;
         private System.Windows.Forms.DataGridViewTextBoxColumn March;
@@ -626,8 +654,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn October;
         private System.Windows.Forms.DataGridViewTextBoxColumn November;
         private System.Windows.Forms.DataGridViewTextBoxColumn December;
-        internal System.Windows.Forms.Button ExportListButton;
-        private System.Windows.Forms.SaveFileDialog SaveTargetsDialog;
+        internal System.Windows.Forms.Button CurrentTargetListButton;
     }
 }
 

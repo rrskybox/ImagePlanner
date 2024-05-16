@@ -23,7 +23,7 @@ namespace ImagePlanner
             }
         }
 
-    private const int SW_SHOWNORMAL = 1;
+        private const int SW_SHOWNORMAL = 1;
         private const int SW_SHOWMINIMIZED = 2;
         private const int SW_SHOWMAXIMIZED = 3;
 
