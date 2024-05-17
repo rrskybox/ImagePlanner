@@ -64,7 +64,7 @@ namespace ImagePlanner
             TargetDataGrid.Rows[selTargetIndex].Selected = true;
         }
 
-        private void TargetDataGrid_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void TargetDataGrid_CellContentClick(object sender, System.Windows.Forms.DataGridViewCellEventArgs e)
         {
             //Selection of a cell -- update image planner with new target via event
             //Causes the image planner form to be update with the current target name selected

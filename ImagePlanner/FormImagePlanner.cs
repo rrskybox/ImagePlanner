@@ -438,27 +438,7 @@ namespace ImagePlanner
             }
             int iRow = cellpick.ColumnIndex;
             moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
-            //If the Path pop up is open then update it.
-            if (pathForm != null && IsFormOpen(pathForm.Name))
-                OpenPath();
-            //If the Track pop up is open then update i.
-            if (trackForm != null && IsFormOpen(trackForm.Name))
-                OpenTrack();
-            //If the Prospect pop up is open then update i.
-            if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
-                OpenProspect();
-            if (exoPlanetForm != null && IsFormOpen(exoPlanetForm.Name))
-                OpenExoPlanet();
-            //If the Target List pop up is open then update i.
-            if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
-                OpenTargetList();
-
-            //If the prospect popup is open then just close it otherwise it's a whole 'nother wait to get it filled out.
-            if (!ProspectProtected)
-            {
-                if (wazzupForm != null && IsFormOpen(wazzupForm.Name))
-                    OpenProspect();
-            }
+            RegenerateForms();
             return;
         }
 

@@ -1,4 +1,6 @@
-﻿namespace ImagePlanner
+﻿using System.Windows.Forms;
+
+namespace ImagePlanner
 {
     partial class FormTargetList
     {
@@ -88,9 +90,9 @@
             this.TargetDataGrid.RowsDefaultCellStyle = dataGridViewCellStyle3;
             this.TargetDataGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.TargetDataGrid.ShowEditingIcon = false;
-            this.TargetDataGrid.Size = new System.Drawing.Size(593, 690);
+            this.TargetDataGrid.Size = new System.Drawing.Size(615, 690);
             this.TargetDataGrid.TabIndex = 0;
-            this.TargetDataGrid.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TargetDataGrid_CellContentClick);
+            this.TargetDataGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.TargetDataGrid_CellContentClick);
             // 
             // TargetName
             // 
@@ -169,7 +171,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(624, 691);
+            this.ClientSize = new System.Drawing.Size(633, 691);
             this.Controls.Add(this.TargetDataGrid);
             this.Name = "FormTargetList";
             this.Text = "Current Target Listing";
