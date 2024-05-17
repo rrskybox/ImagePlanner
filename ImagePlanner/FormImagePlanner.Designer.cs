@@ -52,7 +52,7 @@
             this.DeleteTargetPlanButton = new System.Windows.Forms.Button();
             this.AddTargetPlanButton = new System.Windows.Forms.Button();
             this.CurrentTargetListLabel = new System.Windows.Forms.Label();
-            this.ImagePlannerTargetList = new System.Windows.Forms.ComboBox();
+            this.DropDownTargetList = new System.Windows.Forms.ComboBox();
             this.Label3 = new System.Windows.Forms.Label();
             this.Label2 = new System.Windows.Forms.Label();
             this.Label1 = new System.Windows.Forms.Label();
@@ -168,17 +168,17 @@
             this.CurrentTargetListLabel.TabIndex = 53;
             this.CurrentTargetListLabel.Text = "Current Target List";
             // 
-            // ImagePlannerTargetList
+            // DropDownTargetList
             // 
-            this.ImagePlannerTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
-            this.ImagePlannerTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ImagePlannerTargetList.FormattingEnabled = true;
-            this.ImagePlannerTargetList.Location = new System.Drawing.Point(934, 9);
-            this.ImagePlannerTargetList.MaxDropDownItems = 20;
-            this.ImagePlannerTargetList.Name = "ImagePlannerTargetList";
-            this.ImagePlannerTargetList.Size = new System.Drawing.Size(121, 21);
-            this.ImagePlannerTargetList.TabIndex = 52;
-            this.ImagePlannerTargetList.SelectedIndexChanged += new System.EventHandler(this.ImagePlannerTargetList_SelectedIndexChanged);
+            this.DropDownTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.DropDownTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.DropDownTargetList.FormattingEnabled = true;
+            this.DropDownTargetList.Location = new System.Drawing.Point(934, 9);
+            this.DropDownTargetList.MaxDropDownItems = 20;
+            this.DropDownTargetList.Name = "DropDownTargetList";
+            this.DropDownTargetList.Size = new System.Drawing.Size(121, 21);
+            this.DropDownTargetList.TabIndex = 52;
+            this.DropDownTargetList.SelectedIndexChanged += new System.EventHandler(this.DropDownTargetList_SelectedIndexChanged);
             // 
             // Label3
             // 
@@ -590,7 +590,7 @@
             this.Controls.Add(this.DeleteTargetPlanButton);
             this.Controls.Add(this.AddTargetPlanButton);
             this.Controls.Add(this.CurrentTargetListLabel);
-            this.Controls.Add(this.ImagePlannerTargetList);
+            this.Controls.Add(this.DropDownTargetList);
             this.Controls.Add(this.Label3);
             this.Controls.Add(this.Label2);
             this.Controls.Add(this.Label1);
@@ -624,7 +624,7 @@
         internal System.Windows.Forms.Button DeleteTargetPlanButton;
         internal System.Windows.Forms.Button AddTargetPlanButton;
         internal System.Windows.Forms.Label CurrentTargetListLabel;
-        internal System.Windows.Forms.ComboBox ImagePlannerTargetList;
+        internal System.Windows.Forms.ComboBox DropDownTargetList;
         internal System.Windows.Forms.Label Label3;
         internal System.Windows.Forms.Label Label2;
         internal System.Windows.Forms.Label Label1;

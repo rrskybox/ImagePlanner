@@ -78,6 +78,7 @@ namespace ImagePlanner
         public Point tgtListFormLocation = new Point(0, 0);
 
         private bool isInInit = false;
+        private bool isListingTargets = false;
 
         public bool enteringTargetState;  //true if writing target in, false if target has been entered
 
@@ -141,18 +142,18 @@ namespace ImagePlanner
                 List<string> tgtList = xf.GetTargetFiles();
                 foreach (string tgt in tgtList)
                     if (!(tgt.Contains("Default")))
-                        ImagePlannerTargetList.Items.Add(tgt);
+                        DropDownTargetList.Items.Add(tgt);
             }
             //Set selected item to current Humason target, if any
             string? currentTarget = xf.CurrentHumasonTarget;
             if (currentTarget != null)
             {
-                for (int i = 0; i < ImagePlannerTargetList.Items.Count; i++)
-                    if (ImagePlannerTargetList.Items[i].ToString().Contains(currentTarget))
-                        ImagePlannerTargetList.SelectedIndex = i;
+                for (int i = 0; i < DropDownTargetList.Items.Count; i++)
+                    if (DropDownTargetList.Items[i].ToString().Contains(currentTarget))
+                        DropDownTargetList.SelectedIndex = i;
             }
-            else if (ImagePlannerTargetList.Items.Count > 0)
-                ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
+            else if (DropDownTargetList.Items.Count > 0)
+                DropDownTargetList.SelectedItem = DropDownTargetList.Items[0];
 
             QPUpdate.WazzupEventHandler += WazzupEvent_Handler;
             isInInit = false;
@@ -267,7 +268,7 @@ namespace ImagePlanner
                 xfn.SavePlan(tgtName);
             }
             //clear current target list box and reload
-            ImagePlannerTargetList.Items.Clear();
+            DropDownTargetList.Items.Clear();
             //Fill in Humason target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
@@ -275,14 +276,14 @@ namespace ImagePlanner
             {
                 if (!(tgt.Contains("Default")))
                 {
-                    ImagePlannerTargetList.Items.Add(tgt);
+                    DropDownTargetList.Items.Add(tgt);
                 }
             }
-            foreach (string tgt in ImagePlannerTargetList.Items)
+            foreach (string tgt in DropDownTargetList.Items)
             {
                 if (tgt == tgtName)
                 {
-                    ImagePlannerTargetList.SelectedItem = tgt;
+                    DropDownTargetList.SelectedItem = tgt;
                 }
             }
             ButtonGreen(AddTargetPlanButton);
@@ -294,10 +295,10 @@ namespace ImagePlanner
             ButtonRed(DeleteTargetPlanButton);
             //Delete the Humason configuration file with this target name
             XFiles xfn = new XFiles();
-            string tgtName = ImagePlannerTargetList.SelectedItem.ToString();
+            string tgtName = DropDownTargetList.SelectedItem.ToString();
             xfn.DeletePlan(tgtName);
             //clear current target list box and reload
-            ImagePlannerTargetList.Items.Clear(); ;
+            DropDownTargetList.Items.Clear(); ;
             //Fill in Humason target plans
             XFiles xf = new XFiles();
             List<string> tgtList = xf.GetTargetFiles();
@@ -305,12 +306,12 @@ namespace ImagePlanner
             {
                 if (!(tgt.Contains("Default")))
                 {
-                    ImagePlannerTargetList.Items.Add(tgt);
+                    DropDownTargetList.Items.Add(tgt);
                 }
             }
-            if (ImagePlannerTargetList.Items.Count > 0)
+            if (DropDownTargetList.Items.Count > 0)
             {
-                ImagePlannerTargetList.SelectedItem = ImagePlannerTargetList.Items[0];
+                DropDownTargetList.SelectedItem = DropDownTargetList.Items[0];
             }
             ButtonGreen(DeleteTargetPlanButton);
             return;
@@ -319,8 +320,14 @@ namespace ImagePlanner
         private void CurrentTargetListButton_Click(object sender, EventArgs e)
         {
             ButtonRed(CurrentTargetListButton);
+            CurrentTargetListButton.Enabled = false;
+            System.Windows.Forms.Application.DoEvents();
+            Show();
             OpenTargetList();
+            CurrentTargetListButton.Enabled = true;
             ButtonGreen(CurrentTargetListButton);
+            Show();
+            System.Windows.Forms.Application.DoEvents();
         }
 
         private void PrintButton_Click(Object sender, EventArgs e)  // Handles PrintButton.Click
@@ -366,7 +373,7 @@ namespace ImagePlanner
             {
                 string fileName = saveFileDialog.FileName;
                 StreamWriter sw = File.CreateText(fileName);
-                foreach (string tgt in ImagePlannerTargetList.Items)
+                foreach (string tgt in DropDownTargetList.Items)
                 {
                     sw.WriteLine(tgt);
                 }
@@ -386,7 +393,7 @@ namespace ImagePlanner
             //  then move the selected day up one row before entering the month-calendar selection changed method
             DateTime newDate;
             if (SelectedDate.Month == 2 && SelectedDate.Day == 29 && !DateTime.IsLeapYear((int)CurrentYearPick.Value))
-                MonthCalendar.CurrentCell = MonthCalendar[MonthCalendar.CurrentCell.ColumnIndex,MonthCalendar.CurrentCell.RowIndex - 1];
+                MonthCalendar.CurrentCell = MonthCalendar[MonthCalendar.CurrentCell.ColumnIndex, MonthCalendar.CurrentCell.RowIndex - 1];
             //TSX star chart can only be set using Julian Dates, so the best thing to do
             //  is use a differential in local days (from prior to new) and add that to the TSX julian day setting
             MonthCalendar_SelectionChanged(sender, e);
@@ -467,10 +474,10 @@ namespace ImagePlanner
 
         }
 
-        private void ImagePlannerTargetList_SelectedIndexChanged(Object sender, EventArgs e)  // Handles ImagePlannerTargetList.SelectedIndexChanged
+        private void DropDownTargetList_SelectedIndexChanged(Object sender, EventArgs e)  // Handles ImagePlannerTargetList.SelectedIndexChanged
         {
             //Loads the new target from the nh target list
-            string tName = ImagePlannerTargetList.SelectedItem.ToString();
+            string tName = DropDownTargetList.SelectedItem.ToString();
             TargetNameBox.Text = tName;
             RegenerateForms();
             return;
@@ -1226,11 +1233,11 @@ namespace ImagePlanner
             enteringTargetState = false;
             //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
             RegenerateForms();
-            DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
-            int iRow = selcel[0].RowIndex;
-            int iCol = selcel[0].ColumnIndex;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
-            MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
+            //DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
+            //int iRow = selcel[0].RowIndex;
+            //int iCol = selcel[0].ColumnIndex;
+            //MonthCalendar.Rows[iRow].Cells[iCol].Selected = false;
+            //MonthCalendar.Rows[iRow].Cells[iCol].Selected = true;
             //this.Show();
             System.Windows.Forms.Application.DoEvents();
             ProspectProtected = false;
