@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,11 +15,15 @@ namespace ImagePlanner
     public partial class FormTargetList : Form
     {
         private string currentTarget;
+        private DateTime currentDate;
+
+        public static RefreshEvent RefreshUpdateEvent = new RefreshEvent();
 
         public FormTargetList(string selectTarget)
         {
             InitializeComponent();
             currentTarget = selectTarget;
+            RefreshUpdateEvent.RefreshEventHandler += RefreshTargetListHandler;
         }
 
         public void ShowTargetList()
@@ -28,6 +33,8 @@ namespace ImagePlanner
 
         public void WriteTargetList()
         {
+            Color bgd = TargetDataGrid.BackgroundColor;
+            TargetDataGrid.BackgroundColor = Color.LightSalmon;
             int selTargetIndex = 0;
             //Load the Target Plan datagridview
             TargetDataGrid.Rows.Clear();
@@ -62,6 +69,7 @@ namespace ImagePlanner
             TargetDataGrid.Update();
             TargetDataGrid.ClearSelection();
             TargetDataGrid.Rows[selTargetIndex].Selected = true;
+            TargetDataGrid.BackgroundColor = bgd;
         }
 
         private void TargetDataGrid_CellContentClick(object sender, System.Windows.Forms.DataGridViewCellEventArgs e)
@@ -69,7 +77,7 @@ namespace ImagePlanner
             //Selection of a cell -- update image planner with new target via event
             //Causes the image planner form to be update with the current target name selected
             int selectedRowIndex;
-            if (TargetDataGrid.SelectedRows.Count > 0 && e.RowIndex >0)
+            if (TargetDataGrid.SelectedRows.Count > 0 && e.RowIndex > 0)
             {
                 selectedRowIndex = TargetDataGrid.SelectedRows[0].Index;
                 int tgtNameColumn = 0;
@@ -79,5 +87,15 @@ namespace ImagePlanner
             }
 
         }
+
+        #region Event Subscription
+
+        public void RefreshTargetListHandler(object sender, RefreshEvent.RefreshEventArgs e)
+        {
+            if (e.NewDate.ToShortDateString() != TimeManagement.CurrentTSXDate.ToShortDateString())
+                WriteTargetList();
+        }
+
+        #endregion
     }
 }
