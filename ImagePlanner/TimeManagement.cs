@@ -12,6 +12,28 @@ namespace ImagePlanner
         private static TimeSpan? localTimeZone = null;
         private static int dstIndex;
 
+        public static DateTime CurrentTSXDate
+        {
+            get
+            {
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+                double currentJulDate = tsxsc.DocPropOut;
+                DateTime currentUTC = JulianToUTC(currentJulDate);
+                DateTime currentLocalTime = UTCToLocalTime(currentUTC);
+                return currentLocalTime;
+            }
+            set
+            {
+                //Convert local to UTC
+                DateTime utcDateTime = TimeManagement.LocalToUTCTime(value);
+                //Convert UTC to Julian
+                double jDate = AstroMath.Celestial.DateToJulian(utcDateTime);
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jDate);
+            }
+        }
+
         public static DateTime LocalToUTCTime(DateTime localTime)
         {
             //Converts TSX location time to UTC
@@ -47,19 +69,8 @@ namespace ImagePlanner
             sky6StarChart tsxsc = new sky6StarChart();
             tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
             double currentJulDate = tsxsc.DocPropOut;
-            double newJulDate = currentJulDate+shiftDays;
+            double newJulDate = currentJulDate + shiftDays;
             tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, newJulDate);
-        }
-
-        public static void SetTSXDate(DateTime localDateTime)
-        {
-            //Convert local to UTC
-            DateTime utcDateTime = TimeManagement.LocalToUTCTime(localDateTime);
-            //Convert UTC to Julian
-            double jDate = AstroMath.Celestial.DateToJulian(utcDateTime);
-            sky6StarChart tsxsc = new sky6StarChart();
-            tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow,jDate);
-
         }
 
         public static TimeSpan DSTCorrection(DateTime dt)

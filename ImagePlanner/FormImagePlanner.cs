@@ -422,7 +422,7 @@ namespace ImagePlanner
                 return;
             }
             //Set TSX to this newly selected date/year
-            TimeManagement.SetTSXDate(SelectedDate);
+            TimeManagement.CurrentTSXDate = SelectedDate;
             //Find dailyposition index for (this date
             for (int idx = 0; idx < tgtdata.Length; idx++)
             {
@@ -1060,7 +1060,7 @@ namespace ImagePlanner
             if (trackForm != null && IsFormOpen(trackForm.Name))
                 OpenTrack();
             if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
-                OpenTargetList();
+                DateChangeNotification(SelectedDate);
             return;
         }
 
@@ -1204,7 +1204,7 @@ namespace ImagePlanner
 
         #endregion
 
-        #region Event Handlers
+        #region Event Subscriptions
 
         private void WazzupEvent_Handler(object sender, WazzupEvent.WazzupEventArgs e)
         {
@@ -1234,6 +1234,19 @@ namespace ImagePlanner
         {
 
         }
+
+        #endregion
+
+        #region Event Publishing
+
+        private void DateChangeNotification(DateTime newDate)
+        {
+            //Generates event for subscribing forms to update their displays with new date data
+            RefreshEvent ndEvent = FormTargetList.RefreshUpdateEvent;
+            ndEvent.RefreshUpdate(newDate);
+        }
+
+
         #endregion
 
         #region Button Color

@@ -27,7 +27,7 @@
     <ProductName>Image Planner</ProductName>
     <PublisherName>TSXToolkit</PublisherName>
     <SuiteName>TSXToolKit</SuiteName>
-    <ApplicationRevision>112</ApplicationRevision>
+    <ApplicationRevision>113</ApplicationRevision>
     <ApplicationVersion>4.1.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -152,6 +152,7 @@
     <Compile Include="TargetSpecs.cs" />
     <Compile Include="TimeManagement.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="RefreshEvent.cs" />
     <Compile Include="WazzupEvent.cs" />
     <Compile Include="TargetControl.cs" />
     <Compile Include="HumasonXccess.cs" />
@@ -244,15 +245,6 @@
   <ItemGroup>
     <COMReference Include="TheSky64Lib">
       <Guid>{AECFC6C9-1BED-4028-B248-0D9156598264}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="TheSkyXLib">
-      <Guid>{AECFC6C9-1BED-4028-B248-0D9156598289}</Guid>
       <VersionMajor>1</VersionMajor>
       <VersionMinor>0</VersionMinor>
       <Lcid>0</Lcid>
