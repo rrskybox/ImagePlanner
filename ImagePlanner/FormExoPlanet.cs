@@ -142,8 +142,8 @@ namespace ImagePlanner
         private void UpdateImagePlanner(string targetName)
         {
             //Causes the image planner form to be update with the current target name selected
-            WazzupEvent qpEvent = FormImagePlanner.QPUpdate;
-            qpEvent.QPTargetUpdate(targetName);
+            TargetChangeEvent qpEvent = FormImagePlanner.QPUpdate;
+            qpEvent.TargetChangeUpdate(targetName);
             return;
         }
 

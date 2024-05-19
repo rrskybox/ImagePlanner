@@ -26,7 +26,7 @@ namespace ImagePlanner
             RefreshUpdateEvent.RefreshEventHandler += RefreshTargetListHandler;
         }
 
-         public void WriteTargetList()
+        public void WriteTargetList()
         {
             Color bgd = TargetDataGrid.BackgroundColor;
             TargetDataGrid.BackgroundColor = Color.LightSalmon;
@@ -34,6 +34,8 @@ namespace ImagePlanner
             //Load the Target Plan datagridview
             TargetDataGrid.Rows.Clear();
             int ridx = 0;
+
+            this.Text = "Current Target List as of " + TimeManagement.CurrentTSXDate.ToShortDateString();
 
             //Fill in Humason target plans
             XFiles xf = new XFiles();
@@ -77,8 +79,8 @@ namespace ImagePlanner
                 selectedRowIndex = TargetDataGrid.SelectedRows[0].Index;
                 int tgtNameColumn = 0;
                 string targetName = TargetDataGrid.Rows[selectedRowIndex].Cells[tgtNameColumn].Value.ToString();
-                WazzupEvent qpEvent = FormImagePlanner.QPUpdate;
-                qpEvent.QPTargetUpdate(targetName);
+                TargetChangeEvent qpEvent = FormImagePlanner.QPUpdate;
+                qpEvent.TargetChangeUpdate(targetName);
             }
 
         }
@@ -87,7 +89,9 @@ namespace ImagePlanner
 
         public void RefreshTargetListHandler(object sender, RefreshEvent.RefreshEventArgs e)
         {
-            if (e.NewDate.ToShortDateString() != TimeManagement.CurrentTSXDate.ToShortDateString())
+            //if (e.NewDate.ToShortDateString() != TimeManagement.CurrentTSXDate.ToShortDateString())
+            //int cols = TargetDataGrid.Columns.Count;
+            if (e.RefreshType != RefreshEvent.RefreshType.Target)
                 WriteTargetList();
         }
 

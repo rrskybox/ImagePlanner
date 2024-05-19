@@ -26,13 +26,20 @@ namespace ImagePlanner
         ///            lg.targetName("Acquiring guide star");
         ///            
 
+        public enum RefreshType
+        {
+            Target,
+            TargetList,
+            Date
+        }
+
         //Event declaration
         public event EventHandler<RefreshEventArgs> RefreshEventHandler;
 
         //Method for initiating target event
-        public void RefreshUpdate(DateTime newDate)
+        public void RefreshUpdate(RefreshType rType, DateTime newDate)
         {
-            OnRefreshEventHandler(new RefreshEventArgs(newDate));
+            OnRefreshEventHandler(new RefreshEventArgs(rType, newDate));
         }
 
         // Wrap event invocations inside a protected virtual method
@@ -48,21 +55,27 @@ namespace ImagePlanner
         public class RefreshEventArgs : System.EventArgs
         {
             private DateTime privateNewDate;
+            private RefreshType privateRefreshType;
 
-            public RefreshEventArgs(DateTime newDate)
+            public RefreshEventArgs(RefreshType rType, DateTime newDate)
             {
                 this.privateNewDate = newDate;
+                this.privateRefreshType = rType;
             }
 
             public DateTime NewDate
             { get { return privateNewDate; } }
+
+            public RefreshType RefreshType
+            { get { return privateRefreshType; } }
+
         }
 
-        public void RefreshtUpdate(DateTime newDate)
+        public void RefreshtUpdate(RefreshType rType, DateTime newDate)
         {
             //Raises a refresh event for anyone who is listening
 
-            RefreshUpdate(newDate);
+            RefreshUpdate(rType, newDate);
             System.Windows.Forms.Application.DoEvents();
             return;
         }

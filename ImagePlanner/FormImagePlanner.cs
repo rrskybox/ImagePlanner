@@ -70,8 +70,8 @@ namespace ImagePlanner
         public Point detailFormLocation = new Point(0, 0);
         public FormTargetTrack trackForm = null;
         public Point trackFormLocation = new Point(0, 0);
-        public FormWazzup wazzupForm = null;
-        public Point wazzupFormLocation = new Point(0, 0);
+        public FormProspect prospectForm = null;
+        public Point prospectFormLocation = new Point(0, 0);
         public FormExoPlanet exoPlanetForm = null;
         public Point exoPlanetFormLocation = new Point(0, 0);
         public FormTargetList tgtListForm = null;
@@ -82,7 +82,7 @@ namespace ImagePlanner
 
         public bool enteringTargetState;  //true if writing target in, false if target has been entered
 
-        public static WazzupEvent QPUpdate = new WazzupEvent();
+        public static TargetChangeEvent QPUpdate = new TargetChangeEvent();
 
         public FormImagePlanner()
         {
@@ -155,7 +155,7 @@ namespace ImagePlanner
             else if (DropDownTargetList.Items.Count > 0)
                 DropDownTargetList.SelectedItem = DropDownTargetList.Items[0];
 
-            QPUpdate.WazzupEventHandler += WazzupEvent_Handler;
+            QPUpdate.TargetChangeEventHandler += WazzupEvent_Handler;
             isInInit = false;
             return;
         }
@@ -169,7 +169,7 @@ namespace ImagePlanner
             if (TargetNameBox.Text == "")
                 AcquireTSXTargetName();
             enteringTargetState = false;
-            RegenerateForms();
+            RegenerateForms(RefreshEvent.RefreshType.Target);
             DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
             int iRow = selcel[0].RowIndex;
             int iCol = selcel[0].ColumnIndex;
@@ -282,10 +282,9 @@ namespace ImagePlanner
             foreach (string tgt in DropDownTargetList.Items)
             {
                 if (tgt == tgtName)
-                {
                     DropDownTargetList.SelectedItem = tgt;
-                }
             }
+            RegenerateForms(RefreshEvent.RefreshType.TargetList);
             ButtonGreen(AddTargetPlanButton);
             return;
         }
@@ -313,6 +312,7 @@ namespace ImagePlanner
             {
                 DropDownTargetList.SelectedItem = DropDownTargetList.Items[0];
             }
+            RegenerateForms(RefreshEvent.RefreshType.TargetList);
             ButtonGreen(DeleteTargetPlanButton);
             return;
         }
@@ -397,7 +397,6 @@ namespace ImagePlanner
             //TSX star chart can only be set using Julian Dates, so the best thing to do
             //  is use a differential in local days (from prior to new) and add that to the TSX julian day setting
             MonthCalendar_SelectionChanged(sender, e);
-            RegenerateForms();
         }
 
         private void MonthCalendar_SelectionChanged(Object sender, EventArgs e)  // Handles MonthCalendar.SelectionChanged
@@ -438,7 +437,7 @@ namespace ImagePlanner
             }
             int iRow = cellpick.ColumnIndex;
             moonDataDescription = MonthCalendar.Rows[cellpick.RowIndex].Cells[cellpick.ColumnIndex].ToolTipText;
-            RegenerateForms();
+            RegenerateForms(RefreshEvent.RefreshType.Date);
             return;
         }
 
@@ -447,7 +446,7 @@ namespace ImagePlanner
             if (e.KeyChar == '\r')
             {
                 enteringTargetState = false;
-                RegenerateForms();
+                RegenerateForms(RefreshEvent.RefreshType.Target);
                 return;
             }
             return;
@@ -459,7 +458,7 @@ namespace ImagePlanner
             //Loads the new target from the nh target list
             string tName = DropDownTargetList.SelectedItem.ToString();
             TargetNameBox.Text = tName;
-            RegenerateForms();
+            RegenerateForms(RefreshEvent.RefreshType.Target);
             return;
         }
 
@@ -467,7 +466,7 @@ namespace ImagePlanner
         {
             Properties.Settings.Default.MinimumAltitude = (double)MinAltitudeBox.Value;
             Properties.Settings.Default.Save();
-            RegenerateForms();
+            RegenerateForms(RefreshEvent.RefreshType.Target);
             return;
         }
 
@@ -894,37 +893,37 @@ namespace ImagePlanner
                 return;
 
             //First, close the old one, if (any
-            if (this.wazzupForm != null)
+            if (this.prospectForm != null)
             {
-                this.wazzupFormLocation = this.wazzupForm.Location;
-                this.wazzupForm.Close();
+                this.prospectFormLocation = this.prospectForm.Location;
+                this.prospectForm.Close();
             }
 
             DateTime dawnDateUTC = sundata[TargetIndex + 1].Rising;
             DateTime duskDateUTC = sundata[TargetIndex].Setting;
 
-            this.wazzupForm = new FormWazzup(duskDateUTC, dawnDateUTC);
+            this.prospectForm = new FormProspect(duskDateUTC, dawnDateUTC);
             //set this form as the owner
-            wazzupForm.Owner = this;
+            prospectForm.Owner = this;
             //Locate the start position of this form at the lower left hand corner of the parent form
             int twPosX = this.Location.X;
             int twposY = this.Location.Y;
             int twSizeW = this.Size.Width;
             int twSizeH = this.Size.Height;
-            int pvSizeW = this.wazzupForm.Size.Width;
-            int pvSizeH = this.wazzupForm.Size.Height;
+            int pvSizeW = this.prospectForm.Size.Width;
+            int pvSizeH = this.prospectForm.Size.Height;
             Point pvLoc = new Point(twPosX + ((twSizeW / 2) - (pvSizeW / 2)), (twposY + twSizeH - pvSizeH));
-            if (this.wazzupFormLocation != new Point(0, 0))
+            if (this.prospectFormLocation != new Point(0, 0))
             {
-                this.wazzupForm.Location = this.wazzupFormLocation;
+                this.prospectForm.Location = this.prospectFormLocation;
             }
             else
             {
-                this.wazzupForm.Location = pvLoc;
+                this.prospectForm.Location = pvLoc;
             }
-            this.wazzupForm.StartPosition = FormStartPosition.Manual;
+            this.prospectForm.StartPosition = FormStartPosition.Manual;
             //show the form
-            this.wazzupForm.Show();
+            this.prospectForm.Show();
             return;
         }
 
@@ -1021,6 +1020,7 @@ namespace ImagePlanner
             {
                 tgtListFormLocation = this.tgtListForm.Location;
                 this.tgtListForm.Close();
+                this.tgtListForm.Dispose();
             }
             tgtListForm = new FormTargetList(TargetNameBox.Text);
             tgtListForm.Owner = this;
@@ -1031,7 +1031,6 @@ namespace ImagePlanner
             int twSizeH = this.Size.Height;
             int pvSizeW = this.tgtListForm.Size.Width;
             int pvSizeH = this.tgtListForm.Size.Height;
-            //Point pvLoc = new Point(twPosX + ((twSizeW / 2) - (pvSizeW / 2)), (twposY + twSizeH - pvSizeH));
             Point pvLoc = new Point(twPosX, twposY + 100);
             if (this.tgtListFormLocation != new Point(0, 0))
             {
@@ -1046,7 +1045,7 @@ namespace ImagePlanner
             tgtListForm.WriteTargetList();
         }
 
-        private void RegenerateForms()
+        private void RegenerateForms(RefreshEvent.RefreshType rType)
         {
             //Common method for (rebuilding all the forms with new target, etc
             WriteTitle(TargetNameBox.Text, CurrentYearPick.Value.ToString());
@@ -1059,9 +1058,13 @@ namespace ImagePlanner
                 OpenPath();
             if (trackForm != null && IsFormOpen(trackForm.Name))
                 OpenTrack();
-            if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
-                DateChangeNotification(SelectedDate);
-            return;
+            if (prospectForm != null && IsFormOpen(prospectForm.Name) && rType == RefreshEvent.RefreshType.Date)
+                OpenProspect();
+            if (tgtListForm != null && IsFormOpen(tgtListForm.Name) && rType != RefreshEvent.RefreshType.Target)
+                OpenTargetList();
+            else
+                  DateChangeNotification(rType, SelectedDate);
+          return;
         }
 
         #endregion
@@ -1206,13 +1209,13 @@ namespace ImagePlanner
 
         #region Event Subscriptions
 
-        private void WazzupEvent_Handler(object sender, WazzupEvent.WazzupEventArgs e)
+        private void WazzupEvent_Handler(object sender, TargetChangeEvent.TargetChangeEventArgs e)
         {
             ProspectProtected = true;
             this.TargetNameBox.Text = e.TargetName;
             enteringTargetState = false;
             //TargetNameBox.Text = TargetNameBox.Text.Replace(" ", "");
-            RegenerateForms();
+            RegenerateForms(RefreshEvent.RefreshType.Target);
             //DataGridViewSelectedCellCollection selcel = MonthCalendar.SelectedCells;
             //int iRow = selcel[0].RowIndex;
             //int iCol = selcel[0].ColumnIndex;
@@ -1239,11 +1242,11 @@ namespace ImagePlanner
 
         #region Event Publishing
 
-        private void DateChangeNotification(DateTime newDate)
+        private void DateChangeNotification(RefreshEvent.RefreshType rType,  DateTime newDate)
         {
             //Generates event for subscribing forms to update their displays with new date data
             RefreshEvent ndEvent = FormTargetList.RefreshUpdateEvent;
-            ndEvent.RefreshUpdate(newDate);
+            ndEvent.RefreshUpdate(rType, newDate);
         }
 
 
