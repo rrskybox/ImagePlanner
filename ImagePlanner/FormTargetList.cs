@@ -74,7 +74,7 @@ namespace ImagePlanner
             //Selection of a cell -- update image planner with new target via event
             //Causes the image planner form to be update with the current target name selected
             int selectedRowIndex;
-            if (TargetDataGrid.SelectedRows.Count > 0 && e.RowIndex > 0)
+            if (TargetDataGrid.SelectedRows.Count > 0 && e.RowIndex >= 0)
             {
                 selectedRowIndex = TargetDataGrid.SelectedRows[0].Index;
                 int tgtNameColumn = 0;
