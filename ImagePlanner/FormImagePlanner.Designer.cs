@@ -83,6 +83,8 @@
             this.ExportListButton = new System.Windows.Forms.Button();
             this.SaveTargetsDialog = new System.Windows.Forms.SaveFileDialog();
             this.CurrentTargetListButton = new System.Windows.Forms.Button();
+            this.TargetGroupButton = new System.Windows.Forms.Button();
+            this.TargetSubfolderDialog = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.MinAltitudeBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthCalendar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.CurrentYearPick)).BeginInit();
@@ -162,7 +164,7 @@
             this.CurrentTargetListLabel.AutoSize = true;
             this.CurrentTargetListLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.CurrentTargetListLabel.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.CurrentTargetListLabel.Location = new System.Drawing.Point(834, 13);
+            this.CurrentTargetListLabel.Location = new System.Drawing.Point(770, 12);
             this.CurrentTargetListLabel.Name = "CurrentTargetListLabel";
             this.CurrentTargetListLabel.Size = new System.Drawing.Size(96, 15);
             this.CurrentTargetListLabel.TabIndex = 53;
@@ -173,7 +175,7 @@
             this.DropDownTargetList.BackColor = System.Drawing.SystemColors.ControlLight;
             this.DropDownTargetList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DropDownTargetList.FormattingEnabled = true;
-            this.DropDownTargetList.Location = new System.Drawing.Point(934, 9);
+            this.DropDownTargetList.Location = new System.Drawing.Point(870, 8);
             this.DropDownTargetList.MaxDropDownItems = 20;
             this.DropDownTargetList.Name = "DropDownTargetList";
             this.DropDownTargetList.Size = new System.Drawing.Size(121, 21);
@@ -572,6 +574,18 @@
             this.CurrentTargetListButton.UseVisualStyleBackColor = false;
             this.CurrentTargetListButton.Click += new System.EventHandler(this.CurrentTargetListButton_Click);
             // 
+            // TargetGroupButton
+            // 
+            this.TargetGroupButton.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.TargetGroupButton.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.TargetGroupButton.Location = new System.Drawing.Point(1006, 9);
+            this.TargetGroupButton.Name = "TargetGroupButton";
+            this.TargetGroupButton.Size = new System.Drawing.Size(49, 20);
+            this.TargetGroupButton.TabIndex = 66;
+            this.TargetGroupButton.Text = "Group";
+            this.TargetGroupButton.UseVisualStyleBackColor = false;
+            this.TargetGroupButton.Click += new System.EventHandler(this.TargetGroupButton_Click);
+            // 
             // FormImagePlanner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -579,6 +593,7 @@
             this.AutoSize = true;
             this.BackColor = System.Drawing.Color.Teal;
             this.ClientSize = new System.Drawing.Size(1441, 830);
+            this.Controls.Add(this.TargetGroupButton);
             this.Controls.Add(this.CurrentTargetListButton);
             this.Controls.Add(this.ExportListButton);
             this.Controls.Add(this.ExoPlanetButton);
@@ -655,6 +670,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn November;
         private System.Windows.Forms.DataGridViewTextBoxColumn December;
         internal System.Windows.Forms.Button CurrentTargetListButton;
+        internal System.Windows.Forms.Button TargetGroupButton;
+        private System.Windows.Forms.FolderBrowserDialog TargetSubfolderDialog;
     }
 }
 

@@ -23,7 +23,7 @@ namespace Humason
 
         //Private data
 
-        string HumasonFolderName = "Humason";
+        public static string HumasonFolderName = "Humason";
         string HumasonTargetPlanFilename = "TargetPlan.xml";
         string HumasonTargetPlanXName = "HumasonTargetPlan";
         string HumasonDefaultTargetPlanFilename = "TargetPlanDefault.xml";

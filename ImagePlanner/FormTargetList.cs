@@ -65,7 +65,8 @@ namespace ImagePlanner
             }
             TargetDataGrid.Update();
             TargetDataGrid.ClearSelection();
-            TargetDataGrid.Rows[selTargetIndex].Selected = true;
+            if (TargetDataGrid.Rows.Count > 0)
+                TargetDataGrid.Rows[selTargetIndex].Selected = true;
             TargetDataGrid.BackgroundColor = bgd;
         }
 

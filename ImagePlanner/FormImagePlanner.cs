@@ -105,6 +105,8 @@ namespace ImagePlanner
             ButtonGreen(ExoPlanetButton);
             ButtonGreen(ExportListButton);
             ButtonGreen(CurrentTargetListButton);
+            ButtonGreen(TargetGroupButton);
+
 
             InitializeCurrentTarget();
 
@@ -1060,11 +1062,12 @@ namespace ImagePlanner
                 OpenTrack();
             if (prospectForm != null && IsFormOpen(prospectForm.Name) && rType == RefreshEvent.RefreshType.Date)
                 OpenProspect();
-            if (tgtListForm != null && IsFormOpen(tgtListForm.Name) && rType != RefreshEvent.RefreshType.Target)
-                OpenTargetList();
-            else
-                  DateChangeNotification(rType, SelectedDate);
-          return;
+            if (tgtListForm != null && IsFormOpen(tgtListForm.Name))
+                if (rType != RefreshEvent.RefreshType.Target)
+                    OpenTargetList();
+                else
+                    DateChangeNotification(rType, SelectedDate);
+            return;
         }
 
         #endregion
@@ -1242,7 +1245,7 @@ namespace ImagePlanner
 
         #region Event Publishing
 
-        private void DateChangeNotification(RefreshEvent.RefreshType rType,  DateTime newDate)
+        private void DateChangeNotification(RefreshEvent.RefreshType rType, DateTime newDate)
         {
             //Generates event for subscribing forms to update their displays with new date data
             RefreshEvent ndEvent = FormTargetList.RefreshUpdateEvent;
@@ -1294,8 +1297,78 @@ namespace ImagePlanner
 
 
 
+
         #endregion
 
+        private void TargetGroupButton_Click(object sender, EventArgs e)
+        {
+            //Loads a saved set of targets into Humason/Image Planner
+            //after saving the current set, if any, to a current or new folder
+            //inside of the Humason folder
+            ButtonRed(TargetGroupButton);
+            bool overWrite = true;
+            string DocumentsDirectoryPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+            string HumasonDirectoryPath = DocumentsDirectoryPath + "\\" + XFiles.HumasonFolderName;
+            TargetSubfolderDialog.SelectedPath = HumasonDirectoryPath;
+            DialogResult dResult = MessageBox.Show("Do you want to save the current target definitions?", "Swap Target Sets", MessageBoxButtons.YesNoCancel);
+            switch (dResult)
+            {
+                case DialogResult.Cancel:
+                    ButtonGreen(TargetGroupButton);
+                    return;
+                    break;
+                case DialogResult.Yes:
+                    TargetSubfolderDialog.Description = "Choose an existing or Create a new Group Folder";
+                    DialogResult dr = TargetSubfolderDialog.ShowDialog();
+                    string storeDir = TargetSubfolderDialog.SelectedPath;
+                    List<string> currentTargetPaths = Directory.GetFiles(HumasonDirectoryPath).Where(x => x.Contains("TargetPlan")).ToList();
+                    List<string> storeTargetPaths = Directory.GetFiles(storeDir).Where(x => x.Contains("TargetPlan")).ToList();
+                    //Clear destination directory and move Humason target files there
+                    foreach (string f in storeTargetPaths)
+                        File.Delete(f);
+                    foreach (string f in currentTargetPaths)
+                        File.Move(f, storeDir + "\\" + Path.GetFileName(f));
+                    //Get directory from which to load targets, then load them into the Humason directory
+                    TargetSubfolderDialog.Description = "Choose an existing Group Folder from which to load";
+                    dr = TargetSubfolderDialog.ShowDialog();
+                    storeDir = TargetSubfolderDialog.SelectedPath;
+                    List<string> newTargetPaths = Directory.GetFiles(storeDir).Where(x => x.Contains("TargetPlan")).ToList();
+                    foreach (string f in newTargetPaths)
+                        File.Copy(f, HumasonDirectoryPath + "\\" + Path.GetFileName(f), overWrite);
+                    break;
+                case DialogResult.No:
+                    //Get directory from which to load targets, then load them into the Humason directory
+                    TargetSubfolderDialog.Description = "Choose an existing Group Folder from which to load";
+                    dr = TargetSubfolderDialog.ShowDialog();
+                    storeDir = TargetSubfolderDialog.SelectedPath;
+                    currentTargetPaths = Directory.GetFiles(HumasonDirectoryPath).Where(x => x.Contains("TargetPlan")).ToList();
+                    foreach (string f in currentTargetPaths)
+                        File.Delete(f);
+                    newTargetPaths = Directory.GetFiles(storeDir).Where(x => x.Contains("TargetPlan")).ToList();
+                    foreach (string f in newTargetPaths)
+                        File.Copy(f, HumasonDirectoryPath + "\\" + Path.GetFileName(f), overWrite);
+                    break;
+            }
+            //clear current target list box and reload
+            DropDownTargetList.Items.Clear();
+            //Fill in Humason target plans
+            XFiles xf = new XFiles();
+            List<string> tgtList = xf.GetTargetFiles();
+            foreach (string tgt in tgtList)
+            {
+                if (!(tgt.Contains("Default")))
+                {
+                    DropDownTargetList.Items.Add(tgt);
+                }
+            }
 
+            foreach (string tgt in DropDownTargetList.Items)
+            {
+                if (tgt == xf.CurrentHumasonTarget)
+                    DropDownTargetList.SelectedItem = tgt;
+            }
+            RegenerateForms(RefreshEvent.RefreshType.TargetList);
+            ButtonGreen(TargetGroupButton);
+        }
     }
 }
