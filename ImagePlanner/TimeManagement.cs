@@ -1,6 +1,7 @@
 ﻿using AstroMath;
 using System;
 using TheSky64Lib;
+using static System.Windows.Forms.AxHost;
 
 namespace ImagePlanner
 {
@@ -9,18 +10,40 @@ namespace ImagePlanner
 
         private static TimeSpan? offsetHours = null;
         private static string? locationTSX = null;
-        private static TimeSpan? localTimeZone = null;
+        private static TimeSpan? tsxLocalTimeZone = null;
         private static int dstIndex;
+        private static TimeSpan? localTimeOfDay = null;
 
-        public static DateTime CurrentTSXDate
+        public static double JulianTSXDate
         {
             get
             {
                 sky6StarChart tsxsc = new sky6StarChart();
                 tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+                return tsxsc.DocPropOut;
+            }
+            set
+            {
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, value);
+            }
+        }
+
+        public static DateTime LocalTSXDateTime
+        {
+            get
+            {
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
+                tsxLocalTimeZone = TimeSpan.FromHours(tsxsc.DocPropOut);
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
+                dstIndex = (int)tsxsc.DocPropOut;
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
                 double currentJulDate = tsxsc.DocPropOut;
                 DateTime currentUTC = JulianToUTC(currentJulDate);
                 DateTime currentLocalTime = UTCToLocalTime(currentUTC);
+                localTimeOfDay = currentLocalTime.TimeOfDay;
+
                 return currentLocalTime;
             }
             set
@@ -34,33 +57,75 @@ namespace ImagePlanner
             }
         }
 
+        public static TimeSpan? CurrentTSXTimeOfDay
+        {
+            get
+            {
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+                double currentJulDate = tsxsc.DocPropOut;
+                DateTime currentUTC = JulianToUTC(currentJulDate);
+                DateTime currentLocalTime = UTCToLocalTime(currentUTC);
+                localTimeOfDay = currentLocalTime.TimeOfDay;
+                return localTimeOfDay;
+            }
+            set
+            {
+                sky6StarChart tsxsc = new sky6StarChart();
+                tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
+                double currentJulDate = tsxsc.DocPropOut;
+                DateTime currentUTC = JulianToUTC(currentJulDate);
+                DateTime currentLocalTime = UTCToLocalTime(currentUTC);
+                DateTime newLocalTime = new DateTime(currentLocalTime.Year, currentLocalTime.Month, currentLocalTime.Day) + (TimeSpan)localTimeOfDay;
+                //Convert local to UTC
+                DateTime utcDateTime = TimeManagement.LocalToUTCTime(newLocalTime);
+                //Convert UTC to Julian
+                double jDate = AstroMath.Celestial.DateToJulian(utcDateTime);
+                tsxsc.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, jDate);
+            }
+        }
+
+
         public static DateTime LocalToUTCTime(DateTime localTime)
         {
-            //Converts TSX location time to UTC
-            return StandardTimeToDST(localTime) - (TimeSpan)OffsetUTC();
-            //return localTime.ToUniversalTime();
+            //Converts TSX location time to UTC for the current location time daylight savings time
+
+            //DateTime tsxZoneStandardTime = AdjustFromZoneStandardTimeToDST(localTime);
+            return AdjustToZoneStandardTimeFromDST(localTime) - (TimeSpan)tsxLocalTimeZone;
         }
 
         public static DateTime UTCToLocalTime(DateTime utcTime)
         {
             //Converts UTC to TSX location time
-            return StandardTimeToDST(utcTime + (TimeSpan)OffsetUTC());
-            //return utcTime.ToLocalTime();
+            DateTime localStandardTime = utcTime + (TimeSpan)tsxLocalTimeZone;
+            return AdjustFromZoneStandardTimeToDST(localStandardTime);
+        }
+
+        public static DateTime AdjustFromZoneStandardTimeToDST(DateTime dt)
+        {
+            //Returns the number of hours to add to the input time dt to account for DST
+            return dt += DSTCorrection(dt);
+        }
+
+        public static DateTime AdjustToZoneStandardTimeFromDST(DateTime dt)
+        {
+            //Returns the number of hours to add to the input time dt to account for DST
+            return dt -= DSTCorrection(dt);
         }
 
         public static TimeSpan? OffsetUTC()
         {
             //Determines difference in timespan between TSX location time and UTC time based on TSX terrestrial location settings
             //Uses local nullable variable offsetHours to avoid querying TSX for every conversion -- that is very, very slow
-            if (localTimeZone == null)
+            if (tsxLocalTimeZone == null)
             {
                 sky6StarChart tsxsc = new sky6StarChart();
                 tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_Time_Zone);
-                localTimeZone = TimeSpan.FromHours(tsxsc.DocPropOut);
+                tsxLocalTimeZone = TimeSpan.FromHours(tsxsc.DocPropOut);
                 tsxsc.DocumentProperty(Sk6DocumentProperty.sk6DocProp_DaylightSavingTimeIndex);
                 dstIndex = (int)tsxsc.DocPropOut;
             }
-            return localTimeZone;
+            return tsxLocalTimeZone;
         }
 
         public static void ShiftTSXDate(double shiftDays)
@@ -210,9 +275,11 @@ namespace ImagePlanner
             return loc;
         }
 
-        public static DateTime JulianToUTC(double jDAte)
+        public static DateTime JulianToUTC(double jDate)
         {
-            return StandardTimeFromDST(Celestial.JulianToDate(jDAte));
+            //return StandardTimeFromDST(Celestial.JulianToDate(jDAte));
+            return Celestial.JulianToDate(jDate);
+
         }
 
         public static bool IsBetweenDuskAndDawn(DateTime localDuskDate, DateTime localDawnDate, DateTime localDate)

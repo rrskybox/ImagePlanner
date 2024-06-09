@@ -29,7 +29,6 @@ namespace ImagePlanner
             string lineBreak = "\r\n" + "Moon Phases";
             this.MoonDataTextBox.Text = moonDataDescription.Replace("\r\n", "     ");
             this.MoonDataTextBox.Text = MoonDataTextBox.Text.Replace("Moon Phase", lineBreak);
-            return;
         }
 
         private void GraphAltitude(DateTime gStart, DateTime gEnd, Celestial.RADec gRaDec, Celestial.LatLon gloc, string gName, Color gcolor)

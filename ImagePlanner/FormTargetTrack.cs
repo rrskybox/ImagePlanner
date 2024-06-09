@@ -49,14 +49,7 @@ namespace ImagePlanner
             sky6StarChart tsxs = new sky6StarChart();
             sky6ObjectInformation tsxo = new sky6ObjectInformation();
             //Set the date/time to the local date for the target
-            double tgtJulian = Celestial.DateToJulian(tgtDateUTC);
-            tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, tgtJulian);
-            do
-            {
-                System.Threading.Thread.Sleep(1000);
-                tsxs.DocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow);
-            }
-            while (tsxs.DocPropOut != tgtJulian);
+            // Except that it should already be set
 
             //Get some target stuff that's hard to calculate
             tsxs.Find(targetName);
@@ -65,9 +58,8 @@ namespace ImagePlanner
             tsxo.Property(Sk6ObjectInformationProperty.sk6ObjInfoProp_TRANSIT_TIME);
             tgtTransitH = tsxo.ObjInfoPropOut;
 
-            //Test stuff
-            //double testmoontransitH = MoonPosition.TransitTime(tgtDateUTC, obsLocation);
-
+            //Save current tsx julian date
+            double savedJulianDate = TimeManagement.JulianTSXDate;
             //Get some moon stuff now
             tsxs.SetDocumentProperty(Sk6DocumentProperty.sk6DocProp_JulianDateNow, Celestial.DateToJulian(moonDateUTC));
             tsxs.Find("Moon");
@@ -79,10 +71,7 @@ namespace ImagePlanner
             moonSetH = tsxo.ObjInfoPropOut;
             //put the target back in
             tsxs.Find(targetName);
-
-            tsxs = null;
-            tsxo = null;
-            return;
+            TimeManagement.JulianTSXDate =  savedJulianDate;
         }
 
         public void ShowTrack()

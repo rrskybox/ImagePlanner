@@ -35,7 +35,7 @@ namespace ImagePlanner
             TargetDataGrid.Rows.Clear();
             int ridx = 0;
 
-            this.Text = "Current Target List as of " + TimeManagement.CurrentTSXDate.ToShortDateString();
+            this.Text = "Current Target List as of " + TimeManagement.LocalTSXDateTime.ToShortDateString();
 
             //Fill in Humason target plans
             XFiles xf = new XFiles();
