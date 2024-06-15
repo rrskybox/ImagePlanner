@@ -12,7 +12,7 @@ namespace ImagePlanner
             InitializeComponent();
             //
             //private string isource1 = "http://server1.sky-map.org/skywindow?img_source=DSS2&object=ic2177&zoom=8";
-            string isource1 = "http://server1.sky-map.org/skywindow?img_source=DSS2";
+            string isource1 = "https://server1.sky-map.org/skywindow?img_source=DSS2";
             string izoom = "zoom=";
             string ira = "ra=";
             string idec = "de=";
@@ -119,9 +119,9 @@ namespace ImagePlanner
             return;
         }
 
-        private void WebBrowserFrame_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) // Handles WebBrowserFrame.DocumentCompleted
+        private void PreviewBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            return;
+
         }
     }
 }
