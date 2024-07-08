@@ -110,6 +110,8 @@ namespace ImagePlanner
                 MessageBox.Show(ex.Message);
                 Close();
             }
+            //Kill any script error window
+            Utility.KillScriptError();
 
             System.Threading.Thread.Sleep(1);
             this.Show();

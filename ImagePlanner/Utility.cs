@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace ImagePlanner
 {
@@ -46,6 +49,20 @@ namespace ImagePlanner
                 return Convert.ToDouble(sData);
             else
                 return 0;
+        }
+
+        public static void KillScriptError()
+        {
+            //Determine if a script error was thrown in the Star-Sky.com access
+            //  if so, then kill that process.
+            const string scriptErrorProcessName = "Script Error";
+            //Get list of current process names
+
+            Process[] PWIFind = Process.GetProcessesByName("Script Error");
+            Thread.Sleep(1000);
+            if (PWIFind.Length > 0) 
+                PWIFind[0].Kill();
+            return;
         }
 
     }
